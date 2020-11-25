@@ -41,3 +41,8 @@ BEGIN CATCH
 END CATCH
 
 GO
+
+-- Them user admin
+EXEC sp_addNguoiDung N'Nguyễn Mạnh Tuấn Anh', 'xdorro@gmail.com', '1230123', 1, 'OK'
+
+GO

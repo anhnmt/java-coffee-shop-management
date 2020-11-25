@@ -1,7 +1,7 @@
 package com.example.controller;
 
 import com.example.dao.DbUtil;
-import com.example.view.FrmDangNhap;
+import com.example.view.FrmLogin;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 public class LoginController {
 
     public void index() {
-        FrmDangNhap frmDangNhap = new FrmDangNhap();
+        FrmLogin frmDangNhap = new FrmLogin();
         frmDangNhap.setVisible(true);
     }
 

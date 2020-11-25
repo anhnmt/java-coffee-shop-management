@@ -7,20 +7,21 @@ package com.example.view;
 
 import com.example.controller.LoginController;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author TUANANH-DESKTOP
  */
-public class FrmDangNhap extends javax.swing.JFrame {
+public class FrmLogin extends javax.swing.JFrame {
 
     /**
      * Creates new form FrmDangNhap
      */
-    public FrmDangNhap() {
+    public FrmLogin() {
         initComponents();
-//        lblImageLogin.setIcon(); // NOI18N
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -32,8 +33,6 @@ public class FrmDangNhap extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        popupMenu1 = new java.awt.PopupMenu();
-        popupMenu2 = new java.awt.PopupMenu();
         loginPanel = new javax.swing.JPanel();
         lblLogin = new javax.swing.JLabel();
         txtEmail = new javax.swing.JTextField();
@@ -44,15 +43,13 @@ public class FrmDangNhap extends javax.swing.JFrame {
         lblImageLogin = new javax.swing.JLabel();
         txtPassword = new javax.swing.JPasswordField();
 
-        popupMenu1.setLabel("popupMenu1");
-
-        popupMenu2.setLabel("popupMenu2");
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Đăng nhập");
         setIconImages(null);
+        setLocationByPlatform(true);
         setResizable(false);
 
-        loginPanel.setBackground(new java.awt.Color(46, 53, 79));
+        loginPanel.setBackground(new java.awt.Color(54, 57, 63));
         loginPanel.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         loginPanel.setMaximumSize(new java.awt.Dimension(500, 592));
         loginPanel.setMinimumSize(new java.awt.Dimension(500, 592));
@@ -63,35 +60,35 @@ public class FrmDangNhap extends javax.swing.JFrame {
         lblLogin.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblLogin.setText("ĐĂNG NHẬP TÀI KHOẢN");
 
-        txtEmail.setBackground(new java.awt.Color(44, 52, 75));
+        txtEmail.setBackground(new java.awt.Color(48, 51, 57));
         txtEmail.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         txtEmail.setForeground(new java.awt.Color(255, 255, 255));
         txtEmail.setToolTipText("Nhập tên đăng nhập của bạn");
         txtEmail.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         txtEmail.setCaretColor(new java.awt.Color(255, 255, 255));
-        txtEmail.setMargin(new java.awt.Insets(2, 10, 2, 10));
-        txtEmail.setPreferredSize(new java.awt.Dimension(75, 21));
 
-        lblUsername.setFont(new java.awt.Font("SansSerif", 0, 15)); // NOI18N
-        lblUsername.setForeground(new java.awt.Color(255, 255, 255));
+        lblUsername.setBackground(new java.awt.Color(255, 255, 255));
+        lblUsername.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        lblUsername.setForeground(new java.awt.Color(142, 146, 151));
         lblUsername.setLabelFor(txtEmail);
-        lblUsername.setText("Địa chỉ email:");
+        lblUsername.setText("EMAIL");
 
-        lblPassword.setFont(new java.awt.Font("SansSerif", 0, 15)); // NOI18N
-        lblPassword.setForeground(new java.awt.Color(255, 255, 255));
+        lblPassword.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        lblPassword.setForeground(new java.awt.Color(142, 146, 151));
         lblPassword.setLabelFor(txtPassword);
-        lblPassword.setText("Mật khẩu:");
+        lblPassword.setText("MẬT KHẨU");
         lblPassword.setToolTipText("");
 
-        btnLogin.setBackground(new java.awt.Color(67, 187, 115));
-        btnLogin.setFont(new java.awt.Font("SansSerif", 0, 15)); // NOI18N
+        btnLogin.setBackground(new java.awt.Color(114, 137, 218));
+        btnLogin.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         btnLogin.setForeground(new java.awt.Color(255, 255, 255));
         btnLogin.setText("Đăng nhập");
         btnLogin.setToolTipText("Click để Đăng nhập");
         btnLogin.setAlignmentY(0.0F);
-        btnLogin.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        btnLogin.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         btnLogin.setBorderPainted(false);
-        btnLogin.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnLogin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnLogin.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLoginActionPerformed(evt);
@@ -100,23 +97,24 @@ public class FrmDangNhap extends javax.swing.JFrame {
 
         lblForgotPassword.setBackground(new java.awt.Color(255, 255, 255));
         lblForgotPassword.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        lblForgotPassword.setForeground(new java.awt.Color(255, 255, 255));
-        lblForgotPassword.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblForgotPassword.setForeground(new java.awt.Color(114, 137, 218));
+        lblForgotPassword.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblForgotPassword.setText("Quên mật khẩu?");
+        lblForgotPassword.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         lblImageLogin.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblImageLogin.setIcon(new javax.swing.ImageIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/login.png")).getImage().getScaledInstance(200, 200, Image.SCALE_REPLICATE)));
+        lblImageLogin.setIcon(new javax.swing.ImageIcon(new javax.swing.ImageIcon(getClass().getResource("/com.example/assets/img/login.png")).getImage().getScaledInstance(200, 200, Image.SCALE_REPLICATE)));
         lblImageLogin.setMaximumSize(new java.awt.Dimension(200, 200));
         lblImageLogin.setMinimumSize(new java.awt.Dimension(200, 200));
 
-        txtPassword.setBackground(new java.awt.Color(44, 52, 75));
+        txtPassword.setBackground(new java.awt.Color(48, 51, 57));
         txtPassword.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         txtPassword.setForeground(new java.awt.Color(255, 255, 255));
         txtPassword.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         txtPassword.setCaretColor(new java.awt.Color(255, 255, 255));
-        txtPassword.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPasswordActionPerformed(evt);
+        txtPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPasswordKeyPressed(evt);
             }
         });
 
@@ -137,7 +135,7 @@ public class FrmDangNhap extends javax.swing.JFrame {
                             .addComponent(lblPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblForgotPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(lblLogin, javax.swing.GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE)
-                            .addComponent(txtEmail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtEmail)
                             .addComponent(txtPassword))))
                 .addGap(23, 23, 23))
         );
@@ -146,7 +144,7 @@ public class FrmDangNhap extends javax.swing.JFrame {
             .addGroup(loginPanelLayout.createSequentialGroup()
                 .addGap(44, 44, 44)
                 .addComponent(lblLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addComponent(lblImageLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
                 .addComponent(lblUsername)
@@ -156,9 +154,9 @@ public class FrmDangNhap extends javax.swing.JFrame {
                 .addComponent(lblPassword)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblForgotPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(30, 30, 30)
                 .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -190,9 +188,11 @@ public class FrmDangNhap extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnLoginActionPerformed
 
-    private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtPasswordActionPerformed
+    private void txtPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            btnLogin.doClick();
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPasswordKeyPressed
 
     /**
      * @param args the command line arguments
@@ -211,20 +211,21 @@ public class FrmDangNhap extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmDangNhap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmDangNhap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmDangNhap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmDangNhap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FrmDangNhap().setVisible(true);
+                new FrmLogin().setVisible(true);
             }
         });
     }
@@ -237,8 +238,6 @@ public class FrmDangNhap extends javax.swing.JFrame {
     private javax.swing.JLabel lblPassword;
     private javax.swing.JLabel lblUsername;
     private javax.swing.JPanel loginPanel;
-    private java.awt.PopupMenu popupMenu1;
-    private java.awt.PopupMenu popupMenu2;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JPasswordField txtPassword;
     // End of variables declaration//GEN-END:variables
