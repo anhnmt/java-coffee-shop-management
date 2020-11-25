@@ -1,4 +1,4 @@
-package com.example.dao;
+package com.example.DAO;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,7 +11,7 @@ public class DbUtil {
 
     public DbUtil() {
         try {
-            ResourceBundle bundle = ResourceBundle.getBundle("config.config");
+            ResourceBundle bundle = ResourceBundle.getBundle("com.example.config.config");
             Class.forName(bundle.getString("DRIVER_NAME"));
 
             conn = DriverManager.getConnection(bundle.getString("URL"), bundle.getString("USER"), bundle.getString("PASSWORD"));
