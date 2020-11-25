@@ -1,2 +1,2 @@
-# java-student-management
-This is my Java Student Management project
+# java-coffee-shop-management
+This is my Java Coffee Shop Management project
