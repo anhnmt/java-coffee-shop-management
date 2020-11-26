@@ -361,7 +361,7 @@ public class FrmLogin extends javax.swing.JFrame {
                 .addContainerGap(32, Short.MAX_VALUE))
         );
 
-        panelBackround.add(panelLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 100, -1, -1));
+        panelBackround.add(panelLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 120, -1, -1));
 
         lblBackground.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblBackground.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
