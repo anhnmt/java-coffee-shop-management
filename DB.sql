@@ -21,7 +21,7 @@ CREATE TABLE Users(
 
 GO
 
-CREATE PROC sp_createUser(
+CREATE PROC sp_insertUser(
 	@_name nvarchar(100),
 	@_email varchar(100),
 	@_password varchar(100),
@@ -45,7 +45,7 @@ END CATCH
 GO
 
 -- Them user admin
-EXEC sp_createUser @_name = N'Nguyễn Mạnh Tuấn Anh', @_email = 'xdorro@gmail.com', @_password = '1230123', @_role = 1, @_KetQua = 'OK'
+EXEC sp_insertUser @_name = N'Nguyễn Mạnh Tuấn Anh', @_email = 'xdorro@gmail.com', @_password = '1230123', @_role = 1, @_KetQua = 'OK'
 
 GO
 
@@ -57,7 +57,7 @@ CREATE TABLE Categories(
 
 GO
 
-CREATE PROC sp_createCategory(
+CREATE PROC sp_insertCategory(
 	@_name nvarchar(100),
 	@_status bit = 1,
 	@_KetQua nvarchar(200) output
@@ -78,31 +78,31 @@ END CATCH
 GO
 
 -- Thêm danh mục
-EXEC sp_createCategory @_name = N'Cà Phê Việt', @_KetQua = 'OK'
+EXEC sp_insertCategory @_name = N'Cà Phê Việt', @_KetQua = 'OK'
 
 GO
 
-EXEC sp_createCategory @_name = N'Cà Phê Tây', @_KetQua = 'OK'
+EXEC sp_insertCategory @_name = N'Cà Phê Tây', @_KetQua = 'OK'
 
 GO
 
-EXEC sp_createCategory @_name = N'Sinh Tố', @_KetQua = 'OK'
+EXEC sp_insertCategory @_name = N'Sinh Tố', @_KetQua = 'OK'
 
 GO
 
-EXEC sp_createCategory @_name = N'Trà', @_KetQua = 'OK'
+EXEC sp_insertCategory @_name = N'Trà', @_KetQua = 'OK'
 
 GO
 
-EXEC sp_createCategory @_name = N'Trái Cây', @_KetQua = 'OK'
+EXEC sp_insertCategory @_name = N'Trái Cây', @_KetQua = 'OK'
 
 GO
 
-EXEC sp_createCategory @_name = N'Sữa Chua', @_KetQua = 'OK'
+EXEC sp_insertCategory @_name = N'Sữa Chua', @_KetQua = 'OK'
 
 GO
 
-EXEC sp_createCategory @_name = N'Khác', @_KetQua = 'OK'
+EXEC sp_insertCategory @_name = N'Khác', @_KetQua = 'OK'
 
 GO
 
