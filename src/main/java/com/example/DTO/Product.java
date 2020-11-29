@@ -3,7 +3,7 @@ package com.example.DTO;
 import lombok.Data;
 
 @Data
-public class Drink {
+public class Product {
     private int id;
     private String name;
     private float price;
