@@ -1,27 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package coffeeshop.DAO;
 
-/**
- *
- * @author TUANANH-LAPTOP
- */
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
+
 public interface GenericDao<T> {
+    List<T> getAll();
 
-    public void index();
+    Map<String, Object> create(T t);
 
-    public void create();
+    T read(int id);
 
-    public void store();
+    Map<String, Object> update(T t);
 
-    public void show();
-
-    public void edit();
-
-    public void update();
-
-    public void destroy();
+    Map<String, Object> delete(int id);
 }
