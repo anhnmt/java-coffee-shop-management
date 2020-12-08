@@ -8,8 +8,10 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="java-coffee-shop-management" />
-        <module name="java-student-management" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="java-coffee-shop-management" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
