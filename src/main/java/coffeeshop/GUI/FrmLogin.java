@@ -5,9 +5,13 @@
  */
 package coffeeshop.GUI;
 
+import coffeeshop.DAO.UserDao;
+import coffeeshop.DTO.User;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.Map;
 
 /**
  *
@@ -123,7 +127,21 @@ public class FrmLogin extends JFrame {
         }
 
         if (validate == true) {
-            JOptionPane.showMessageDialog(null, "Đăng nhập thành công!");
+            UserDao ud = new UserDao();
+            User obj = ud.auth(email, password);
+            System.out.println(obj);
+
+            if (obj != null) {
+                JOptionPane.showMessageDialog(null, "Xin chào: " + obj.getName() + "!");
+            } else {
+                txtPassword.setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(new Color(240, 71, 71)),
+                        BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+                txtPassword.setText("");
+                lblPassword.setForeground(new Color(240, 71, 71));
+                lblPasswordError.setText("Email hoặc mật khẩu đăng nhập không chính xác.");
+                lblPasswordError.setVisible(true);
+            }
         }
     }//GEN-LAST:event_btnLoginActionPerformed
 

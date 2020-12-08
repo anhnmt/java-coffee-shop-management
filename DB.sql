@@ -59,6 +59,21 @@ EXEC sp_insertUser @_name = N'Nguyễn Mạnh Tuấn Anh', @_email = 'xdorro@gma
 
 GO
 
+CREATE PROC sp_checkUser(
+	@_email varchar(100),
+    @_password varchar(100)
+)
+AS
+BEGIN
+	SELECT TOP 1 * FROM Users WHERE email = @_email AND [password] = @_password
+END
+
+GO
+
+EXEC sp_checkUser 'xdorro@gmail.com', '1230123'
+
+GO
+
 CREATE TABLE Categories
 (
     id       int primary key identity,
@@ -222,8 +237,8 @@ GO
 
 CREATE PROC sp_insertTable(@_area_id int,
                            @_name nvarchar(100),
-                           @_status bit = 1,
                            @_note nvarchar(150) = '',
+                           @_status bit = 1,
                            @_outStt bit = 1 output,
                            @_outMsg nvarchar(200) = '' output)
 AS
