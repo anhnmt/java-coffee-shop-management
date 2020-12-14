@@ -13,7 +13,7 @@ public class UserDao implements GenericDao<User> {
 
     @Override
     public List<User> getAll() {
-        List<User> list = new ArrayList<User>();
+        List<User> list = new ArrayList<>();
         String sql = "SELECT * FROM Users";
 
         try (Connection conn = new DbUtil().getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
