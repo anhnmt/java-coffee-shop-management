@@ -17,5 +17,5 @@ public class Order {
     private float discount;
     private String note;
     private boolean status;
-    private LocalDateTime created_at;
+    private String created_at;
 }
