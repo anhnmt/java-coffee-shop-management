@@ -14,9 +14,9 @@ public class CategoryDao implements GenericDao<Category> {
     @Override
     public List<Category> getAll() {
         List<Category> list = new ArrayList<>();
-        String sql = "SELECT * FROM Categories";
+        String sql = "{CALL sp_getAllCategory}";
 
-        try (Connection conn = new DbUtil().getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql); ResultSet rs = cs.executeQuery()) {
             while (rs.next()) {
                 Category obj = new Category(
                         rs.getInt("id"),
@@ -33,13 +33,13 @@ public class CategoryDao implements GenericDao<Category> {
     }
 
     @Override
-    public Map<String, Object> create(Category user) {
+    public Map<String, Object> create(Category category) {
         Map<String, Object> output = new HashMap<>();
         String sql = "{CALL sp_insertCategory(?, ?, ?, ?)}";
 
         try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
-            cs.setNString(1, user.getName());
-            cs.setBoolean(2, user.isStatus());
+            cs.setNString(1, category.getName());
+            cs.setBoolean(2, category.isStatus());
             cs.registerOutParameter(3, Types.BIT);
             cs.registerOutParameter(4, Types.NVARCHAR);
             cs.execute();
@@ -78,12 +78,44 @@ public class CategoryDao implements GenericDao<Category> {
     }
 
     @Override
-    public Map<String, Object> update(Category user) {
-        return null;
+    public Map<String, Object> update(Category category) {
+        Map<String, Object> output = new HashMap<>();
+        String sql = "{CALL sp_updateCategory(?, ?, ?, ?, ?)}";
+
+        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
+            cs.setInt(1, category.getId());
+            cs.setNString(2, category.getName());
+            cs.setBoolean(3, category.isStatus());
+            cs.registerOutParameter(4, Types.BIT);
+            cs.registerOutParameter(5, Types.NVARCHAR);
+            cs.execute();
+
+            output.put("status", cs.getBoolean(4));
+            output.put("message", cs.getNString(5));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return output;
     }
 
     @Override
     public Map<String, Object> delete(int id) {
-        return null;
+        Map<String, Object> output = new HashMap<>();
+        String sql = "{CALL sp_deleteCategory(?, ?, ?)}";
+
+        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
+            cs.setInt(1, id);
+            cs.registerOutParameter(2, Types.BIT);
+            cs.registerOutParameter(3, Types.NVARCHAR);
+            cs.execute();
+
+            output.put("status", cs.getBoolean(2));
+            output.put("message", cs.getNString(3));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return output;
     }
 }

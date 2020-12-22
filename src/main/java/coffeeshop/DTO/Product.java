@@ -13,5 +13,5 @@ public class Product {
     private String name;
     private float price;
     private boolean status;
-    private String created_at;
+    private String category_name;
 }

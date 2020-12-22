@@ -14,9 +14,9 @@ public class ProductDao implements GenericDao<Product> {
     @Override
     public List<Product> getAll() {
         List<Product> list = new ArrayList<>();
-        String sql = "SELECT * FROM Products";
+        String sql = "{CALL sp_getAllProduct}";
 
-        try (Connection conn = new DbUtil().getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql); ResultSet rs = cs.executeQuery()) {
             while (rs.next()) {
                 Product obj = new Product(
                         rs.getInt("id"),
@@ -24,7 +24,7 @@ public class ProductDao implements GenericDao<Product> {
                         rs.getNString("name"),
                         rs.getFloat("price"),
                         rs.getBoolean("status"),
-                        rs.getString("created_at")
+                        rs.getString("category_name")
                 );
                 list.add(obj);
             }
@@ -36,19 +36,21 @@ public class ProductDao implements GenericDao<Product> {
     }
 
     @Override
-    public Map<String, Object> create(Product user) {
+    public Map<String, Object> create(Product product) {
         Map<String, Object> output = new HashMap<>();
-        String sql = "{CALL sp_insertCategory(?, ?, ?, ?)}";
+        String sql = "{CALL sp_insertProduct(?, ?, ?, ?, ?, ?)}";
 
         try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
-            cs.setNString(1, user.getName());
-            cs.setBoolean(2, user.isStatus());
-            cs.registerOutParameter(3, Types.BIT);
-            cs.registerOutParameter(4, Types.NVARCHAR);
+            cs.setInt(1, product.getCategory_id());
+            cs.setNString(2, product.getName());
+            cs.setFloat(3, product.getPrice());
+            cs.setBoolean(4, product.isStatus());
+            cs.registerOutParameter(5, Types.BIT);
+            cs.registerOutParameter(6, Types.NVARCHAR);
             cs.execute();
 
-            output.put("status", cs.getBoolean(3));
-            output.put("message", cs.getNString(4));
+            output.put("status", cs.getBoolean(5));
+            output.put("message", cs.getNString(6));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -72,7 +74,7 @@ public class ProductDao implements GenericDao<Product> {
                             rs.getNString("name"),
                             rs.getFloat("price"),
                             rs.getBoolean("status"),
-                            rs.getString("created_at")
+                            null
                     );
                 }
             }
@@ -84,12 +86,46 @@ public class ProductDao implements GenericDao<Product> {
     }
 
     @Override
-    public Map<String, Object> update(Product user) {
-        return null;
+    public Map<String, Object> update(Product product) {
+        Map<String, Object> output = new HashMap<>();
+        String sql = "{CALL sp_updateProduct(?, ?, ?, ?, ?, ?, ?)}";
+
+        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
+            cs.setInt(1, product.getId());
+            cs.setInt(2, product.getCategory_id());
+            cs.setNString(3, product.getName());
+            cs.setFloat(4, product.getPrice());
+            cs.setBoolean(5, product.isStatus());
+            cs.registerOutParameter(6, Types.BIT);
+            cs.registerOutParameter(7, Types.NVARCHAR);
+            cs.execute();
+
+            output.put("status", cs.getBoolean(6));
+            output.put("message", cs.getNString(7));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return output;
     }
 
     @Override
     public Map<String, Object> delete(int id) {
-        return null;
+        Map<String, Object> output = new HashMap<>();
+        String sql = "{CALL sp_deleteProduct(?, ?, ?)}";
+
+        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
+            cs.setInt(1, id);
+            cs.registerOutParameter(2, Types.BIT);
+            cs.registerOutParameter(3, Types.NVARCHAR);
+            cs.execute();
+
+            output.put("status", cs.getBoolean(2));
+            output.put("message", cs.getNString(3));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return output;
     }
 }

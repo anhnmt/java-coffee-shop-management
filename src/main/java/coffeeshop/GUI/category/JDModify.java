@@ -5,6 +5,14 @@
  */
 package coffeeshop.GUI.category;
 
+import coffeeshop.DAO.CategoryDao;
+import coffeeshop.DTO.Category;
+import java.awt.Color;
+import java.awt.event.KeyEvent;
+import java.util.Map;
+import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Minh
@@ -14,10 +22,33 @@ public class JDModify extends javax.swing.JDialog {
     /**
      * Creates new form JDCategoryCreate
      */
-    public JDModify(java.awt.Frame parent, boolean modal) {
+    CallbackModify callback;
+    Category category;
+
+    interface CallbackModify {
+
+        public void actionModify();
+    }
+
+    public JDModify(java.awt.Frame parent, boolean modal, CallbackModify callback, Category category) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
+        lblNameError.setVisible(false);
+        this.callback = callback;
+        System.out.println(category);
+        if (category != null) {
+            this.category = category;
+            loadData();
+        }
+    }
+
+    public void loadData() {
+        lblTitle.setText("Sửa đổi danh mục");
+        btnModify.setText("Sửa đổi");
+        txtName.setText(category.getName());
+        rdoActive.setSelected(category.isStatus());
+        rdoNonActive.setSelected(category.isStatus() == false);
     }
 
     /**
@@ -31,27 +62,34 @@ public class JDModify extends javax.swing.JDialog {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        lblTitle = new javax.swing.JLabel();
+        lblName = new javax.swing.JLabel();
         txtName = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
+        lblStatus = new javax.swing.JLabel();
         rdoActive = new javax.swing.JRadioButton();
         rdoNonActive = new javax.swing.JRadioButton();
         btnModify = new javax.swing.JButton();
+        lblNameError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_categorize_50px.png"))); // NOI18N
-        jLabel1.setText("THÊM MỚI DANH MỤC");
+        lblTitle.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
+        lblTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_categorize_50px.png"))); // NOI18N
+        lblTitle.setText("THÊM MỚI DANH MỤC");
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        jLabel2.setText("Tên danh mục");
+        lblName.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        lblName.setText("Tên danh mục");
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        jLabel3.setText("Trạng thái");
+        txtName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNameKeyPressed(evt);
+            }
+        });
+
+        lblStatus.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        lblStatus.setText("Trạng thái");
 
         rdoActive.setBackground(new java.awt.Color(255, 255, 255));
         buttonGroup1.add(rdoActive);
@@ -70,6 +108,14 @@ public class JDModify extends javax.swing.JDialog {
         btnModify.setText("Thêm mới");
         btnModify.setBorderPainted(false);
         btnModify.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnModify.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModifyActionPerformed(evt);
+            }
+        });
+
+        lblNameError.setForeground(new java.awt.Color(240, 71, 71));
+        lblNameError.setText("Tên danh mục không được để trống");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -78,36 +124,41 @@ public class JDModify extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtName)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(lblNameError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtName)
+                            .addComponent(lblStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGap(0, 427, Short.MAX_VALUE)
+                                .addComponent(btnModify, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(rdoActive, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(rdoNonActive, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(btnModify, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap())
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(rdoNonActive, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(7, 7, 7)
+                .addComponent(lblNameError)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rdoActive)
                     .addComponent(rdoNonActive, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addComponent(btnModify, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -125,6 +176,63 @@ public class JDModify extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyActionPerformed
+        String name = txtName.getText().trim();
+        boolean status = rdoActive.isSelected();
+        boolean validate = true;
+
+        if (name.equals("")) {
+            txtName.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(new Color(240, 71, 71)),
+                    BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+            lblName.setForeground(new Color(240, 71, 71));
+            lblNameError.setVisible(true);
+            validate = false;
+        } else {
+            try {
+                Category category = new Category();
+                if (category == null) {
+                    category.setName(name);
+                    category.setStatus(status);
+                    CategoryDao categoryDao = new CategoryDao();
+                    Map<String, Object> result = categoryDao.create(category);
+
+                    if ((boolean) result.get("status") == true) {
+                        JOptionPane.showMessageDialog(null, "Thêm danh mục thành công!");
+                        callback.actionModify();
+                        dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Thêm danh mục thất bại, lỗi: " + result.get("message") + "!");
+                    }
+                } else {
+                    category.setId(this.category.getId());
+                    category.setName(name);
+                    category.setStatus(status);
+                    CategoryDao categoryDao = new CategoryDao();
+                    Map<String, Object> result = categoryDao.update(category);
+
+                    if ((boolean) result.get("status") == true) {
+                        JOptionPane.showMessageDialog(null, "Sửa đổi danh mục thành công!");
+                        callback.actionModify();
+                        dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Sửa đổi danh mục thất bại, lỗi: " + result.get("message") + "!");
+                    }
+                }
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+    }//GEN-LAST:event_btnModifyActionPerformed
+
+    private void txtNameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNameKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            btnModify.doClick();
+        }
+    }//GEN-LAST:event_txtNameKeyPressed
 
     /**
      * @param args the command line arguments
@@ -157,7 +265,7 @@ public class JDModify extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                JDModify dialog = new JDModify(new javax.swing.JFrame(), true);
+                JDModify dialog = new JDModify(new javax.swing.JFrame(), true, null, null);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -172,10 +280,11 @@ public class JDModify extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnModify;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lblName;
+    private javax.swing.JLabel lblNameError;
+    private javax.swing.JLabel lblStatus;
+    private javax.swing.JLabel lblTitle;
     private javax.swing.JRadioButton rdoActive;
     private javax.swing.JRadioButton rdoNonActive;
     private javax.swing.JTextField txtName;
