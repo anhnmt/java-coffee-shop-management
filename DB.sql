@@ -59,6 +59,11 @@ EXEC sp_insertUser @_name = N'Nguyễn Mạnh Tuấn Anh', @_email = 'xdorro@gma
 
 GO
 
+EXEC sp_insertUser @_name = N'Nguyễn Tuấn Minh', @_email = 'minh@gmail.com', @_password = '123456', @_role = 1,
+     @_outMsg = 'OK'
+
+GO
+
 CREATE PROC sp_checkUser(
 	@_email varchar(100),
     @_password varchar(100)
@@ -83,6 +88,12 @@ CREATE TABLE Categories
 
 GO
 
+CREATE PROC sp_getAllCategory
+AS
+    SELECT * FROM  Categories
+
+GO
+
 CREATE PROC sp_insertCategory(@_name nvarchar(100),
                               @_status bit = 1,
                               @_outStt bit = 1 output,
@@ -103,7 +114,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
-    SET @_outMsg = N'Thêm không thành công: ' + ERROR_MESSAGE()
+    SET @_outMsg = ERROR_MESSAGE()
 END CATCH
 
 GO
@@ -137,6 +148,61 @@ EXEC sp_insertCategory @_name = N'Khác'
 
 GO
 
+CREATE PROC sp_updateCategory(@_id int,
+							  @_name nvarchar(100),
+                              @_status bit = 1,
+                              @_outStt bit = 1 output,
+                              @_outMsg nvarchar(200) = '' output)
+AS
+BEGIN TRY
+    IF EXISTS(SELECT [name] FROM Categories WHERE [name] = @_name and id != @_id)
+        BEGIN
+            SET @_outStt = 0;
+            SET @_outMsg = N'Tên danh mục đã tồn tại, vui lòng nhập lại'
+        END
+    ELSE
+        BEGIN
+            UPDATE Categories
+			SET [name] = @_name,
+				[status] = @_status
+			WHERE id = @_id
+
+            SET @_outStt = 1;
+            SET @_outMsg = N'Cập nhật thành công'
+        END
+END TRY
+BEGIN CATCH
+    SET @_outStt = 0;
+    SET @_outMsg = ERROR_MESSAGE()
+END CATCH
+
+GO
+
+CREATE PROC sp_deleteCategory(@_id int,
+                              @_outStt bit = 1 output,
+                              @_outMsg nvarchar(200) = '' output)
+AS
+BEGIN TRY
+    IF EXISTS(SELECT * FROM Categories JOIN Products ON Products.category_id = Categories.id WHERE Categories.id = @_id)
+        BEGIN
+            SET @_outStt = 0;
+            SET @_outMsg = N'Danh mục đang có sản phẩm, không thể xoá'
+        END
+    ELSE
+        BEGIN
+            DELETE Categories WHERE id = @_id
+
+            SET @_outStt = 1;
+            SET @_outMsg = N'Xoá thành công'
+        END
+END TRY
+BEGIN CATCH
+    SET @_outStt = 0;
+    SET @_outMsg = ERROR_MESSAGE()
+END CATCH
+
+GO
+
 CREATE TABLE Products
 (
     id          int primary key identity,
@@ -145,6 +211,12 @@ CREATE TABLE Products
     price       float default (0),
     [status]    bit   default (1)
 )
+
+GO
+
+CREATE PROC sp_getAllProduct
+AS
+    SELECT p.*, c.[name] 'category_name' FROM Products p JOIN Categories c ON c.id = p.category_id
 
 GO
 
@@ -172,12 +244,70 @@ BEGIN TRY
                 INSERT INTO Products(category_id, [name], price, [status])
                 VALUES (@_category_id, @_name, @_price, @_status)
                 SET @_outStt = 1;
-                SET @_outMsg = N'Thêm danh mục thành công';
+                SET @_outMsg = N'Thêm sản phẩm thành công';
             END
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
-    SET @_outMsg = N'Thêm không thành công: ' + ERROR_MESSAGE()
+    SET @_outMsg = ERROR_MESSAGE()
+END CATCH
+
+GO
+
+CREATE PROC sp_updateProduct(@_id int,
+							 @_category_id int,
+                             @_name nvarchar(100),
+                             @_price float,
+                             @_status bit = 1,
+                             @_outStt bit = 1 output,
+                             @_outMsg nvarchar(200) = '' output)
+AS
+BEGIN TRY
+    IF EXISTS(SELECT [name] FROM Products WHERE [name] = @_name and id != @_id)
+        BEGIN
+            SET @_outStt = 0;
+            SET @_outMsg = N'Tên sản phẩm đã tồn tại, vui lòng nhập lại'
+        END
+    ELSE
+        BEGIN
+            UPDATE Products 
+			SET category_id = @_category_id,
+				[name] = @_name,
+				[price] = @_price,
+				[status] = @_status
+			WHERE id = @_id
+            SET @_outStt = 1;
+            SET @_outMsg = N'Sửa đổi danh mục thành công'
+        END
+END TRY
+BEGIN CATCH
+    SET @_outStt = 0;
+    SET @_outMsg = ERROR_MESSAGE()
+END CATCH
+
+GO
+
+CREATE PROC sp_deleteProduct(@_id int,
+                              @_outStt bit = 1 output,
+                              @_outMsg nvarchar(200) = '' output)
+AS
+BEGIN TRY
+    IF EXISTS(SELECT * FROM Products p JOIN OrderDetails o ON o.product_id = p.id WHERE p.id = @_id)
+        BEGIN
+            SET @_outStt = 0;
+            SET @_outMsg = N'Sản phẩm đang có liên kết hoá đơn, không thể xoá'
+        END
+    ELSE
+        BEGIN
+            DELETE Products WHERE id = @_id
+
+            SET @_outStt = 1;
+            SET @_outMsg = N'Xoá thành công'
+        END
+END TRY
+BEGIN CATCH
+    SET @_outStt = 0;
+    SET @_outMsg = ERROR_MESSAGE()
 END CATCH
 
 GO
@@ -188,6 +318,12 @@ CREATE TABLE Areas
     [name]   nvarchar(100) unique not null,
     [status] bit default (1)
 )
+
+GO
+
+CREATE PROC sp_getAllArea
+AS
+    SELECT * FROM  Areas
 
 GO
 
@@ -232,6 +368,12 @@ CREATE TABLE [Tables]
     note     nvarchar(150),
     [status] bit default (1)
 )
+
+GO
+
+CREATE PROC sp_getAllTable
+AS
+    SELECT * FROM  Tables
 
 GO
 

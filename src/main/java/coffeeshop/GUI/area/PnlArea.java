@@ -5,11 +5,19 @@
  */
 package coffeeshop.GUI.area;
 
+import coffeeshop.DTO.Area;
+import coffeeshop.DTO.Table;
+import coffeeshop.DAO.AreaDao;
+import coffeeshop.DAO.TableDao;
 import coffeeshop.Utils.WrapLayout;
 import java.awt.Component;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 
@@ -19,23 +27,40 @@ import javax.swing.SwingConstants;
  */
 public class PnlArea extends javax.swing.JPanel {
 
+    List<Area> listArea = new ArrayList<Area>();
+    List<Table> listTable = new ArrayList<Table>();
+
     /**
      * Creates new form PnlCategory
      */
     public PnlArea() {
         initComponents();
-//        ImageIcon icon = createImageIcon("Gambar/icons8_add_50px_2.png");
+        loading();
 
-        JComponent panel1 = makeTextPanel("Panel #1");
-        addTab(tabbedPane, "Khu vực 1 (ngoài sân)", panel1);
+    }
 
-        JComponent panel2 = makeTextPanel("Panel #2");
-        addTab(tabbedPane, "Khu vực 2 (tầng 2)", panel2);
+    public void loading() {
+        AreaDao areaDao = new AreaDao();
+        listArea = areaDao.getAll();
+        TableDao tableDao = new TableDao();
+        listTable = tableDao.getAll();
+        for (Area area : listArea) {
+            JComponent panel = makeTextPanel();
+            addTab(tabbedPane, area.getName(), panel);
+            for (Table table : listTable) {
+                if (table.getArea_id() == area.getId()) {
+                    JLabel jp = makeTable(panel, table.getName());
+                }
+            }
+        }
 
     }
 
     private void addTab(JTabbedPane tabbedPane, String title, Component tab) {
-        tabbedPane.add(tab);
+        JScrollPane jScrollPane = new JScrollPane();
+        jScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane.setViewportView(tab);
+        tabbedPane.add(jScrollPane);
         tabbedPane.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
 
         JLabel lbl = new JLabel(title);
@@ -50,7 +75,7 @@ public class PnlArea extends javax.swing.JPanel {
         tabbedPane.setTabComponentAt(tabbedPane.getTabCount() - 1, lbl);
     }
 
-    protected JComponent makeTextPanel(String text) {
+    protected JComponent makeTextPanel() {
         javax.swing.JPanel panel = new javax.swing.JPanel(false);
         panel.setLayout(new WrapLayout(WrapLayout.LEFT, 35, 5));
         JLabel jl1 = new JLabel();
@@ -61,30 +86,34 @@ public class PnlArea extends javax.swing.JPanel {
         jl1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jl1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                JLabel jp = new JLabel();
-                jp.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-                jp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_table_75px.png"))); // NOI18N
-                jp.setText("Bàn 2");
-                jp.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-                jp.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-                jp.setVisible(true);
-                panel.add(jp);
-                panel.validate();
-                panel.repaint();
-                panel.validate();
-                panel.repaint();
+//                JLabel jp = new JLabel();
+//                jp.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+//                jp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_table_75px.png"))); // NOI18N
+//                jp.setText("Bàn 2");
+//                jp.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+//                jp.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+//                jp.setVisible(true);
+//                panel.add(jp);
+//                panel.repaint();
+//                panel.revalidate();
             }
         });
         panel.add(jl1);
-
-        JLabel jl12 = new JLabel();
-        jl12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jl12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_table_75px.png"))); // NOI18N
-        jl12.setText("Bàn");
-        jl12.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jl12.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        panel.add(jl12);
         return panel;
+    }
+
+    public JLabel makeTable(JComponent panel, String tableName) {
+        JLabel jp = new JLabel();
+        jp.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_table_75px.png"))); // NOI18N
+        jp.setText(tableName);
+        jp.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jp.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jp.setVisible(true);
+        panel.add(jp);
+        panel.repaint();
+        panel.revalidate();
+        return jp;
     }
 
     protected ImageIcon createImageIcon(String path) {
@@ -108,7 +137,6 @@ public class PnlArea extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         lblAdd = new javax.swing.JLabel();
-        lblSearch = new javax.swing.JLabel();
         lblUpdate = new javax.swing.JLabel();
         lblDelete = new javax.swing.JLabel();
         tabbedPane = new javax.swing.JTabbedPane();
@@ -141,15 +169,6 @@ public class PnlArea extends javax.swing.JPanel {
         lblAdd.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         lblAdd.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jPanel2.add(lblAdd);
-
-        lblSearch.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        lblSearch.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_search_50px_1.png"))); // NOI18N
-        lblSearch.setText("Tìm kiếm");
-        lblSearch.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        lblSearch.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        lblSearch.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jPanel2.add(lblSearch);
 
         lblUpdate.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         lblUpdate.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -218,7 +237,6 @@ public class PnlArea extends javax.swing.JPanel {
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblAdd;
     private javax.swing.JLabel lblDelete;
-    private javax.swing.JLabel lblSearch;
     private javax.swing.JLabel lblUpdate;
     private javax.swing.JTabbedPane tabbedPane;
     // End of variables declaration//GEN-END:variables

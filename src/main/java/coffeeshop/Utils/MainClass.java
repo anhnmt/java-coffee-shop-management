@@ -2,6 +2,7 @@ package coffeeshop.Utils;
 
 import coffeeshop.DAO.UserDao;
 import coffeeshop.DTO.User;
+import coffeeshop.GUI.Dashboard;
 import coffeeshop.GUI.FrmLogin;
 
 import javax.swing.*;
@@ -15,8 +16,8 @@ public class MainClass {
             if (conn != null) {
                 System.out.println("Kết nối thành công");
 
-                FrmLogin frmLogin = new FrmLogin();
-                frmLogin.setVisible(true);
+                Dashboard dashboard = new Dashboard();
+                dashboard.setVisible(true);
             } else {
                 System.out.println("Kết nối không thành công");
                 JOptionPane.showMessageDialog(null, "Kết nối CSDL không thành công.", "Có lỗi xảy ra", JOptionPane.ERROR_MESSAGE);

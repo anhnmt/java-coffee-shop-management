@@ -13,9 +13,9 @@ public class AreaDao implements GenericDao<Area> {
     @Override
     public List<Area> getAll() {
         List<Area> list = new ArrayList<>();
-        String sql = "SELECT * FROM Areas";
+        String sql = "{CALL sp_getAllArea}";
 
-        try (Connection conn = new DbUtil().getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql); ResultSet rs = cs.executeQuery()) {
             while (rs.next()) {
                 Area obj = new Area(
                         rs.getInt("id"),
