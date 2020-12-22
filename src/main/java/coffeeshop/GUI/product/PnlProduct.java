@@ -56,7 +56,7 @@ public class PnlProduct extends javax.swing.JPanel implements JDModify.CallbackM
         }
         tblProduct.setModel(dtm);
         tblProduct.changeSelection(0, 0, false, false);
-        tblProduct.setRowSelectionInterval(0, 0);
+//        tblProduct.setRowSelectionInterval(0, 0);
     }
 
     /**

@@ -94,6 +94,22 @@ AS
 
 GO
 
+ALTER PROC sp_getCategoriesByNameAndStatus(@_name nvarchar(100),
+                              @_status bit = null)
+AS
+	print @_name
+	print @_status
+	IF @_status IS NOT NULL
+		SELECT * FROM  Categories WHERE [name] LIKE Concat('%', @_name, '%') AND [status] = @_status
+	ELSE
+		SELECT * FROM  Categories WHERE [name] LIKE Concat('%', @_name, '%')
+
+GO
+
+EXEC sp_getCategoriesByNameAndStatus N'cà', 1
+
+GO
+
 CREATE PROC sp_insertCategory(@_name nvarchar(100),
                               @_status bit = 1,
                               @_outStt bit = 1 output,

@@ -32,6 +32,32 @@ public class CategoryDao implements GenericDao<Category> {
         return list;
     }
 
+    public List<Category> getAll(String name, Boolean status) {
+        List<Category> list = new ArrayList<>();
+
+        String sql = "{CALL sp_getCategoriesByNameAndStatus(?, ?)}";
+
+        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
+
+            cs.setNString(1, name);
+            cs.setBoolean(2, status);
+            ResultSet rs = cs.executeQuery();
+
+            while (rs.next()) {
+                Category obj = new Category(
+                        rs.getInt("id"),
+                        rs.getNString("name"),
+                        rs.getBoolean("status")
+                );
+                list.add(obj);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
     @Override
     public Map<String, Object> create(Category category) {
         Map<String, Object> output = new HashMap<>();
