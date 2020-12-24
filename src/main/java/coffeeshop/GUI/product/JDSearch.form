@@ -58,11 +58,11 @@
                       <Component id="jLabel5" alignment="1" max="32767" attributes="0"/>
                       <Component id="jComboBox1" alignment="0" max="32767" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="txtName1" min="-2" pref="230" max="-2" attributes="0"/>
+                          <Component id="txtFromPrice" min="-2" pref="230" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jLabel6" pref="79" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="txtName2" min="-2" pref="230" max="-2" attributes="0"/>
+                          <Component id="txtToPrice" min="-2" pref="230" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -89,8 +89,8 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabel6" alignment="0" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="txtName1" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
-                          <Component id="txtName2" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
+                          <Component id="txtFromPrice" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
+                          <Component id="txtToPrice" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
@@ -164,7 +164,7 @@
             <Property name="text" type="java.lang.String" value="Kho&#x1ea3;ng gi&#xe1;"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtName1">
+        <Component class="javax.swing.JTextField" name="txtFromPrice">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>
@@ -189,7 +189,7 @@
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtName2">
+        <Component class="javax.swing.JTextField" name="txtToPrice">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel6">
           <Properties>

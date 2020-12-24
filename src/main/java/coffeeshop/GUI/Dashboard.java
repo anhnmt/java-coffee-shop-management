@@ -35,9 +35,11 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
     public Dashboard() {
         initComponents();
         loadUser(null);
+        
         JDLogin jDLogin = new JDLogin(this, true, this);
         this.jDLogin = jDLogin;
         jDLogin.setVisible(true);
+        
         if (user.getRole() != 1) {
             lblUser.setVisible(false);
             btnUser.setVisible(false);

@@ -1,9 +1,6 @@
 package coffeeshop.Utils;
 
-import coffeeshop.DAO.UserDao;
-import coffeeshop.DTO.User;
 import coffeeshop.GUI.Dashboard;
-import coffeeshop.GUI.FrmLogin;
 
 import javax.swing.*;
 import java.sql.Connection;

@@ -18,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Minh
  */
-public class PnlProduct extends javax.swing.JPanel implements JDModify.CallbackModify, JDDelete.CallbackDelete {
+public class PnlProduct extends javax.swing.JPanel implements JDModify.CallbackModify, JDDelete.CallbackDelete, JDSearch.CallbackSearch {
 
     Frame parent;
     List<Product> list = new ArrayList<Product>();
@@ -30,7 +30,7 @@ public class PnlProduct extends javax.swing.JPanel implements JDModify.CallbackM
     public PnlProduct(Frame parent, int role) {
         initComponents();
         this.parent = parent;
-        loading();
+        loading(null, null, null, null);
         if (role != 1) {
             lblAdd.setVisible(false);
             lblUpdate.setVisible(false);
@@ -38,7 +38,7 @@ public class PnlProduct extends javax.swing.JPanel implements JDModify.CallbackM
         }
     }
 
-    public void loading() {
+    public void loading(String name, Float fromPrice, Float toPrice, Boolean status) {
         ProductDao categoryDao = new ProductDao();
         list = categoryDao.getAll();
         String columns[] = {"Id", "Tên", "Giá", "Tên danh mục", "Trạng thái"};
@@ -61,7 +61,7 @@ public class PnlProduct extends javax.swing.JPanel implements JDModify.CallbackM
         }
         tblProduct.setModel(dtm);
         tblProduct.changeSelection(0, 0, false, false);
-        tblProduct.setRowSelectionInterval(0, 0);
+//        tblProduct.setRowSelectionInterval(0, 0);
     }
 
     /**
@@ -299,11 +299,16 @@ public class PnlProduct extends javax.swing.JPanel implements JDModify.CallbackM
 
     @Override
     public void actionModify() {
-        loading();
+        loading(null, null, null, null);
     }
 
     @Override
     public void actionDelete() {
-        loading();
+        loading(null, null, null, null);
+    }
+
+    @Override
+    public void actionSearch(String name, Float fromPrice, Float toPrice, Boolean status) {
+        loading(name, fromPrice, toPrice, status);
     }
 }
