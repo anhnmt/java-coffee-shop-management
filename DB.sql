@@ -106,7 +106,7 @@ AS
 
 GO
 
-EXEC sp_getCategoriesByNameAndStatus N'cà', 1
+EXEC sp_getCategoriesByNameAndStatus N''
 
 GO
 
