@@ -28,10 +28,15 @@ public class PnlCategory extends javax.swing.JPanel implements JDModify.Callback
     /**
      * Creates new form PnlCategory
      */
-    public PnlCategory(Frame parent) {
+    public PnlCategory(Frame parent, int role) {
         initComponents();
         this.parent = parent;
         loading();
+        if(role != 1){
+            lblAdd.setVisible(false);
+            lblUpdate.setVisible(false);
+            lblDelete.setVisible(false);     
+        }
     }
 
     public void loading() {
@@ -261,7 +266,7 @@ public class PnlCategory extends javax.swing.JPanel implements JDModify.Callback
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddMouseClicked
-        JDModify jdm = new JDModify(this.parent, true, this, new Category());
+        JDModify jdm = new JDModify(this.parent, true, this, null);
         jdm.setVisible(true);
     }//GEN-LAST:event_lblAddMouseClicked
 

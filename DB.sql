@@ -64,6 +64,11 @@ EXEC sp_insertUser @_name = N'Nguyễn Tuấn Minh', @_email = 'minh@gmail.com',
 
 GO
 
+EXEC sp_insertUser @_name = N'Nhân viên', @_email = 'e@gmail.com', @_password = '123456', @_role = 0,
+     @_outMsg = 'OK'
+
+GO
+
 CREATE PROC sp_checkUser(
 	@_email varchar(100),
     @_password varchar(100)
@@ -347,7 +352,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
-    SET @_outMsg = N'Thêm không thành công: ' + ERROR_MESSAGE()
+    SET @_outMsg = ERROR_MESSAGE()
 END CATCH
 
 GO
@@ -357,6 +362,67 @@ EXEC sp_insertArea @_name = N'Tầng 1'
 GO
 
 EXEC sp_insertArea @_name = N'Tầng 2'
+
+GO
+
+CREATE PROC sp_updateArea(@_id int,
+						  @_name nvarchar(100),
+                          @_status bit = 1,
+                          @_outStt bit = 1 output,
+                          @_outMsg nvarchar(200) = '' output)
+AS
+BEGIN TRY
+    IF EXISTS(SELECT [name] FROM Areas WHERE [name] = @_name and id != @_id)
+        BEGIN
+            SET @_outStt = 0;
+            SET @_outMsg = N'Tên khu vực đã tồn tại, vui lòng nhập lại'
+        END
+    ELSE
+        BEGIN
+            UPDATE Areas 
+			SET [name] = @_name,
+				[status] = @_status
+			WHERE id = @_id
+
+            SET @_outStt = 1;
+            SET @_outMsg = N'Sửa khu vực thành công';
+        END
+END TRY
+BEGIN CATCH
+    SET @_outStt = 0;
+    SET @_outMsg = ERROR_MESSAGE()
+END CATCH
+
+GO
+
+CREATE PROC sp_findAreaByName(@_name nvarchar(100))
+AS
+	SELECT * FROM  Areas WHERE [name] = @_name;
+
+GO
+
+CREATE PROC sp_deleteArea(@_id int,
+                          @_outStt bit = 1 output,
+                          @_outMsg nvarchar(200) = '' output)
+AS
+BEGIN TRY
+    IF EXISTS(SELECT * FROM Areas JOIN [Tables] ON [Tables].area_id = Areas.id WHERE Areas.id = @_id)
+        BEGIN
+            SET @_outStt = 0;
+            SET @_outMsg = N'Khu vực đang có bàn, không thể xoá!'
+        END
+    ELSE
+        BEGIN
+            DELETE Areas WHERE id = @_id
+
+            SET @_outStt = 1;
+            SET @_outMsg = N'Xoá thành công'
+        END
+END TRY
+BEGIN CATCH
+    SET @_outStt = 0;
+    SET @_outMsg = ERROR_MESSAGE()
+END CATCH
 
 GO
 

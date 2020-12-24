@@ -43,6 +43,8 @@ public class JDLogin extends javax.swing.JDialog {
         this.callback = callback;
         this.parent = parent;
         parent.setVisible(false);
+        txtEmail.setText("minh@gmail.com");
+        txtPassword.setText("123456");
         
         // Custom code
         lblBackground.setBounds(0, 0, 960, 610);

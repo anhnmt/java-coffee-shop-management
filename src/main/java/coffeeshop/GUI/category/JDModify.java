@@ -192,7 +192,7 @@ public class JDModify extends javax.swing.JDialog {
         } else {
             try {
                 Category category = new Category();
-                if (category == null) {
+                if (this.category == null) {
                     category.setName(name);
                     category.setStatus(status);
                     CategoryDao categoryDao = new CategoryDao();
