@@ -19,9 +19,13 @@ public class PnlBill extends javax.swing.JPanel {
     /**
      * Creates new form PnlCategory
      */
-    public PnlBill(Frame parent) {
+    public PnlBill(Frame parent, int role) {
         initComponents();
         this.parent = parent;
+        if(role != 1){
+            lblUpdate.setVisible(false);
+            lblDelete.setVisible(false);     
+        }
     }
 
     /**

@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package coffeeshop.GUI.product;
+package coffeeshop.GUI.area;
 
-import coffeeshop.DTO.Product;
-import coffeeshop.DAO.ProductDao;
+import coffeeshop.DTO.Area;
+import coffeeshop.DAO.AreaDao;
 import java.util.Map;
 import javax.swing.JOptionPane;
 
@@ -14,12 +14,12 @@ import javax.swing.JOptionPane;
  *
  * @author Minh
  */
-public class JDDelete extends javax.swing.JDialog {
+public class JDDeleteArea extends javax.swing.JDialog {
 
-    CallbackDelete callback;
-    Product product;
+    CallbackAreaDelete callback;
+    Area area;
 
-    interface CallbackDelete {
+    interface CallbackAreaDelete {
 
         public void actionDelete();
     }
@@ -27,13 +27,13 @@ public class JDDelete extends javax.swing.JDialog {
     /**
      * Creates new form JDCategoryCreate
      */
-    public JDDelete(java.awt.Frame parent, boolean modal, CallbackDelete callback, Product product) {
+    public JDDeleteArea(java.awt.Frame parent, boolean modal, CallbackAreaDelete callback, Area area) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
         this.callback = callback;
-        this.product = product;
-        lblConfirm.setText("Bạn có chắc chắn muốn xoá sản phẩm tên: " + product.getName());
+        this.area = area;
+        lblConfirm.setText("Bạn có chắc chắn muốn xoá danh mục tên: " + area.getName());
 
     }
 
@@ -59,7 +59,7 @@ public class JDDelete extends javax.swing.JDialog {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_trash_can_50px_1.png"))); // NOI18N
-        jLabel1.setText("XOÁ SẢN PHẨM");
+        jLabel1.setText("XOÁ KHU VỰC");
 
         btnCancel.setBackground(new java.awt.Color(0, 204, 51));
         btnCancel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -112,7 +112,7 @@ public class JDDelete extends javax.swing.JDialog {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(lblConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -134,14 +134,14 @@ public class JDDelete extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        ProductDao productDao = new ProductDao();
-        Map<String, Object> result = productDao.delete(product.getId());
+        AreaDao areaDao = new AreaDao();
+        Map<String, Object> result = areaDao.delete(area.getId());
         if ((boolean) result.get("status") == true) {
-            JOptionPane.showMessageDialog(null, "Xoá danh mục thành công!");
+            JOptionPane.showMessageDialog(null, "Xoá khu vực thành công!");
             callback.actionDelete();
             dispose();
         } else {
-            JOptionPane.showMessageDialog(null, "Xoá danh mục thất bại, lỗi: " + result.get("message") + "!");
+            JOptionPane.showMessageDialog(null, "Xoá khu vực thất bại, lỗi: " + result.get("message") + "!");
             dispose();
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
@@ -167,22 +167,14 @@ public class JDDelete extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JDDelete.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JDDeleteArea.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JDDelete.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JDDeleteArea.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JDDelete.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JDDeleteArea.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JDDelete.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JDDeleteArea.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -195,7 +187,7 @@ public class JDDelete extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                JDDelete dialog = new JDDelete(new javax.swing.JFrame(), true, null, null);
+                JDDeleteArea dialog = new JDDeleteArea(new javax.swing.JFrame(), true, null, null);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

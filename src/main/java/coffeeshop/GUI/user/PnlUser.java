@@ -3,14 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package coffeeshop.GUI.category;
+package coffeeshop.GUI.user;
 
-import coffeeshop.DAO.CategoryDao;
-import coffeeshop.DTO.Category;
+import coffeeshop.DAO.UserDao;
+import coffeeshop.DTO.User;
 import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -19,63 +18,45 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Minh
  */
-public class PnlCategory extends javax.swing.JPanel implements JDModify.CallbackModify, JDDelete.CallbackDelete, JDSearch.CallbackSearch {
+public class PnlUser extends javax.swing.JPanel implements JDModify.CallbackModify, JDDelete.CallbackDelete {
 
     Frame parent;
-    List<Category> list = new ArrayList<Category>();
-    Category category;
-    CategoryDao categoryDao = new CategoryDao();
+    List<User> list = new ArrayList<User>();
+    User user;
 
     /**
      * Creates new form PnlCategory
      */
-    public PnlCategory(Frame parent, int role) {
+    public PnlUser(Frame parent) {
         initComponents();
         this.parent = parent;
-        loading(null, null);
-        if(role != 1){
-            lblAdd.setVisible(false);
-            lblUpdate.setVisible(false);
-            lblDelete.setVisible(false);     
-        }
+        loading();
     }
 
-    public void loading(String name, Boolean status) {
-        tblCategory.removeAll();
-        if (name != null || status != null) {
-            list = categoryDao.getAll(name, status);
-        } else {
-            list = categoryDao.getAll();
-        }
-
-        System.out.println(list);
-
-        String columns[] = {"Id", "Tên", "Trạng thái"};
+    public void loading() {
+        UserDao userDao = new UserDao();
+        list = userDao.getAll();
+        String columns[] = {"Id", "Tên", "Email", "Quyền", "Trạng thái"};
         DefaultTableModel dtm = new DefaultTableModel(columns, 0);
-
-        if (!list.isEmpty()) {
-            for (Category category : list) {
-                dtm.addRow(new Object[]{category.getId(), category.getName(), category.isStatus() ? "Hoạt động" : "Không hoạt động"});
-            }
-
-            tblCategory.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+        for (User user : list) {
+            dtm.addRow(new Object[]{user.getId(), user.getName(), user.getEmail(), user.getRole() == 1 ? "Super Admin" : "Nhân viên", user.isStatus() == true ? "Hoạt động" : "Không hoạt động"});
+        }
+        if (list.size() > 0) {
+            tblUser.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
                 @Override
                 public void valueChanged(ListSelectionEvent lse) {
-                    int position = tblCategory.getSelectedRow();
+                    int position = tblUser.getSelectedRow();
                     if (position < 0) {
                         position = 0;
                     }
 
-                    category = list.get(position);
+                    user = list.get(position);
                 }
             });
-
-            tblCategory.changeSelection(0, 0, false, false);
-//        tblCategory.setRowSelectionInterval(0, 0);
         }
-
-        tblCategory.setModel(dtm);
-
+        tblUser.setModel(dtm);
+        tblUser.changeSelection(0, 0, false, false);
+        tblUser.setRowSelectionInterval(0, 0);
     }
 
     /**
@@ -95,9 +76,8 @@ public class PnlCategory extends javax.swing.JPanel implements JDModify.Callback
         lblUpdate = new javax.swing.JLabel();
         lblSearch = new javax.swing.JLabel();
         lblDelete = new javax.swing.JLabel();
-        lblRefresh = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblCategory = new javax.swing.JTable();
+        tblUser = new javax.swing.JTable();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -175,23 +155,9 @@ public class PnlCategory extends javax.swing.JPanel implements JDModify.Callback
         });
         jPanel2.add(lblDelete);
 
-        lblRefresh.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        lblRefresh.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_delete_50px.png"))); // NOI18N
-        lblRefresh.setText("Làm mới");
-        lblRefresh.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        lblRefresh.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        lblRefresh.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        lblRefresh.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblRefreshMouseClicked(evt);
-            }
-        });
-        jPanel2.add(lblRefresh);
-
         jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_START);
 
-        tblCategory.setModel(new javax.swing.table.DefaultTableModel(
+        tblUser.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -249,7 +215,7 @@ public class PnlCategory extends javax.swing.JPanel implements JDModify.Callback
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(tblCategory);
+        jScrollPane1.setViewportView(tblUser);
 
         jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -298,23 +264,19 @@ public class PnlCategory extends javax.swing.JPanel implements JDModify.Callback
     }//GEN-LAST:event_lblAddMouseClicked
 
     private void lblUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUpdateMouseClicked
-        JDModify jdm = new JDModify(this.parent, true, this, category);
+        JDModify jdm = new JDModify(this.parent, true, this, user);
         jdm.setVisible(true);
     }//GEN-LAST:event_lblUpdateMouseClicked
 
     private void lblSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSearchMouseClicked
-        JDSearch jds = new JDSearch(this.parent, true, this);
+        JDSearch jds = new JDSearch(this.parent, true);
         jds.setVisible(true);
     }//GEN-LAST:event_lblSearchMouseClicked
 
     private void lblDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDeleteMouseClicked
-        JDDelete jdd = new JDDelete(this.parent, true, this, category);
+        JDDelete jdd = new JDDelete(this.parent, true, this, user);
         jdd.setVisible(true);
     }//GEN-LAST:event_lblDeleteMouseClicked
-
-    private void lblRefreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRefreshMouseClicked
-        loading(null, null);
-    }//GEN-LAST:event_lblRefreshMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -325,24 +287,18 @@ public class PnlCategory extends javax.swing.JPanel implements JDModify.Callback
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblAdd;
     private javax.swing.JLabel lblDelete;
-    private javax.swing.JLabel lblRefresh;
     private javax.swing.JLabel lblSearch;
     private javax.swing.JLabel lblUpdate;
-    private javax.swing.JTable tblCategory;
+    private javax.swing.JTable tblUser;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void actionModify() {
-        loading(null, null);
+        loading();
     }
 
     @Override
     public void actionDelete() {
-        loading(null, null);
-    }
-
-    @Override
-    public void actionSearch(String name, Boolean status) {
-        loading(name, status);
+        loading();
     }
 }

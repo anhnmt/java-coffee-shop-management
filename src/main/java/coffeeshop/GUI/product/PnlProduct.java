@@ -27,10 +27,15 @@ public class PnlProduct extends javax.swing.JPanel implements JDModify.CallbackM
     /**
      * Creates new form PnlCategory
      */
-    public PnlProduct(Frame parent) {
+    public PnlProduct(Frame parent, int role) {
         initComponents();
         this.parent = parent;
         loading(null, null, null, null);
+        if (role != 1) {
+            lblAdd.setVisible(false);
+            lblUpdate.setVisible(false);
+            lblDelete.setVisible(false);
+        }
     }
 
     public void loading(String name, Float fromPrice, Float toPrice, Boolean status) {

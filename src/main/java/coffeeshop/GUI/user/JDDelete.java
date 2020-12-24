@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package coffeeshop.GUI.product;
+package coffeeshop.GUI.user;
 
-import coffeeshop.DTO.Product;
-import coffeeshop.DAO.ProductDao;
+import coffeeshop.DTO.User;
+import coffeeshop.DAO.UserDao;
 import java.util.Map;
 import javax.swing.JOptionPane;
 
@@ -17,7 +17,7 @@ import javax.swing.JOptionPane;
 public class JDDelete extends javax.swing.JDialog {
 
     CallbackDelete callback;
-    Product product;
+    User user;
 
     interface CallbackDelete {
 
@@ -27,13 +27,13 @@ public class JDDelete extends javax.swing.JDialog {
     /**
      * Creates new form JDCategoryCreate
      */
-    public JDDelete(java.awt.Frame parent, boolean modal, CallbackDelete callback, Product product) {
+    public JDDelete(java.awt.Frame parent, boolean modal, CallbackDelete callback, User user) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
         this.callback = callback;
-        this.product = product;
-        lblConfirm.setText("Bạn có chắc chắn muốn xoá sản phẩm tên: " + product.getName());
+        this.user = user;
+        lblConfirm.setText("Bạn có chắc chắn muốn xoá người dùng tên: " + user.getName());
 
     }
 
@@ -134,14 +134,14 @@ public class JDDelete extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        ProductDao productDao = new ProductDao();
-        Map<String, Object> result = productDao.delete(product.getId());
+        UserDao productDao = new UserDao();
+        Map<String, Object> result = productDao.delete(user.getId());
         if ((boolean) result.get("status") == true) {
-            JOptionPane.showMessageDialog(null, "Xoá danh mục thành công!");
+            JOptionPane.showMessageDialog(null, "Xoá người dùng thành công!");
             callback.actionDelete();
             dispose();
         } else {
-            JOptionPane.showMessageDialog(null, "Xoá danh mục thất bại, lỗi: " + result.get("message") + "!");
+            JOptionPane.showMessageDialog(null, "Xoá người dùng thất bại, lỗi: " + result.get("message") + "!");
             dispose();
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
@@ -175,14 +175,6 @@ public class JDDelete extends javax.swing.JDialog {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(JDDelete.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>

@@ -8,8 +8,9 @@ package coffeeshop.GUI;
 import coffeeshop.DTO.User;
 import coffeeshop.GUI.bill.PnlBill;
 import coffeeshop.GUI.area.PnlArea;
-import coffeeshop.GUI.product.PnlProduct;
+import coffeeshop.GUI.user.PnlUser;
 import coffeeshop.GUI.category.PnlCategory;
+import coffeeshop.GUI.product.PnlProduct;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -34,10 +35,15 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
     public Dashboard() {
         initComponents();
         loadUser(null);
-
-//        JDLogin jDLogin = new JDLogin(this, true, this);
-//        this.jDLogin = jDLogin;
-//        jDLogin.setVisible(true);
+        
+        JDLogin jDLogin = new JDLogin(this, true, this);
+        this.jDLogin = jDLogin;
+        jDLogin.setVisible(true);
+        
+        if (user.getRole() != 1) {
+            lblUser.setVisible(false);
+            btnUser.setVisible(false);
+        }
     }
 
     public void loadUser(User user) {
@@ -77,6 +83,8 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
         jLabel17 = new javax.swing.JLabel();
         btnArea = new javax.swing.JButton();
         lblBill = new javax.swing.JLabel();
+        btnUser = new javax.swing.JButton();
+        lblUser = new javax.swing.JLabel();
         pnlBody = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -295,6 +303,24 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
         lblBill.setOpaque(true);
         lblBill.setPreferredSize(new java.awt.Dimension(100, 0));
 
+        btnUser.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
+        btnUser.setForeground(new java.awt.Color(44, 62, 80));
+        btnUser.setText("Người dùng");
+        btnUser.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnUser.setContentAreaFilled(false);
+        btnUser.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnUser.setFocusable(false);
+        btnUser.setPreferredSize(new java.awt.Dimension(100, 27));
+        btnUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUserActionPerformed(evt);
+            }
+        });
+
+        lblUser.setBackground(new java.awt.Color(255, 255, 255));
+        lblUser.setOpaque(true);
+        lblUser.setPreferredSize(new java.awt.Dimension(100, 0));
+
         javax.swing.GroupLayout pnlMenuLayout = new javax.swing.GroupLayout(pnlMenu);
         pnlMenu.setLayout(pnlMenuLayout);
         pnlMenuLayout.setHorizontalGroup(
@@ -304,25 +330,29 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
                 .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlMenuLayout.createSequentialGroup()
                         .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lblDashboard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnDashboard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(60, 60, 60)
+                            .addComponent(btnDashboard, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
+                            .addComponent(lblDashboard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, 0)
                         .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnCategory, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE)
+                            .addComponent(btnCategory, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
                             .addComponent(lblCategory, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(61, 61, 61)
+                        .addGap(0, 0, 0)
                         .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lblProduct, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
-                            .addComponent(btnProduct, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(60, 60, 60)
+                            .addComponent(btnProduct, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
+                            .addComponent(lblProduct, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, 0)
                         .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnArea, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
                             .addComponent(lblArea, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(60, 60, 60)
+                        .addGap(0, 0, 0)
                         .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnBill, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
                             .addComponent(lblBill, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap(117, Short.MAX_VALUE))
+                        .addGap(0, 0, 0)
+                        .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnUser, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                            .addComponent(lblUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(101, Short.MAX_VALUE))
                     .addGroup(pnlMenuLayout.createSequentialGroup()
                         .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(lblName, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
@@ -358,9 +388,13 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
                         .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnBill, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, 0)
-                        .addComponent(lblArea, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblArea, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMenuLayout.createSequentialGroup()
+                                .addGap(0, 0, 0)
+                                .addComponent(lblUser, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addComponent(lblBill, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
@@ -453,8 +487,9 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
         lblProduct.setBackground(new Color(255, 255, 255));
         lblArea.setBackground(new Color(255, 255, 255));
         lblBill.setBackground(new Color(255, 255, 255));
+        lblUser.setBackground(new Color(255, 255, 255));
         pnlBody.removeAll();
-        PnlCategory pnl = new PnlCategory(this);
+        PnlCategory pnl = new PnlCategory(this, user.getRole());
 //        pnl.setVisible(true);
         pnlBody.add(pnl);
         pnlBody.repaint();
@@ -468,8 +503,9 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
         lblCategory.setBackground(new Color(255, 255, 255));
         lblArea.setBackground(new Color(255, 255, 255));
         lblBill.setBackground(new Color(255, 255, 255));
+        lblUser.setBackground(new Color(255, 255, 255));
         pnlBody.removeAll();
-        PnlProduct pnl = new PnlProduct(this);
+        PnlProduct pnl = new PnlProduct(this, user.getRole());
 //        pnl.setVisible(true);
         pnlBody.add(pnl);
         pnlBody.repaint();
@@ -483,8 +519,9 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
         lblCategory.setBackground(new Color(255, 255, 255));
         lblProduct.setBackground(new Color(255, 255, 255));
         lblArea.setBackground(new Color(255, 255, 255));
+        lblUser.setBackground(new Color(255, 255, 255));
         pnlBody.removeAll();
-        PnlBill pnl = new PnlBill(this);
+        PnlBill pnl = new PnlBill(this, user.getRole());
 //        pnl.setVisible(true);
         pnlBody.add(pnl);
         pnlBody.repaint();
@@ -498,6 +535,7 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
         lblBill.setBackground(new Color(255, 255, 255));
         lblCategory.setBackground(new Color(255, 255, 255));
         lblProduct.setBackground(new Color(255, 255, 255));
+        lblUser.setBackground(new Color(255, 255, 255));
         pnlBody.removeAll();
         PnlTrangChu pnl = new PnlTrangChu();
 //        pnl.setVisible(true);
@@ -513,8 +551,9 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
         lblBill.setBackground(new Color(255, 255, 255));
         lblCategory.setBackground(new Color(255, 255, 255));
         lblProduct.setBackground(new Color(255, 255, 255));
+        lblUser.setBackground(new Color(255, 255, 255));
         pnlBody.removeAll();
-        PnlArea pnl = new PnlArea();
+        PnlArea pnl = new PnlArea(this, user.getRole());
 //        pnl.setVisible(true);
         pnlBody.add(pnl);
         pnlBody.repaint();
@@ -526,6 +565,21 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
         this.setVisible(false);
         this.jDLogin.setVisible(true);
     }//GEN-LAST:event_jLabel17MouseClicked
+
+    private void btnUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserActionPerformed
+        lblUser.setBackground(new Color(0, 204, 106));
+
+        lblArea.setBackground(new Color(255, 255, 255));
+        lblDashboard.setBackground(new Color(255, 255, 255));
+        lblBill.setBackground(new Color(255, 255, 255));
+        lblCategory.setBackground(new Color(255, 255, 255));
+        lblProduct.setBackground(new Color(255, 255, 255));
+        pnlBody.removeAll();
+        PnlUser pnl = new PnlUser(this);
+        pnlBody.add(pnl);
+        pnlBody.repaint();
+        pnlBody.revalidate();
+    }//GEN-LAST:event_btnUserActionPerformed
 
     /**
      * @param args the command line arguments
@@ -571,6 +625,7 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
     private javax.swing.JButton btnMaximize;
     private javax.swing.JButton btnMinimize;
     private javax.swing.JButton btnProduct;
+    private javax.swing.JButton btnUser;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel lblArea;
@@ -580,6 +635,7 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblProduct;
+    private javax.swing.JLabel lblUser;
     private javax.swing.JPanel pnlBody;
     private javax.swing.JPanel pnlHeader;
     private javax.swing.JPanel pnlMenu;
