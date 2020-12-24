@@ -18,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Minh
  */
-public class PnlProduct extends javax.swing.JPanel implements JDModify.CallbackModify, JDDelete.CallbackDelete{
+public class PnlProduct extends javax.swing.JPanel implements JDModify.CallbackModify, JDDelete.CallbackDelete {
 
     Frame parent;
     List<Product> list = new ArrayList<Product>();
@@ -27,10 +27,15 @@ public class PnlProduct extends javax.swing.JPanel implements JDModify.CallbackM
     /**
      * Creates new form PnlCategory
      */
-    public PnlProduct(Frame parent) {
+    public PnlProduct(Frame parent, int role) {
         initComponents();
         this.parent = parent;
         loading();
+        if (role != 1) {
+            lblAdd.setVisible(false);
+            lblUpdate.setVisible(false);
+            lblDelete.setVisible(false);
+        }
     }
 
     public void loading() {
