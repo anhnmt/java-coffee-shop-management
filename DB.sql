@@ -75,16 +75,14 @@ GO
 EXEC sp_insertUser @_name = N'Quản trị viên',
                    @_email = 'admin@gmail.com',
                    @_password = '123456',
-                   @_role = 1,
-                   @_outMsg = 'OK';
+                   @_role = 1;
 
 GO
 
 EXEC sp_insertUser @_name = N'Nhân viên',
                    @_email = 'user@gmail.com',
                    @_password = '123456',
-                   @_role = 0,
-                   @_outMsg = 'OK';
+                   @_role = 0;
 
 GO
 
@@ -329,7 +327,7 @@ EXEC (@sql);
 
 GO
 
-EXEC dbo.sp_getAllProduct N'Cà';
+EXEC dbo.sp_getAllProduct NULL, NULL, 35000, 40000, NULL;
 
 GO
 

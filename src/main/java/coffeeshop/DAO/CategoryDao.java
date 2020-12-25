@@ -38,9 +38,16 @@ public class CategoryDao implements GenericDao<Category> {
         String sql = "{CALL sp_getAllCategory(?, ?)}";
 
         try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
-
-            cs.setNString(1, name);
-            cs.setBoolean(2, status);
+            if (name == null) {
+                cs.setNull(1, Types.NVARCHAR);
+            } else {
+                cs.setNString(1, name);
+            }
+            if (status == null) {
+                cs.setNull(2, Types.BOOLEAN);
+            } else {
+                cs.setBoolean(2, status);
+            }
             ResultSet rs = cs.executeQuery();
 
             while (rs.next()) {

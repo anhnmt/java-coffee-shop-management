@@ -54,7 +54,7 @@
                           <EmptySpace min="0" pref="427" max="32767" attributes="0"/>
                           <Component id="btnSearch" min="-2" pref="120" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="jComboBox1" alignment="0" max="32767" attributes="0"/>
+                      <Component id="cboStatus" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -72,7 +72,7 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jLabel3" min="-2" pref="30" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jComboBox1" min="-2" pref="41" max="-2" attributes="0"/>
+                  <Component id="cboStatus" min="-2" pref="41" max="-2" attributes="0"/>
                   <EmptySpace pref="59" max="32767" attributes="0"/>
                   <Component id="btnSearch" min="-2" pref="35" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
@@ -131,7 +131,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSearchActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JComboBox" name="jComboBox1">
+        <Component class="javax.swing.JComboBox" name="cboStatus">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="0"/>

@@ -21,7 +21,7 @@ import javax.swing.table.DefaultTableModel;
 public class PnlProduct extends javax.swing.JPanel implements JDModify.CallbackModify, JDDelete.CallbackDelete, JDSearch.CallbackSearch {
 
     Frame parent;
-    List<Product> list = new ArrayList<Product>();
+    List<Product> products = new ArrayList<Product>();
     Product product;
     ProductDao productDao = new ProductDao();
 
@@ -42,16 +42,13 @@ public class PnlProduct extends javax.swing.JPanel implements JDModify.CallbackM
 
     public void loading(String name, Integer category_id, Float fromPrice, Float toPrice, Boolean status) {
         tblProduct.removeAll();
-        if (name != null || category_id != null || fromPrice != null || toPrice != null || status != null) {
-            list = productDao.getAll(name, category_id, fromPrice, toPrice, status);
-        } else {
-            list = productDao.getAll();
-        }
+        products = productDao.getAll(name, category_id, fromPrice, toPrice, status);
 
         String columns[] = {"Id", "Tên", "Giá", "Tên danh mục", "Trạng thái"};
         DefaultTableModel dtm = new DefaultTableModel(columns, 0);
-        if (list.size() > 0) {
-            for (Product product : list) {
+
+        if (!products.isEmpty()) {
+            for (Product product : products) {
                 dtm.addRow(new Object[]{product.getId(), product.getName(), product.getPrice(), product.getCategory_name(), product.isStatus() ? "Hoạt động" : "Không hoạt động"});
             }
 
@@ -63,14 +60,15 @@ public class PnlProduct extends javax.swing.JPanel implements JDModify.CallbackM
                         position = 0;
                     }
 
-                    product = list.get(position);
+                    product = products.get(position);
                 }
             });
 
-            tblProduct.setModel(dtm);
             tblProduct.changeSelection(0, 0, false, false);
 //          tblProduct.setRowSelectionInterval(0, 0);
         }
+
+        tblProduct.setModel(dtm);
     }
 
     /**

@@ -68,6 +68,7 @@ public class ProductDao implements GenericDao<Product> {
             ResultSet rs = cs.executeQuery();
 
             while (rs.next()) {
+                System.out.println(rs.toString());
                 Product obj = new Product(
                         rs.getInt("id"),
                         rs.getInt("category_id"),
@@ -77,6 +78,7 @@ public class ProductDao implements GenericDao<Product> {
                         rs.getString("category_name")
                 );
                 list.add(obj);
+                System.out.println(obj.toString());
             }
         } catch (SQLException e) {
             e.printStackTrace();
