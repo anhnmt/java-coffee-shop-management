@@ -173,7 +173,7 @@ public class PnlCategory extends javax.swing.JPanel implements JDModify.Callback
 
         lblRefresh.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         lblRefresh.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_delete_50px.png"))); // NOI18N
+        lblRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_repeat_50px_1.png"))); // NOI18N
         lblRefresh.setText("Làm mới");
         lblRefresh.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblRefresh.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);

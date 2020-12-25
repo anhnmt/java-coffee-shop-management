@@ -38,6 +38,7 @@ public class JDModify extends javax.swing.JDialog {
         initComponents();
         setLocationRelativeTo(null);
         this.callback = callback;
+        loadingPermission();
 
         if (user != null) {
             lblTitle.setText("Sửa đổi người dùng");
@@ -47,13 +48,27 @@ public class JDModify extends javax.swing.JDialog {
         }
 
         lblNameError.setVisible(false);
-        lblPriceError.setVisible(false);
+        lblEmailError.setVisible(false);
+        lblPasswordError.setVisible(false);
     }
 
     public void loadingData() {
         txtName.setText(this.user.getName());
+        txtPassword.setText(this.user.getPassword());
+        txtEmail.setText(this.user.getEmail());
         rdoActive.setSelected(this.user.isStatus());
         rdoNonActive.setSelected(this.user.isStatus() == false);
+        cboPermission.setSelectedItem(this.user.getRole() == 1 ? "Super Admin" : "Nhân viên");
+    }
+    
+    public void loadingPermission(){
+        DefaultComboBoxModel dcbm = new DefaultComboBoxModel();
+        String permissions[] = {"Super Admin", "Nhân viên"};
+        for (String permission : permissions) {
+            dcbm.addElement(permission);
+        }
+        
+        cboPermission.setModel(dcbm);
     }
 
     /**
@@ -74,33 +89,42 @@ public class JDModify extends javax.swing.JDialog {
         rdoActive = new javax.swing.JRadioButton();
         rdoNonActive = new javax.swing.JRadioButton();
         btnModify = new javax.swing.JButton();
-        lblPrice = new javax.swing.JLabel();
-        txtPrice = new javax.swing.JTextField();
-        lblCategory = new javax.swing.JLabel();
-        cboCategory = new javax.swing.JComboBox<>();
+        lblEmail = new javax.swing.JLabel();
+        txtEmail = new javax.swing.JTextField();
+        lblPermission = new javax.swing.JLabel();
+        cboPermission = new javax.swing.JComboBox();
         lblNameError = new javax.swing.JLabel();
-        lblPriceError = new javax.swing.JLabel();
+        lblEmailError = new javax.swing.JLabel();
+        lblPassword = new javax.swing.JLabel();
+        txtPassword = new javax.swing.JTextField();
+        lblPasswordError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblTitle.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
         lblTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_product_50px_2.png"))); // NOI18N
-        lblTitle.setText("THÊM MỚI SẢN PHẨM");
+        lblTitle.setText("THÊM MỚI NGƯỜI DÙNG");
+        jPanel1.add(lblTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 11, 547, 60));
 
         lblName.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        lblName.setText("Tên sản phẩm");
+        lblName.setText("Tên người dùng");
+        jPanel1.add(lblName, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 89, 547, 30));
+        jPanel1.add(txtName, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 125, 547, 40));
 
         lblStatus.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         lblStatus.setText("Trạng thái");
+        jPanel1.add(lblStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 513, 547, 30));
 
         rdoActive.setBackground(new java.awt.Color(255, 255, 255));
         buttonGroup1.add(rdoActive);
         rdoActive.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         rdoActive.setSelected(true);
         rdoActive.setText("Hoạt động");
+        jPanel1.add(rdoActive, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 545, 259, -1));
 
         rdoNonActive.setBackground(new java.awt.Color(255, 255, 255));
         buttonGroup1.add(rdoNonActive);
@@ -111,6 +135,7 @@ public class JDModify extends javax.swing.JDialog {
                 rdoNonActiveActionPerformed(evt);
             }
         });
+        jPanel1.add(rdoNonActive, new org.netbeans.lib.awtextra.AbsoluteConstraints(271, 545, 286, -1));
 
         btnModify.setBackground(new java.awt.Color(0, 204, 106));
         btnModify.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -123,77 +148,35 @@ public class JDModify extends javax.swing.JDialog {
                 btnModifyActionPerformed(evt);
             }
         });
+        jPanel1.add(btnModify, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 590, 120, 35));
 
-        lblPrice.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        lblPrice.setText("Giá ");
+        lblEmail.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        lblEmail.setText("Email");
+        jPanel1.add(lblEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 203, 547, 30));
+        jPanel1.add(txtEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 239, 547, 40));
 
-        lblCategory.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        lblCategory.setText("Danh mục");
+        lblPermission.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        lblPermission.setText("Quyền");
+        jPanel1.add(lblPermission, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 419, 547, 30));
+
+        jPanel1.add(cboPermission, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 455, 547, 40));
 
         lblNameError.setForeground(new java.awt.Color(240, 71, 71));
         lblNameError.setText("Không được để trống");
+        jPanel1.add(lblNameError, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 171, 547, -1));
 
-        lblPriceError.setForeground(new java.awt.Color(240, 71, 71));
-        lblPriceError.setText("Không được để trổng");
+        lblEmailError.setForeground(new java.awt.Color(240, 71, 71));
+        lblEmailError.setText("Không được để trổng");
+        jPanel1.add(lblEmailError, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 285, 547, -1));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtName)
-                    .addComponent(lblPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtPrice, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblCategory, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cboCategory, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 427, Short.MAX_VALUE)
-                        .addComponent(btnModify, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(lblNameError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblPriceError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(rdoActive, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(rdoNonActive, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(lblName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblNameError)
-                .addGap(18, 18, 18)
-                .addComponent(lblPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblPriceError)
-                .addGap(18, 18, 18)
-                .addComponent(lblCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cboCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(lblStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rdoActive)
-                    .addComponent(rdoNonActive))
-                .addGap(35, 35, 35)
-                .addComponent(btnModify, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        lblPassword.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        lblPassword.setText("Mật khẩu");
+        jPanel1.add(lblPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 317, 547, 30));
+        jPanel1.add(txtPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 353, 547, 40));
+
+        lblPasswordError.setForeground(new java.awt.Color(240, 71, 71));
+        lblPasswordError.setText("Không được để trổng");
+        jPanel1.add(lblPasswordError, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 399, 547, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -203,7 +186,9 @@ public class JDModify extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 646, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -215,10 +200,13 @@ public class JDModify extends javax.swing.JDialog {
 
     private void btnModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyActionPerformed
         String name = (String) txtName.getText().trim();
-        float price = Float.parseFloat(txtPrice.getText());
+        String email = (String) txtEmail.getText().trim();
+        String password = (String) txtPassword.getText().trim();
+        int role = cboPermission.getSelectedItem() == "Super Admin" ? 1 : 0;
         boolean status = (boolean) rdoActive.isSelected();
         boolean validate = true;
-
+        String email_regex = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+        
         if (name.equals("")) {
             txtName.setBorder(BorderFactory.createCompoundBorder(
                     BorderFactory.createLineBorder(new Color(240, 71, 71)),
@@ -227,32 +215,44 @@ public class JDModify extends javax.swing.JDialog {
             lblNameError.setVisible(true);
             validate = false;
         }
-
-        if (txtPrice.getText().trim().equals("")) {
-            txtPrice.setBorder(BorderFactory.createCompoundBorder(
+        
+        if (password.equals("")) {
+            txtPassword.setBorder(BorderFactory.createCompoundBorder(
                     BorderFactory.createLineBorder(new Color(240, 71, 71)),
                     BorderFactory.createEmptyBorder(5, 8, 5, 8)));
-            lblPrice.setText("Không được để trống");
-            lblPrice.setForeground(new Color(240, 71, 71));
-            lblPriceError.setVisible(true);
+            lblPassword.setForeground(new Color(240, 71, 71));
+            lblPasswordError.setVisible(true);
             validate = false;
-        } else if (price <= 0) {
-            txtPrice.setBorder(BorderFactory.createCompoundBorder(
+        }
+
+        if (txtEmail.getText().trim().equals("")) {
+            txtEmail.setBorder(BorderFactory.createCompoundBorder(
                     BorderFactory.createLineBorder(new Color(240, 71, 71)),
                     BorderFactory.createEmptyBorder(5, 8, 5, 8)));
-            lblPrice.setText("Giá bạn nhập phải là một số thực dương!");
-            lblPrice.setForeground(new Color(240, 71, 71));
-            lblPriceError.setVisible(true);
+            lblEmail.setText("Không được để trống");
+            lblEmail.setForeground(new Color(240, 71, 71));
+            lblEmailError.setVisible(true);
+            validate = false;
+        } else if (!email.matches(email_regex)) {
+            txtEmail.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(new Color(240, 71, 71)),
+                    BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+            lblEmail.setText("Email bạn nhập không đúng định dạng!");
+            lblEmail.setForeground(new Color(240, 71, 71));
+            lblEmailError.setVisible(true);
             validate = false;
         }
 
         if (validate == true) {
             lblNameError.setVisible(false);
-            lblPriceError.setVisible(false);
+            lblEmailError.setVisible(false);
             try {
                 User user = new User();
                 user.setName(name);
                 user.setStatus(status);
+                user.setRole(role);
+                user.setEmail(email);
+                user.setPassword(password);
 
                 UserDao userDao = new UserDao();
                 if (this.user == null) {
@@ -267,6 +267,7 @@ public class JDModify extends javax.swing.JDialog {
                     }
                 } else {
                     user.setId(this.user.getId());
+                    System.out.println(user);
                     Map<String, Object> result = userDao.update(user);
                     if ((boolean) result.get("status") == true) {
                         JOptionPane.showMessageDialog(null, "Sửa người dùng thành công!");
@@ -332,18 +333,21 @@ public class JDModify extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnModify;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JComboBox<User> cboCategory;
+    private javax.swing.JComboBox cboPermission;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel lblCategory;
+    private javax.swing.JLabel lblEmail;
+    private javax.swing.JLabel lblEmailError;
     private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblNameError;
-    private javax.swing.JLabel lblPrice;
-    private javax.swing.JLabel lblPriceError;
+    private javax.swing.JLabel lblPassword;
+    private javax.swing.JLabel lblPasswordError;
+    private javax.swing.JLabel lblPermission;
     private javax.swing.JLabel lblStatus;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JRadioButton rdoActive;
     private javax.swing.JRadioButton rdoNonActive;
+    private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtName;
-    private javax.swing.JTextField txtPrice;
+    private javax.swing.JTextField txtPassword;
     // End of variables declaration//GEN-END:variables
 }
