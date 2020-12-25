@@ -59,7 +59,7 @@ public class JDDelete extends javax.swing.JDialog {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_trash_can_50px_1.png"))); // NOI18N
-        jLabel1.setText("XOÁ SẢN PHẨM");
+        jLabel1.setText("XOÁ NGƯỜI DÙNG");
 
         btnCancel.setBackground(new java.awt.Color(0, 204, 51));
         btnCancel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -134,8 +134,8 @@ public class JDDelete extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        UserDao productDao = new UserDao();
-        Map<String, Object> result = productDao.delete(user.getId());
+        UserDao userDao = new UserDao();
+        Map<String, Object> result = userDao.delete(user.getId());
         if ((boolean) result.get("status") == true) {
             JOptionPane.showMessageDialog(null, "Xoá người dùng thành công!");
             callback.actionDelete();

@@ -2,6 +2,10 @@ USE master
 
 GO
 
+DROP DATABASE IF EXISTS CoffeeShop
+
+GO
+
 CREATE DATABASE CoffeeShop
 
 GO
@@ -54,11 +58,6 @@ END CATCH
 GO
 
 -- Them user admin
-EXEC sp_insertUser @_name = N'Nguyễn Mạnh Tuấn Anh', @_email = 'xdorro@gmail.com', @_password = '1230123', @_role = 1,
-     @_outMsg = 'OK'
-
-GO
-
 EXEC sp_insertUser @_name = N'Nguyễn Tuấn Minh', @_email = 'minh@gmail.com', @_password = '123456', @_role = 1,
      @_outMsg = 'OK'
 
@@ -66,6 +65,64 @@ GO
 
 EXEC sp_insertUser @_name = N'Nhân viên', @_email = 'e@gmail.com', @_password = '123456', @_role = 0,
      @_outMsg = 'OK'
+
+GO
+
+CREATE PROC sp_updateUser(@_id int,
+						  @_name nvarchar(100),
+                          @_email varchar(100),
+                          @_password varchar(100),
+                          @_role tinyint = 0,
+                          @_status bit = 1,
+                          @_outStt bit = 1 output,
+                          @_outMsg nvarchar(200) = '' output)
+AS
+BEGIN TRY
+    IF EXISTS(SELECT email FROM Users WHERE email = @_email and id != @_id)
+        BEGIN
+            SET @_outStt = 0;
+            SET @_outMsg = N'Email đã tồn tại, vui lòng nhập lại';
+        END
+    ELSE
+        BEGIN
+            UPDATE Users SET [name] = @_name,
+							 email = @_email,
+							 [password] = @_password,
+							 [role] = @_role,
+							 [status] = @_status
+			WHERE id = @_id
+
+            SET @_outStt = 1;
+            SET @_outMsg = N'Cập nhật người dùng thành công';
+        END
+END TRY
+BEGIN CATCH
+    BEGIN
+        SET @_outStt = 0;
+        SET @_outMsg = ERROR_MESSAGE()
+    END
+END CATCH
+
+GO
+
+CREATE PROC sp_deleteUser(@_id int,
+                          @_outStt bit = 1 output,
+                          @_outMsg nvarchar(200) = '' output)
+AS
+BEGIN TRY
+    BEGIN
+        DELETE Users WHERE id = @_id
+
+        SET @_outStt = 1;
+        SET @_outMsg = N'Xoá người dùng thành công';
+    END
+END TRY
+BEGIN CATCH
+    BEGIN
+        SET @_outStt = 0;
+        SET @_outMsg = ERROR_MESSAGE()
+    END
+END CATCH
 
 GO
 
@@ -99,7 +156,7 @@ AS
 
 GO
 
-ALTER PROC sp_getCategoriesByNameAndStatus(@_name nvarchar(100),
+CREATE PROC sp_getCategoriesByNameAndStatus(@_name nvarchar(100),
                               @_status bit = null)
 AS
 	print @_name
