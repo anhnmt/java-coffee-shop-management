@@ -86,10 +86,67 @@ EXEC sp_insertUser @_name = N'Nhân viên',
 
 GO
 
-CREATE PROC sp_checkUser
-(
-    @_email VARCHAR(100),
-    @_password VARCHAR(100)
+CREATE PROC sp_updateUser(@_id int,
+						  @_name nvarchar(100),
+                          @_email varchar(100),
+                          @_password varchar(100),
+                          @_role tinyint = 0,
+                          @_status bit = 1,
+                          @_outStt bit = 1 output,
+                          @_outMsg nvarchar(200) = '' output)
+AS
+BEGIN TRY
+    IF EXISTS(SELECT email FROM Users WHERE email = @_email and id != @_id)
+        BEGIN
+            SET @_outStt = 0;
+            SET @_outMsg = N'Email đã tồn tại, vui lòng nhập lại';
+        END
+    ELSE
+        BEGIN
+            UPDATE Users SET [name] = @_name,
+							 email = @_email,
+							 [password] = @_password,
+							 [role] = @_role,
+							 [status] = @_status
+			WHERE id = @_id
+
+            SET @_outStt = 1;
+            SET @_outMsg = N'Cập nhật người dùng thành công';
+        END
+END TRY
+BEGIN CATCH
+    BEGIN
+        SET @_outStt = 0;
+        SET @_outMsg = ERROR_MESSAGE()
+    END
+END CATCH
+
+GO
+
+CREATE PROC sp_deleteUser(@_id int,
+                          @_outStt bit = 1 output,
+                          @_outMsg nvarchar(200) = '' output)
+AS
+BEGIN TRY
+    BEGIN
+        DELETE Users WHERE id = @_id
+
+        SET @_outStt = 1;
+        SET @_outMsg = N'Xoá người dùng thành công';
+    END
+END TRY
+BEGIN CATCH
+    BEGIN
+        SET @_outStt = 0;
+        SET @_outMsg = ERROR_MESSAGE()
+    END
+END CATCH
+
+GO
+
+CREATE PROC sp_checkUser(
+	@_email varchar(100),
+    @_password varchar(100)
 )
 AS
 BEGIN

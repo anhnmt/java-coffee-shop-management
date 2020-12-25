@@ -10,6 +10,7 @@ import coffeeshop.DTO.User;
 import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -23,14 +24,16 @@ public class PnlUser extends javax.swing.JPanel implements JDModify.CallbackModi
     Frame parent;
     List<User> list = new ArrayList<User>();
     User user;
+    int id;
 
     /**
      * Creates new form PnlCategory
      */
-    public PnlUser(Frame parent) {
+    public PnlUser(Frame parent, int id) {
         initComponents();
         this.parent = parent;
         loading();
+        this.id = id;
     }
 
     public void loading() {
@@ -274,8 +277,12 @@ public class PnlUser extends javax.swing.JPanel implements JDModify.CallbackModi
     }//GEN-LAST:event_lblSearchMouseClicked
 
     private void lblDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDeleteMouseClicked
-        JDDelete jdd = new JDDelete(this.parent, true, this, user);
-        jdd.setVisible(true);
+        if (user.getId() == id) {
+            JOptionPane.showMessageDialog(null, "Bạn không thể xoá tài khoản của chính bạn!");
+        } else {
+            JDDelete jdd = new JDDelete(this.parent, true, this, user);
+            jdd.setVisible(true);
+        }
     }//GEN-LAST:event_lblDeleteMouseClicked
 
 
