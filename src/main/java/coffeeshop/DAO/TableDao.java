@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public class TableDao implements GenericDao<Table> {
+
     @Override
     public List<Table> getAll() {
         List<Table> list = new ArrayList<>();

@@ -26,7 +26,7 @@ public class JDModify extends javax.swing.JDialog {
 
     Product product;
     CallbackModify callback;
-    List<Category> list = new ArrayList<Category>();
+    List<Category> categories = new ArrayList<Category>();
 
     interface CallbackModify {
 
@@ -55,13 +55,13 @@ public class JDModify extends javax.swing.JDialog {
     }
 
     public void loadCategory() {
-
         CategoryDao categoryDao = new CategoryDao();
-        list = categoryDao.getAll();
-        DefaultComboBoxModel<Category> dcbm = new DefaultComboBoxModel<Category>();
-        for (Category category : list) {
+        categories = categoryDao.getAll();
+        DefaultComboBoxModel<Category> dcbm = new DefaultComboBoxModel<>();
+        for (Category category : categories) {
             dcbm.addElement(category);
         }
+
         cboCategory.setModel(dcbm);
     }
 
@@ -70,7 +70,7 @@ public class JDModify extends javax.swing.JDialog {
         txtPrice.setText(String.valueOf(this.product.getPrice()));
         rdoActive.setSelected(this.product.isStatus());
         rdoNonActive.setSelected(this.product.isStatus() == false);
-        for (Category category : list) {
+        for (Category category : categories) {
             if (category.getId() == this.product.getCategory_id()) {
                 cboCategory.setSelectedItem(category);
             }

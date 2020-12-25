@@ -22,7 +22,7 @@ import javax.swing.table.DefaultTableModel;
 public class PnlCategory extends javax.swing.JPanel implements JDModify.CallbackModify, JDDelete.CallbackDelete, JDSearch.CallbackSearch {
 
     Frame parent;
-    List<Category> list = new ArrayList<Category>();
+    List<Category> categories = new ArrayList<Category>();
     Category category;
     CategoryDao categoryDao = new CategoryDao();
 
@@ -33,28 +33,24 @@ public class PnlCategory extends javax.swing.JPanel implements JDModify.Callback
         initComponents();
         this.parent = parent;
         loading(null, null);
-        if(role != 1){
+        if (role != 1) {
             lblAdd.setVisible(false);
             lblUpdate.setVisible(false);
-            lblDelete.setVisible(false);     
+            lblDelete.setVisible(false);
         }
     }
 
     public void loading(String name, Boolean status) {
         tblCategory.removeAll();
-        if (name != null || status != null) {
-            list = categoryDao.getAll(name, status);
-        } else {
-            list = categoryDao.getAll();
-        }
+        categories = categoryDao.getAll(name, status);
 
-        System.out.println(list);
+        System.out.println(categories);
 
         String columns[] = {"Id", "Tên", "Trạng thái"};
         DefaultTableModel dtm = new DefaultTableModel(columns, 0);
 
-        if (!list.isEmpty()) {
-            for (Category category : list) {
+        if (!categories.isEmpty()) {
+            for (Category category : categories) {
                 dtm.addRow(new Object[]{category.getId(), category.getName(), category.isStatus() ? "Hoạt động" : "Không hoạt động"});
             }
 
@@ -66,7 +62,7 @@ public class PnlCategory extends javax.swing.JPanel implements JDModify.Callback
                         position = 0;
                     }
 
-                    category = list.get(position);
+                    category = categories.get(position);
                 }
             });
 

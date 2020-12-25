@@ -43,7 +43,7 @@ public class JDLogin extends javax.swing.JDialog {
         this.callback = callback;
         this.parent = parent;
         parent.setVisible(false);
-        txtEmail.setText("minh@gmail.com");
+        txtEmail.setText("admin@gmail.com");
         txtPassword.setText("123456");
         
         // Custom code

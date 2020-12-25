@@ -5,29 +5,59 @@
  */
 package coffeeshop.GUI.product;
 
+import coffeeshop.DAO.CategoryDao;
+import coffeeshop.DTO.Category;
 import coffeeshop.DTO.Product;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 
 /**
  *
  * @author Minh
  */
-public class JDSearch extends javax.swing.JDialog {
+public final class JDSearch extends javax.swing.JDialog {
 
     CallbackSearch callback;
     Product product;
+    List<Category> categories = new ArrayList<>();
 
     interface CallbackSearch {
 
-        public void actionSearch(String name, Float fromPrice, Float toPrice, Boolean status);
+        public void actionSearch(String name, Integer category_id, Float fromPrice, Float toPrice, Boolean status);
     }
 
     /**
      * Creates new form JDCategoryCreate
      */
-    public JDSearch(java.awt.Frame parent, boolean modal) {
+    public JDSearch(java.awt.Frame parent, boolean modal, CallbackSearch callback) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
+        this.callback = callback;
+        loadCategory();
+        loadSatus();
+    }
+
+    public void loadCategory() {
+        cboCategory.removeAllItems();
+        CategoryDao categoryDao = new CategoryDao();
+        categories = categoryDao.getAll();
+        DefaultComboBoxModel<Category> dcbm = new DefaultComboBoxModel<>();
+        dcbm.addElement(new Category(0, "Không chọn", true));
+        categories.forEach(category -> {
+            dcbm.addElement(category);
+        });
+        cboCategory.setModel(dcbm);
+    }
+
+    public void loadSatus() {
+        cboStatus.removeAllItems();
+        DefaultComboBoxModel<String> dcbm = new DefaultComboBoxModel<>();
+        dcbm.addElement("Không chọn");
+        dcbm.addElement("Hoạt động");
+        dcbm.addElement("Không hoạt động");
+        cboStatus.setModel(dcbm);
     }
 
     /**
@@ -39,7 +69,6 @@ public class JDSearch extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -49,10 +78,10 @@ public class JDSearch extends javax.swing.JDialog {
         jLabel4 = new javax.swing.JLabel();
         txtFromPrice = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cboCategory = new javax.swing.JComboBox<>();
         txtToPrice = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        cboStatus = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -71,9 +100,14 @@ public class JDSearch extends javax.swing.JDialog {
         btnModify.setBackground(new java.awt.Color(0, 204, 106));
         btnModify.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnModify.setForeground(new java.awt.Color(255, 255, 255));
-        btnModify.setText("Thêm mới");
+        btnModify.setText("Tìm kiếm");
         btnModify.setBorderPainted(false);
         btnModify.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnModify.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModifyActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         jLabel4.setText("Khoảng giá");
@@ -81,13 +115,11 @@ public class JDSearch extends javax.swing.JDialog {
         jLabel5.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         jLabel5.setText("Danh mục");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jLabel6.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("đến");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboStatus.setToolTipText("");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -102,7 +134,7 @@ public class JDSearch extends javax.swing.JDialog {
                     .addComponent(txtName)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cboCategory, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(txtFromPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -112,7 +144,7 @@ public class JDSearch extends javax.swing.JDialog {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnModify, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(cboStatus, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -135,11 +167,11 @@ public class JDSearch extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cboCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(43, 43, 43)
                 .addComponent(btnModify, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28))
@@ -159,68 +191,26 @@ public class JDSearch extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JDSearch.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JDSearch.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JDSearch.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JDSearch.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
+    private void btnModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyActionPerformed
+        Integer category_id = ((Category) cboCategory.getSelectedItem()).getId() == 0 ? null : ((Category) cboCategory.getSelectedItem()).getId();
+        Float fromPrice = "".equals(txtFromPrice.getText()) ? null : Float.parseFloat(txtFromPrice.getText());
+        Float toPrice = "".equals(txtToPrice.getText()) ? null : Float.parseFloat(txtToPrice.getText());
+        Boolean status = "Không chọn".equals(cboStatus.getSelectedItem().toString()) ? null : "Hoạt động".equals(cboStatus.getSelectedItem().toString());
 
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                JDSearch dialog = new JDSearch(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+        System.out.println("txtName: " + txtName.getText());
+        System.out.println("category_id: " + category_id);
+        System.out.println("fromPrice: " + fromPrice);
+        System.out.println("toPrice: " + toPrice);
+        System.out.println("status: " + status);
+
+        callback.actionSearch(txtName.getText(), category_id, fromPrice, toPrice, status);
+        dispose();
+    }//GEN-LAST:event_btnModifyActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnModify;
-    private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JComboBox<Category> cboCategory;
+    private javax.swing.JComboBox<String> cboStatus;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

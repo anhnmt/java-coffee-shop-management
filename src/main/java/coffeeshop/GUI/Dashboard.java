@@ -644,6 +644,5 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
     @Override
     public void actionLogin(User user) {
         loadUser(user);
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

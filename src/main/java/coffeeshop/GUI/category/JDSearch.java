@@ -6,12 +6,13 @@
 package coffeeshop.GUI.category;
 
 import coffeeshop.DTO.Category;
+import javax.swing.DefaultComboBoxModel;
 
 /**
  *
  * @author Minh
  */
-public class JDSearch extends javax.swing.JDialog {
+public final class JDSearch extends javax.swing.JDialog {
 
     CallbackSearch callback;
     Category category;
@@ -29,6 +30,16 @@ public class JDSearch extends javax.swing.JDialog {
         initComponents();
         setLocationRelativeTo(null);
         this.callback = callback;
+        loadSatus();
+    }
+
+    public void loadSatus() {
+        cboStatus.removeAllItems();
+        DefaultComboBoxModel<String> dcbm = new DefaultComboBoxModel<>();
+        dcbm.addElement("Không chọn");
+        dcbm.addElement("Hoạt động");
+        dcbm.addElement("Không hoạt động");
+        cboStatus.setModel(dcbm);
     }
 
     /**
@@ -46,7 +57,7 @@ public class JDSearch extends javax.swing.JDialog {
         txtName = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         btnSearch = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cboStatus = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -88,7 +99,7 @@ public class JDSearch extends javax.swing.JDialog {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 427, Short.MAX_VALUE)
                         .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(cboStatus, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -103,7 +114,7 @@ public class JDSearch extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
                 .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -124,13 +135,15 @@ public class JDSearch extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        callback.actionSearch(txtName.getText(), true);
+        Boolean status = "Không chọn".equals(cboStatus.getSelectedItem().toString()) ? null : "Hoạt động".equals(cboStatus.getSelectedItem().toString());
+
+        callback.actionSearch(txtName.getText(), status);
         dispose();
     }//GEN-LAST:event_btnSearchActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSearch;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> cboStatus;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
