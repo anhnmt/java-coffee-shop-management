@@ -35,13 +35,10 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
     public Dashboard() {
         initComponents();
         loadUser(null);
+
         JDLogin jDLogin = new JDLogin(this, true, this);
         this.jDLogin = jDLogin;
         jDLogin.setVisible(true);
-        if (user.getRole() != 1) {
-            lblUser.setVisible(false);
-            btnUser.setVisible(false);
-        }
     }
 
     public void loadUser(User user) {
@@ -50,6 +47,11 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
             lblName.setText(user.getName().toUpperCase());
             lblEmail.setText(user.getEmail());
             this.setVisible(true);
+            if (user.getRole() != 1) {
+                lblUser.setVisible(false);
+                btnUser.setVisible(false);
+            }
+            btnDashboard.doClick();
         }
     }
 
@@ -573,7 +575,7 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
         lblCategory.setBackground(new Color(255, 255, 255));
         lblProduct.setBackground(new Color(255, 255, 255));
         pnlBody.removeAll();
-        PnlUser pnl = new PnlUser(this);
+        PnlUser pnl = new PnlUser(this, user.getId());
         pnlBody.add(pnl);
         pnlBody.repaint();
         pnlBody.revalidate();
@@ -642,6 +644,5 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
     @Override
     public void actionLogin(User user) {
         loadUser(user);
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

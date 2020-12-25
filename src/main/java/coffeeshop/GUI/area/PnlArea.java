@@ -42,10 +42,10 @@ public class PnlArea extends javax.swing.JPanel implements JDModifyArea.Callback
         initComponents();
         this.parent = parent;
         loading();
-        if(role != 1){
+        if (role != 1) {
             lblAdd.setVisible(false);
             lblUpdate.setVisible(false);
-            lblDelete.setVisible(false);     
+            lblDelete.setVisible(false);
         }
     }
 

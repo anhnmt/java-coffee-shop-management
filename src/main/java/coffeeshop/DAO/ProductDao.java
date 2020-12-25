@@ -35,6 +35,58 @@ public class ProductDao implements GenericDao<Product> {
         return list;
     }
 
+    public List<Product> getAll(String name, Integer category_id, Float fromPrice, Float toPrice, Boolean status) {
+        List<Product> list = new ArrayList<>();
+        String sql = "{CALL sp_getAllProduct(?, ?, ?, ?, ?)}";
+
+        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql);) {
+            if (name == null) {
+                cs.setNull(1, Types.NVARCHAR);
+            } else {
+                cs.setNString(1, name);
+            }
+            if (category_id == null) {
+                cs.setNull(2, Types.INTEGER);
+            } else {
+                cs.setInt(2, category_id);
+            }
+            if (fromPrice == null) {
+                cs.setNull(3, Types.FLOAT);
+            } else {
+                cs.setFloat(3, fromPrice);
+            }
+            if (toPrice == null) {
+                cs.setNull(4, Types.FLOAT);
+            } else {
+                cs.setFloat(4, toPrice);
+            }
+            if (status == null) {
+                cs.setNull(5, Types.BOOLEAN);
+            } else {
+                cs.setBoolean(5, status);
+            }
+            ResultSet rs = cs.executeQuery();
+
+            while (rs.next()) {
+                System.out.println(rs.toString());
+                Product obj = new Product(
+                        rs.getInt("id"),
+                        rs.getInt("category_id"),
+                        rs.getNString("name"),
+                        rs.getFloat("price"),
+                        rs.getBoolean("status"),
+                        rs.getString("category_name")
+                );
+                list.add(obj);
+                System.out.println(obj.toString());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
     @Override
     public Map<String, Object> create(Product product) {
         Map<String, Object> output = new HashMap<>();

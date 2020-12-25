@@ -88,12 +88,47 @@ public class UserDao implements GenericDao<User> {
 
     @Override
     public Map<String, Object> update(User user) {
-        return null;
+        Map<String, Object> output = new HashMap<>();
+        String sql = "{CALL sp_updateUser(?, ?, ?, ?, ?, ?, ?, ?)}";
+
+        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
+            cs.setInt(1, user.getId());
+            cs.setNString(2, user.getName());
+            cs.setString(3, user.getEmail());
+            cs.setString(4, user.getPassword());
+            cs.setInt(5, user.getRole());
+            cs.setBoolean(6, user.isStatus());
+            cs.registerOutParameter(7, Types.BIT);
+            cs.registerOutParameter(8, Types.NVARCHAR);
+            cs.execute();
+
+            output.put("status", cs.getBoolean(7));
+            output.put("message", cs.getNString(8));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return output;
     }
 
     @Override
     public Map<String, Object> delete(int id) {
-        return null;
+        Map<String, Object> output = new HashMap<>();
+        String sql = "{CALL sp_deleteUser(?, ?, ?)}";
+
+        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
+            cs.setInt(1, id);
+            cs.registerOutParameter(2, Types.BIT);
+            cs.registerOutParameter(3, Types.NVARCHAR);
+            cs.execute();
+
+            output.put("status", cs.getBoolean(2));
+            output.put("message", cs.getNString(3));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return output;
     }
 
     public User auth(String email, String password) {
@@ -102,8 +137,7 @@ public class UserDao implements GenericDao<User> {
 
         try (
                 Connection conn = new DbUtil().getInstance().getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)
-        ) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, email);
             ps.setString(2, password);
 
