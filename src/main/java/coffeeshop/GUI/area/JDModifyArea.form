@@ -7,7 +7,6 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
-    <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -48,31 +47,30 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="lblTitle" max="32767" attributes="0"/>
-                      <Component id="lblStatus" alignment="0" max="32767" attributes="0"/>
-                      <Component id="txtName" alignment="0" max="32767" attributes="0"/>
-                      <Component id="lblPrice" alignment="0" max="32767" attributes="0"/>
-                      <Component id="txtPrice" alignment="1" max="32767" attributes="0"/>
-                      <Component id="lblCategory" alignment="1" max="32767" attributes="0"/>
-                      <Component id="cboCategory" alignment="0" max="32767" attributes="0"/>
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace min="0" pref="427" max="32767" attributes="0"/>
-                          <Component id="btnModify" min="-2" pref="120" max="-2" attributes="0"/>
-                      </Group>
                       <Component id="lblNameError" max="32767" attributes="0"/>
-                      <Component id="lblName" alignment="0" max="32767" attributes="0"/>
-                      <Component id="lblPriceError" alignment="0" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
-                          <Component id="rdoActive" min="-2" pref="259" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="lblTitle" max="32767" attributes="0"/>
+                              <Component id="lblName" max="32767" attributes="0"/>
+                              <Component id="txtName" alignment="0" max="32767" attributes="0"/>
+                              <Component id="lblStatus" alignment="0" max="32767" attributes="0"/>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <EmptySpace min="0" pref="427" max="32767" attributes="0"/>
+                                  <Component id="btnModify" min="-2" pref="120" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="rdoActive" min="-2" pref="259" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="rdoNonActive" min="-2" pref="286" max="-2" attributes="0"/>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="rdoNonActive" min="-2" pref="286" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -85,26 +83,16 @@
                   <Component id="lblName" min="-2" pref="30" max="-2" attributes="0"/>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
                   <Component id="txtName" min="-2" pref="40" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
                   <Component id="lblNameError" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
-                  <Component id="lblPrice" min="-2" pref="30" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" max="-2" attributes="0"/>
-                  <Component id="txtPrice" min="-2" pref="40" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" max="-2" attributes="0"/>
-                  <Component id="lblPriceError" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
-                  <Component id="lblCategory" min="-2" pref="30" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" max="-2" attributes="0"/>
-                  <Component id="cboCategory" min="-2" pref="40" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="lblStatus" min="-2" pref="30" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="rdoActive" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="rdoNonActive" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="rdoNonActive" alignment="3" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+                  <EmptySpace pref="43" max="32767" attributes="0"/>
                   <Component id="btnModify" min="-2" pref="35" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -118,9 +106,9 @@
               <Font name="Segoe UI Semibold" size="36" style="0"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/coffeeshop/assets/img/icons8_product_50px_2.png"/>
+              <Image iconType="3" name="/coffeeshop/assets/img/icons8_location_50px.png"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="TH&#xca;M M&#x1eda;I S&#x1ea2;N PH&#x1ea8;M"/>
+            <Property name="text" type="java.lang.String" value="TH&#xca;M M&#x1eda;I KHU V&#x1ef0;C"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblName">
@@ -128,10 +116,13 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI Semibold" size="12" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="T&#xea;n s&#x1ea3;n ph&#x1ea9;m"/>
+            <Property name="text" type="java.lang.String" value="T&#xea;n danh m&#x1ee5;c"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtName">
+          <Events>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtNameKeyPressed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="lblStatus">
           <Properties>
@@ -169,9 +160,6 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Kh&#xf4;ng ho&#x1ea1;t &#x111;&#x1ed9;ng"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoNonActiveActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnModify">
           <Properties>
@@ -194,48 +182,12 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnModifyActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JLabel" name="lblPrice">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI Semibold" size="12" style="0"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Gi&#xe1; "/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="txtPrice">
-        </Component>
-        <Component class="javax.swing.JLabel" name="lblCategory">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI Semibold" size="12" style="0"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Danh m&#x1ee5;c"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JComboBox" name="cboCategory">
-          <Properties>
-            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="0"/>
-            </Property>
-          </Properties>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Category&gt;"/>
-          </AuxValues>
-        </Component>
         <Component class="javax.swing.JLabel" name="lblNameError">
           <Properties>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="47" green="47" red="f0" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Kh&#xf4;ng &#x111;&#x1b0;&#x1ee3;c &#x111;&#x1ec3; tr&#x1ed1;ng"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="lblPriceError">
-          <Properties>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="47" green="47" red="f0" type="rgb"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Kh&#xf4;ng &#x111;&#x1b0;&#x1ee3;c &#x111;&#x1ec3; tr&#x1ed5;ng"/>
+            <Property name="text" type="java.lang.String" value="T&#xea;n danh m&#x1ee5;c kh&#xf4;ng &#x111;&#x1b0;&#x1ee3;c &#x111;&#x1ec3; tr&#x1ed1;ng"/>
           </Properties>
         </Component>
       </SubComponents>

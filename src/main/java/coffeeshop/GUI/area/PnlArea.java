@@ -5,41 +5,79 @@
  */
 package coffeeshop.GUI.area;
 
+import coffeeshop.DTO.Area;
+import coffeeshop.DTO.Table;
+import coffeeshop.DAO.AreaDao;
+import coffeeshop.DAO.TableDao;
 import coffeeshop.Utils.WrapLayout;
 import java.awt.Component;
+import java.awt.Frame;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
  * @author Minh
  */
-public class PnlArea extends javax.swing.JPanel {
+public class PnlArea extends javax.swing.JPanel implements JDModifyArea.CallbackAreaModify, JDDeleteArea.CallbackAreaDelete {
+
+    Frame parent;
+    List<Area> listArea = new ArrayList<Area>();
+    List<Table> listTable = new ArrayList<Table>();
+    Area area;
 
     /**
      * Creates new form PnlCategory
      */
-    public PnlArea() {
+    public PnlArea(Frame parent, int role) {
         initComponents();
-//        ImageIcon icon = createImageIcon("Gambar/icons8_add_50px_2.png");
-
-        JComponent panel1 = makeTextPanel("Panel #1");
-        addTab(tabbedPane, "Khu vực 1 (ngoài sân)", panel1);
-
-        JComponent panel2 = makeTextPanel("Panel #2");
-        addTab(tabbedPane, "Khu vực 2 (tầng 2)", panel2);
-
+        this.parent = parent;
+        loading();
+        if (role != 1) {
+            lblAdd.setVisible(false);
+            lblUpdate.setVisible(false);
+            lblDelete.setVisible(false);
+        }
     }
 
-    private void addTab(JTabbedPane tabbedPane, String title, Component tab) {
-        tabbedPane.add(tab);
+    public void loading() {
+        tabbedPane.removeAll();
+        AreaDao areaDao = new AreaDao();
+        listArea = areaDao.getAll();
+        TableDao tableDao = new TableDao();
+        listTable = tableDao.getAll();
+        for (Area area : listArea) {
+            JComponent panel = makeTextPanel();
+            addTab(tabbedPane, area.getName(), panel);
+            panel.setName(area.getName());
+            for (Table table : listTable) {
+                if (table.getArea_id() == area.getId()) {
+                    JLabel jp = makeTable(panel, table.getName());
+                }
+            }
+        }
+        String name = tabbedPane.getSelectedComponent().getName();
+        area = areaDao.findByName(name);
+    }
+
+    public void addTab(JTabbedPane tabbedPane, String title, Component tab) {
+        JScrollPane jScrollPane = new JScrollPane();
+        jScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane.setViewportView(tab);
+        tabbedPane.add(jScrollPane);
         tabbedPane.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
 
         JLabel lbl = new JLabel(title);
-        ImageIcon icon = createImageIcon("/coffeeshop/assets/img/icons8_add_50px_2.png");
+        ImageIcon icon = createImageIcon("/coffeeshop/assets/img/icons8_place_marker_50px.png");
         lbl.setIcon(icon);
 
 // Add some spacing between text and icon, and position text to the RHS.
@@ -48,9 +86,10 @@ public class PnlArea extends javax.swing.JPanel {
         lbl.setVerticalTextPosition(SwingConstants.BOTTOM);
 
         tabbedPane.setTabComponentAt(tabbedPane.getTabCount() - 1, lbl);
+        jScrollPane.setName(title);
     }
 
-    protected JComponent makeTextPanel(String text) {
+    public JComponent makeTextPanel() {
         javax.swing.JPanel panel = new javax.swing.JPanel(false);
         panel.setLayout(new WrapLayout(WrapLayout.LEFT, 35, 5));
         JLabel jl1 = new JLabel();
@@ -61,30 +100,25 @@ public class PnlArea extends javax.swing.JPanel {
         jl1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jl1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                JLabel jp = new JLabel();
-                jp.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-                jp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_table_75px.png"))); // NOI18N
-                jp.setText("Bàn 2");
-                jp.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-                jp.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-                jp.setVisible(true);
-                panel.add(jp);
-                panel.validate();
-                panel.repaint();
-                panel.validate();
-                panel.repaint();
+                // TODO add your handling code here:
             }
         });
         panel.add(jl1);
-
-        JLabel jl12 = new JLabel();
-        jl12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jl12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_table_75px.png"))); // NOI18N
-        jl12.setText("Bàn");
-        jl12.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jl12.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        panel.add(jl12);
         return panel;
+    }
+
+    public JLabel makeTable(JComponent panel, String tableName) {
+        JLabel jp = new JLabel();
+        jp.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_table_75px.png"))); // NOI18N
+        jp.setText(tableName);
+        jp.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jp.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jp.setVisible(true);
+        panel.add(jp);
+        panel.repaint();
+        panel.revalidate();
+        return jp;
     }
 
     protected ImageIcon createImageIcon(String path) {
@@ -108,7 +142,6 @@ public class PnlArea extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         lblAdd = new javax.swing.JLabel();
-        lblSearch = new javax.swing.JLabel();
         lblUpdate = new javax.swing.JLabel();
         lblDelete = new javax.swing.JLabel();
         tabbedPane = new javax.swing.JTabbedPane();
@@ -140,16 +173,12 @@ public class PnlArea extends javax.swing.JPanel {
         lblAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblAdd.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         lblAdd.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        lblAdd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAddMouseClicked(evt);
+            }
+        });
         jPanel2.add(lblAdd);
-
-        lblSearch.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        lblSearch.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_search_50px_1.png"))); // NOI18N
-        lblSearch.setText("Tìm kiếm");
-        lblSearch.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        lblSearch.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        lblSearch.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jPanel2.add(lblSearch);
 
         lblUpdate.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         lblUpdate.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -158,6 +187,11 @@ public class PnlArea extends javax.swing.JPanel {
         lblUpdate.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblUpdate.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         lblUpdate.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        lblUpdate.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblUpdateMouseClicked(evt);
+            }
+        });
         jPanel2.add(lblUpdate);
 
         lblDelete.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
@@ -167,12 +201,22 @@ public class PnlArea extends javax.swing.JPanel {
         lblDelete.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblDelete.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         lblDelete.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        lblDelete.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblDeleteMouseClicked(evt);
+            }
+        });
         jPanel2.add(lblDelete);
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_START);
 
         tabbedPane.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
         tabbedPane.setTabPlacement(javax.swing.JTabbedPane.LEFT);
+        tabbedPane.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabbedPaneMouseClicked(evt);
+            }
+        });
         jPanel1.add(tabbedPane, java.awt.BorderLayout.CENTER);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -210,6 +254,29 @@ public class PnlArea extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void lblAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddMouseClicked
+        JDModifyArea jdma = new JDModifyArea(parent, true, this, null);
+        jdma.setVisible(true);
+    }//GEN-LAST:event_lblAddMouseClicked
+
+    private void lblUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUpdateMouseClicked
+        JDModifyArea jdma = new JDModifyArea(parent, true, this, area);
+        jdma.setVisible(true);
+    }//GEN-LAST:event_lblUpdateMouseClicked
+
+    private void tabbedPaneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabbedPaneMouseClicked
+        if (tabbedPane.getComponents().length > 0) {
+            AreaDao areaDao = new AreaDao();
+            String name = tabbedPane.getSelectedComponent().getName();
+            area = areaDao.findByName(name);
+        }
+    }//GEN-LAST:event_tabbedPaneMouseClicked
+
+    private void lblDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDeleteMouseClicked
+        JDDeleteArea jdda = new JDDeleteArea(parent, true, this, area);
+        jdda.setVisible(true);
+    }//GEN-LAST:event_lblDeleteMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
@@ -218,8 +285,17 @@ public class PnlArea extends javax.swing.JPanel {
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblAdd;
     private javax.swing.JLabel lblDelete;
-    private javax.swing.JLabel lblSearch;
     private javax.swing.JLabel lblUpdate;
     private javax.swing.JTabbedPane tabbedPane;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void actionAreaModify() {
+        loading();
+    }
+
+    @Override
+    public void actionDelete() {
+        loading();
+    }
 }

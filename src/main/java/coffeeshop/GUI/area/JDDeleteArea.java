@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package coffeeshop.GUI.category;
+package coffeeshop.GUI.area;
 
-import coffeeshop.DTO.Category;
-import coffeeshop.DAO.CategoryDao;
+import coffeeshop.DTO.Area;
+import coffeeshop.DAO.AreaDao;
 import java.util.Map;
 import javax.swing.JOptionPane;
 
@@ -14,12 +14,12 @@ import javax.swing.JOptionPane;
  *
  * @author Minh
  */
-public class JDDelete extends javax.swing.JDialog {
+public class JDDeleteArea extends javax.swing.JDialog {
 
-    CallbackDelete callback;
-    Category category;
+    CallbackAreaDelete callback;
+    Area area;
 
-    interface CallbackDelete {
+    interface CallbackAreaDelete {
 
         public void actionDelete();
     }
@@ -27,13 +27,13 @@ public class JDDelete extends javax.swing.JDialog {
     /**
      * Creates new form JDCategoryCreate
      */
-    public JDDelete(java.awt.Frame parent, boolean modal, CallbackDelete callback, Category category) {
+    public JDDeleteArea(java.awt.Frame parent, boolean modal, CallbackAreaDelete callback, Area area) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
         this.callback = callback;
-        this.category = category;
-        lblConfirm.setText("Bạn có chắc chắn muốn xoá danh mục tên: " + category.getName());
+        this.area = area;
+        lblConfirm.setText("Bạn có chắc chắn muốn xoá danh mục tên: " + area.getName());
 
     }
 
@@ -59,7 +59,7 @@ public class JDDelete extends javax.swing.JDialog {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_trash_can_50px_1.png"))); // NOI18N
-        jLabel1.setText("XOÁ DANH MỤC");
+        jLabel1.setText("XOÁ KHU VỰC");
 
         btnCancel.setBackground(new java.awt.Color(0, 204, 51));
         btnCancel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -134,14 +134,14 @@ public class JDDelete extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        CategoryDao categoryDao = new CategoryDao();
-        Map<String, Object> result = categoryDao.delete(category.getId());
+        AreaDao areaDao = new AreaDao();
+        Map<String, Object> result = areaDao.delete(area.getId());
         if ((boolean) result.get("status") == true) {
-            JOptionPane.showMessageDialog(null, "Xoá danh mục thành công!");
+            JOptionPane.showMessageDialog(null, "Xoá khu vực thành công!");
             callback.actionDelete();
             dispose();
         } else {
-            JOptionPane.showMessageDialog(null, "Xoá danh mục thất bại, lỗi: " + result.get("message") + "!");
+            JOptionPane.showMessageDialog(null, "Xoá khu vực thất bại, lỗi: " + result.get("message") + "!");
             dispose();
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
@@ -167,14 +167,18 @@ public class JDDelete extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JDDelete.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JDDeleteArea.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JDDelete.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JDDeleteArea.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JDDelete.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JDDeleteArea.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JDDelete.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JDDeleteArea.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -183,7 +187,7 @@ public class JDDelete extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                JDDelete dialog = new JDDelete(new javax.swing.JFrame(), true, null, null);
+                JDDeleteArea dialog = new JDDeleteArea(new javax.swing.JFrame(), true, null, null);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

@@ -40,7 +40,7 @@ public class OrderDao implements GenericDao<Order> {
     @Override
     public Map<String, Object> create(Order order) {
         Map<String, Object> output = new HashMap<>();
-        String sql = "{CALL sp_insertOsp_insertOrder(?, ?, ?, ?, ?, ?, ?, ?,)}";
+        String sql = "{CALL sp_insertOrder(?, ?, ?, ?, ?, ?, ?, ?,)}";
 
         try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
             cs.setInt(1, order.getUser_id());

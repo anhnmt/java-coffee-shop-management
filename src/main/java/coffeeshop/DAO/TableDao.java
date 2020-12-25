@@ -10,12 +10,13 @@ import java.util.List;
 import java.util.Map;
 
 public class TableDao implements GenericDao<Table> {
+
     @Override
     public List<Table> getAll() {
         List<Table> list = new ArrayList<>();
-        String sql = "SELECT * FROM Tables";
+        String sql = "{CALL sp_getAllTable}";
 
-        try (Connection conn = new DbUtil().getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql); ResultSet rs = cs.executeQuery()) {
             while (rs.next()) {
                 Table obj = new Table(
                         rs.getInt("id"),

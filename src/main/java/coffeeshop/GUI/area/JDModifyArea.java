@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package coffeeshop.GUI.category;
+package coffeeshop.GUI.area;
 
-import coffeeshop.DAO.CategoryDao;
-import coffeeshop.DTO.Category;
+import coffeeshop.DAO.AreaDao;
+import coffeeshop.DTO.Area;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.util.Map;
@@ -17,38 +17,37 @@ import javax.swing.JOptionPane;
  *
  * @author Minh
  */
-public class JDModify extends javax.swing.JDialog {
+public class JDModifyArea extends javax.swing.JDialog {
 
     /**
      * Creates new form JDCategoryCreate
      */
-    CallbackModify callback;
-    Category category;
+    CallbackAreaModify callback;
+    Area area;
 
-    interface CallbackModify {
+    interface CallbackAreaModify {
 
-        public void actionModify();
+        public void actionAreaModify();
     }
 
-    public JDModify(java.awt.Frame parent, boolean modal, CallbackModify callback, Category category) {
+    public JDModifyArea(java.awt.Frame parent, boolean modal, CallbackAreaModify callback, Area area) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
         lblNameError.setVisible(false);
         this.callback = callback;
-        System.out.println(category);
-        if (category != null) {
-            this.category = category;
+        if (area != null) {
+            this.area = area;
             loadData();
         }
     }
 
     public void loadData() {
-        lblTitle.setText("Sửa đổi danh mục");
+        lblTitle.setText("Sửa đổi khu vực");
         btnModify.setText("Sửa đổi");
-        txtName.setText(category.getName());
-        rdoActive.setSelected(category.isStatus());
-        rdoNonActive.setSelected(category.isStatus() == false);
+        txtName.setText(area.getName());
+        rdoActive.setSelected(area.isStatus());
+        rdoNonActive.setSelected(area.isStatus() == false);
     }
 
     /**
@@ -76,8 +75,8 @@ public class JDModify extends javax.swing.JDialog {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         lblTitle.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
-        lblTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_categorize_50px.png"))); // NOI18N
-        lblTitle.setText("THÊM MỚI DANH MỤC");
+        lblTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_location_50px.png"))); // NOI18N
+        lblTitle.setText("THÊM MỚI KHU VỰC");
 
         lblName.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         lblName.setText("Tên danh mục");
@@ -191,33 +190,33 @@ public class JDModify extends javax.swing.JDialog {
             validate = false;
         } else {
             try {
-                Category category = new Category();
-                if (this.category == null) {
-                    category.setName(name);
-                    category.setStatus(status);
-                    CategoryDao categoryDao = new CategoryDao();
-                    Map<String, Object> result = categoryDao.create(category);
+                Area area = new Area();
+                if (this.area == null) {
+                    area.setName(name);
+                    area.setStatus(status);
+                    AreaDao areaDao = new AreaDao();
+                    Map<String, Object> result = areaDao.create(area);
 
                     if ((boolean) result.get("status") == true) {
-                        JOptionPane.showMessageDialog(null, "Thêm danh mục thành công!");
-                        callback.actionModify();
+                        JOptionPane.showMessageDialog(null, "Thêm khu vực thành công!");
+                        callback.actionAreaModify();
                         dispose();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Thêm danh mục thất bại, lỗi: " + result.get("message") + "!");
+                        JOptionPane.showMessageDialog(null, "Thêm khu vực thất bại, lỗi: " + result.get("message") + "!");
                     }
                 } else {
-                    category.setId(this.category.getId());
-                    category.setName(name);
-                    category.setStatus(status);
-                    CategoryDao categoryDao = new CategoryDao();
-                    Map<String, Object> result = categoryDao.update(category);
+                    area.setId(this.area.getId());
+                    area.setName(name);
+                    area.setStatus(status);
+                    AreaDao areaDao = new AreaDao();
+                    Map<String, Object> result = areaDao.update(area);
 
                     if ((boolean) result.get("status") == true) {
-                        JOptionPane.showMessageDialog(null, "Sửa đổi danh mục thành công!");
-                        callback.actionModify();
+                        JOptionPane.showMessageDialog(null, "Sửa đổi khu vực thành công!");
+                        callback.actionAreaModify();
                         dispose();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Sửa đổi danh mục thất bại, lỗi: " + result.get("message") + "!");
+                        JOptionPane.showMessageDialog(null, "Sửa đổi khu vực thất bại, lỗi: " + result.get("message") + "!");
                     }
                 }
 
@@ -251,21 +250,23 @@ public class JDModify extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JDModify.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JDModifyArea.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JDModify.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JDModifyArea.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JDModify.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JDModifyArea.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JDModify.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JDModifyArea.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                JDModify dialog = new JDModify(new javax.swing.JFrame(), true, null, null);
+                JDModifyArea dialog = new JDModifyArea(new javax.swing.JFrame(), true, null, null);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

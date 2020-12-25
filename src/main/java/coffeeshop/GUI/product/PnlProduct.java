@@ -5,20 +5,70 @@
  */
 package coffeeshop.GUI.product;
 
+import coffeeshop.DAO.ProductDao;
+import coffeeshop.DTO.Product;
 import java.awt.Frame;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Minh
  */
-public class PnlProduct extends javax.swing.JPanel {
+public class PnlProduct extends javax.swing.JPanel implements JDModify.CallbackModify, JDDelete.CallbackDelete, JDSearch.CallbackSearch {
+
     Frame parent;
+    List<Product> products = new ArrayList<Product>();
+    Product product;
+    ProductDao productDao = new ProductDao();
+
     /**
      * Creates new form PnlCategory
      */
-    public PnlProduct(Frame parent) {
+    public PnlProduct(Frame parent, int role) {
         initComponents();
         this.parent = parent;
+        loading(null, null, null, null, null);
+
+        if (role != 1) {
+            lblAdd.setVisible(false);
+            lblUpdate.setVisible(false);
+            lblDelete.setVisible(false);
+        }
+    }
+
+    public void loading(String name, Integer category_id, Float fromPrice, Float toPrice, Boolean status) {
+        tblProduct.removeAll();
+        products = productDao.getAll(name, category_id, fromPrice, toPrice, status);
+
+        String columns[] = {"Id", "Tên", "Giá", "Tên danh mục", "Trạng thái"};
+        DefaultTableModel dtm = new DefaultTableModel(columns, 0);
+
+        if (!products.isEmpty()) {
+            for (Product product : products) {
+                dtm.addRow(new Object[]{product.getId(), product.getName(), product.getPrice(), product.getCategory_name(), product.isStatus() ? "Hoạt động" : "Không hoạt động"});
+            }
+
+            tblProduct.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+                @Override
+                public void valueChanged(ListSelectionEvent lse) {
+                    int position = tblProduct.getSelectedRow();
+                    if (position < 0) {
+                        position = 0;
+                    }
+
+                    product = products.get(position);
+                }
+            });
+
+            tblProduct.changeSelection(0, 0, false, false);
+//          tblProduct.setRowSelectionInterval(0, 0);
+        }
+
+        tblProduct.setModel(dtm);
     }
 
     /**
@@ -38,8 +88,9 @@ public class PnlProduct extends javax.swing.JPanel {
         lblUpdate = new javax.swing.JLabel();
         lblSearch = new javax.swing.JLabel();
         lblDelete = new javax.swing.JLabel();
+        lblRefresh = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblCategory = new javax.swing.JTable();
+        tblProduct = new javax.swing.JTable();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -117,9 +168,23 @@ public class PnlProduct extends javax.swing.JPanel {
         });
         jPanel2.add(lblDelete);
 
+        lblRefresh.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        lblRefresh.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_delete_50px.png"))); // NOI18N
+        lblRefresh.setText("Làm mới");
+        lblRefresh.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblRefresh.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lblRefresh.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        lblRefresh.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblRefreshMouseClicked(evt);
+            }
+        });
+        jPanel2.add(lblRefresh);
+
         jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_START);
 
-        tblCategory.setModel(new javax.swing.table.DefaultTableModel(
+        tblProduct.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -177,7 +242,7 @@ public class PnlProduct extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(tblCategory);
+        jScrollPane1.setViewportView(tblProduct);
 
         jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -221,24 +286,28 @@ public class PnlProduct extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddMouseClicked
-        JDModify jdm = new JDModify(this.parent, true);
+        JDModify jdm = new JDModify(this.parent, true, this, null);
         jdm.setVisible(true);
     }//GEN-LAST:event_lblAddMouseClicked
 
     private void lblUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUpdateMouseClicked
-        JDModify jdm = new JDModify(this.parent, true);
+        JDModify jdm = new JDModify(this.parent, true, this, product);
         jdm.setVisible(true);
     }//GEN-LAST:event_lblUpdateMouseClicked
 
     private void lblSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSearchMouseClicked
-        JDSearch jds = new JDSearch(this.parent, true);
+        JDSearch jds = new JDSearch(this.parent, true, this);
         jds.setVisible(true);
     }//GEN-LAST:event_lblSearchMouseClicked
 
     private void lblDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDeleteMouseClicked
-        JDDelete jdd = new JDDelete(this.parent, true);
+        JDDelete jdd = new JDDelete(this.parent, true, this, product);
         jdd.setVisible(true);
     }//GEN-LAST:event_lblDeleteMouseClicked
+
+    private void lblRefreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRefreshMouseClicked
+        loading(null, null, null, null, null);
+    }//GEN-LAST:event_lblRefreshMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -249,8 +318,24 @@ public class PnlProduct extends javax.swing.JPanel {
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblAdd;
     private javax.swing.JLabel lblDelete;
+    private javax.swing.JLabel lblRefresh;
     private javax.swing.JLabel lblSearch;
     private javax.swing.JLabel lblUpdate;
-    private javax.swing.JTable tblCategory;
+    private javax.swing.JTable tblProduct;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void actionModify() {
+        loading(null, null, null, null, null);
+    }
+
+    @Override
+    public void actionDelete() {
+        loading(null, null, null, null, null);
+    }
+
+    @Override
+    public void actionSearch(String name, Integer category_id, Float fromPrice, Float toPrice, Boolean status) {
+        loading(name, category_id, fromPrice, toPrice, status);
+    }
 }

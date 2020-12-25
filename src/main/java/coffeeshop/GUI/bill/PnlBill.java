@@ -5,7 +5,10 @@
  */
 package coffeeshop.GUI.bill;
 
+import coffeeshop.DTO.Product;
 import java.awt.Frame;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -16,9 +19,13 @@ public class PnlBill extends javax.swing.JPanel {
     /**
      * Creates new form PnlCategory
      */
-    public PnlBill(Frame parent) {
+    public PnlBill(Frame parent, int role) {
         initComponents();
         this.parent = parent;
+        if(role != 1){
+            lblUpdate.setVisible(false);
+            lblDelete.setVisible(false);     
+        }
     }
 
     /**
@@ -38,7 +45,7 @@ public class PnlBill extends javax.swing.JPanel {
         lblSearch = new javax.swing.JLabel();
         lblDelete = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblCategory = new javax.swing.JTable();
+        tblBill = new javax.swing.JTable();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -104,7 +111,7 @@ public class PnlBill extends javax.swing.JPanel {
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_START);
 
-        tblCategory.setModel(new javax.swing.table.DefaultTableModel(
+        tblBill.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -162,7 +169,7 @@ public class PnlBill extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(tblCategory);
+        jScrollPane1.setViewportView(tblBill);
 
         jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -230,6 +237,6 @@ public class PnlBill extends javax.swing.JPanel {
     private javax.swing.JLabel lblDelete;
     private javax.swing.JLabel lblSearch;
     private javax.swing.JLabel lblUpdate;
-    private javax.swing.JTable tblCategory;
+    private javax.swing.JTable tblBill;
     // End of variables declaration//GEN-END:variables
 }

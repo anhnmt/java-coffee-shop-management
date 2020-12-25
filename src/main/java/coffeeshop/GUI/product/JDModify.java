@@ -5,19 +5,76 @@
  */
 package coffeeshop.GUI.product;
 
+import coffeeshop.DTO.Category;
+import coffeeshop.DTO.Product;
+import coffeeshop.DAO.CategoryDao;
+import coffeeshop.DAO.ProductDao;
+import java.awt.Color;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Minh
  */
 public class JDModify extends javax.swing.JDialog {
 
+    Product product;
+    CallbackModify callback;
+    List<Category> categories = new ArrayList<Category>();
+
+    interface CallbackModify {
+
+        public void actionModify();
+    }
+
     /**
      * Creates new form JDCategoryCreate
      */
-    public JDModify(java.awt.Frame parent, boolean modal) {
+    public JDModify(java.awt.Frame parent, boolean modal, CallbackModify callback, Product product) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
+        loadCategory();
+        this.callback = callback;
+
+        if (product != null) {
+            lblTitle.setText("Sửa đổi sản phẩm");
+            btnModify.setText("Sửa đổi");
+            this.product = product;
+            loadingData();
+        }
+
+        lblNameError.setVisible(false);
+        lblPriceError.setVisible(false);
+    }
+
+    public void loadCategory() {
+        CategoryDao categoryDao = new CategoryDao();
+        categories = categoryDao.getAll();
+        DefaultComboBoxModel<Category> dcbm = new DefaultComboBoxModel<>();
+        for (Category category : categories) {
+            dcbm.addElement(category);
+        }
+
+        cboCategory.setModel(dcbm);
+    }
+
+    public void loadingData() {
+        txtName.setText(this.product.getName());
+        txtPrice.setText(String.valueOf(this.product.getPrice()));
+        rdoActive.setSelected(this.product.isStatus());
+        rdoNonActive.setSelected(this.product.isStatus() == false);
+        for (Category category : categories) {
+            if (category.getId() == this.product.getCategory_id()) {
+                cboCategory.setSelectedItem(category);
+            }
+        }
     }
 
     /**
@@ -31,31 +88,34 @@ public class JDModify extends javax.swing.JDialog {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        lblTitle = new javax.swing.JLabel();
+        lblName = new javax.swing.JLabel();
         txtName = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
+        lblStatus = new javax.swing.JLabel();
         rdoActive = new javax.swing.JRadioButton();
         rdoNonActive = new javax.swing.JRadioButton();
         btnModify = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
-        txtName1 = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        lblPrice = new javax.swing.JLabel();
+        txtPrice = new javax.swing.JTextField();
+        lblCategory = new javax.swing.JLabel();
+        cboCategory = new javax.swing.JComboBox<>();
+        lblNameError = new javax.swing.JLabel();
+        lblPriceError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_product_50px_2.png"))); // NOI18N
-        jLabel1.setText("THÊM MỚI SẢN PHẨM");
+        lblTitle.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
+        lblTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_product_50px_2.png"))); // NOI18N
+        lblTitle.setText("THÊM MỚI SẢN PHẨM");
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        jLabel2.setText("Tên sản phẩm");
+        lblName.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        lblName.setText("Tên sản phẩm");
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        jLabel3.setText("Trạng thái");
+        lblStatus.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        lblStatus.setText("Trạng thái");
 
         rdoActive.setBackground(new java.awt.Color(255, 255, 255));
         buttonGroup1.add(rdoActive);
@@ -79,14 +139,23 @@ public class JDModify extends javax.swing.JDialog {
         btnModify.setText("Thêm mới");
         btnModify.setBorderPainted(false);
         btnModify.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnModify.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModifyActionPerformed(evt);
+            }
+        });
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        jLabel4.setText("Giá ");
+        lblPrice.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        lblPrice.setText("Giá ");
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        jLabel5.setText("Danh mục");
+        lblCategory.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        lblCategory.setText("Danh mục");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        lblNameError.setForeground(new java.awt.Color(240, 71, 71));
+        lblNameError.setText("Không được để trống");
+
+        lblPriceError.setForeground(new java.awt.Color(240, 71, 71));
+        lblPriceError.setText("Không được để trổng");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -95,49 +164,54 @@ public class JDModify extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtName)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtName1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtPrice, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblCategory, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cboCategory, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnModify, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(rdoActive, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(rdoNonActive, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(2, 2, 2)))))
+                        .addGap(0, 427, Short.MAX_VALUE)
+                        .addComponent(btnModify, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblNameError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblPriceError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(rdoActive, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(rdoNonActive, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtName1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblNameError)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblPriceError)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cboCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(lblStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rdoActive)
-                    .addComponent(rdoNonActive, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(30, 30, 30)
+                    .addComponent(rdoNonActive))
+                .addGap(35, 35, 35)
                 .addComponent(btnModify, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -159,6 +233,80 @@ public class JDModify extends javax.swing.JDialog {
     private void rdoNonActiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoNonActiveActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_rdoNonActiveActionPerformed
+
+    private void btnModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyActionPerformed
+        String name = (String) txtName.getText().trim();
+        float price = Float.parseFloat(txtPrice.getText());
+        int category_id = ((Category) cboCategory.getSelectedItem()).getId();
+        boolean status = (boolean) rdoActive.isSelected();
+        boolean validate = true;
+
+        if (name.equals("")) {
+            txtName.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(new Color(240, 71, 71)),
+                    BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+            lblName.setForeground(new Color(240, 71, 71));
+            lblNameError.setVisible(true);
+            validate = false;
+        }
+
+        if (txtPrice.getText().trim().equals("")) {
+            txtPrice.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(new Color(240, 71, 71)),
+                    BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+            lblPrice.setText("Không được để trống");
+            lblPrice.setForeground(new Color(240, 71, 71));
+            lblPriceError.setVisible(true);
+            validate = false;
+        } else if (price <= 0) {
+            txtPrice.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(new Color(240, 71, 71)),
+                    BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+            lblPrice.setText("Giá bạn nhập phải là một số thực dương!");
+            lblPrice.setForeground(new Color(240, 71, 71));
+            lblPriceError.setVisible(true);
+            validate = false;
+        }
+
+        if (validate == true) {
+            lblNameError.setVisible(false);
+            lblPriceError.setVisible(false);
+            try {
+                Product product = new Product();
+                product.setName(name);
+                product.setPrice(price);
+                product.setCategory_id(category_id);
+                product.setStatus(status);
+
+                ProductDao productDao = new ProductDao();
+                if (this.product == null) {
+                    Map<String, Object> result = productDao.create(product);
+
+                    if ((boolean) result.get("status") == true) {
+                        JOptionPane.showMessageDialog(null, "Thêm sản phẩm thành công!");
+                        callback.actionModify();
+                        dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Thêm sản phẩm thất bại, lỗi: " + result.get("message") + "!");
+                    }
+                } else {
+                    product.setId(this.product.getId());
+                    Map<String, Object> result = productDao.update(product);
+                    if ((boolean) result.get("status") == true) {
+                        JOptionPane.showMessageDialog(null, "Sửa sản phẩm thành công!");
+                        callback.actionModify();
+                        dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Sửa sản phẩm thất bại, lỗi: " + result.get("message") + "!");
+                    }
+                }
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+    }//GEN-LAST:event_btnModifyActionPerformed
 
     /**
      * @param args the command line arguments
@@ -189,11 +337,15 @@ public class JDModify extends javax.swing.JDialog {
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                JDModify dialog = new JDModify(new javax.swing.JFrame(), true);
+                JDModify dialog = new JDModify(new javax.swing.JFrame(), true, null, null);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -208,16 +360,18 @@ public class JDModify extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnModify;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JComboBox<Category> cboCategory;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lblCategory;
+    private javax.swing.JLabel lblName;
+    private javax.swing.JLabel lblNameError;
+    private javax.swing.JLabel lblPrice;
+    private javax.swing.JLabel lblPriceError;
+    private javax.swing.JLabel lblStatus;
+    private javax.swing.JLabel lblTitle;
     private javax.swing.JRadioButton rdoActive;
     private javax.swing.JRadioButton rdoNonActive;
     private javax.swing.JTextField txtName;
-    private javax.swing.JTextField txtName1;
+    private javax.swing.JTextField txtPrice;
     // End of variables declaration//GEN-END:variables
 }

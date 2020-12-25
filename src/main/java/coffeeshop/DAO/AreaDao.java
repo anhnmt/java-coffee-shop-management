@@ -10,12 +10,13 @@ import java.util.List;
 import java.util.Map;
 
 public class AreaDao implements GenericDao<Area> {
+
     @Override
     public List<Area> getAll() {
         List<Area> list = new ArrayList<>();
-        String sql = "SELECT * FROM Areas";
+        String sql = "{CALL sp_getAllArea}";
 
-        try (Connection conn = new DbUtil().getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql); ResultSet rs = cs.executeQuery()) {
             while (rs.next()) {
                 Area obj = new Area(
                         rs.getInt("id"),
@@ -52,15 +53,14 @@ public class AreaDao implements GenericDao<Area> {
         return output;
     }
 
-    @Override
-    public Area read(int id) {
+    public Area findByName(String name) {
         Area obj = null;
-        String sql = "SELECT * FROM Areas WHERE id = ?";
+        String sql = "{CALL sp_findAreaByName(?)}";
 
-        try (Connection conn = new DbUtil().getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
+        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
+            cs.setNString(1, name);
 
-            try (ResultSet rs = ps.executeQuery()) {
+            try (ResultSet rs = cs.executeQuery()) {
                 while (rs.next()) {
                     obj = new Area(
                             rs.getInt("id"),
@@ -78,11 +78,48 @@ public class AreaDao implements GenericDao<Area> {
 
     @Override
     public Map<String, Object> update(Area area) {
-        return null;
+        Map<String, Object> output = new HashMap<>();
+        String sql = "{CALL sp_updateArea(?, ?, ?, ?, ?)}";
+
+        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
+            cs.setInt(1, area.getId());
+            cs.setNString(2, area.getName());
+            cs.setBoolean(3, area.isStatus());
+            cs.registerOutParameter(4, Types.BIT);
+            cs.registerOutParameter(5, Types.NVARCHAR);
+            cs.execute();
+
+            output.put("status", cs.getBoolean(4));
+            output.put("message", cs.getNString(5));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return output;
     }
 
     @Override
     public Map<String, Object> delete(int id) {
-        return null;
+        Map<String, Object> output = new HashMap<>();
+        String sql = "{CALL sp_deleteArea(?, ?, ?)}";
+
+        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
+            cs.setInt(1, id);
+            cs.registerOutParameter(2, Types.BIT);
+            cs.registerOutParameter(3, Types.NVARCHAR);
+            cs.execute();
+
+            output.put("status", cs.getBoolean(2));
+            output.put("message", cs.getNString(3));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return output;
+    }
+
+    @Override
+    public Area read(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

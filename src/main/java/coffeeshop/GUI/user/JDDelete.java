@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package coffeeshop.GUI.category;
+package coffeeshop.GUI.user;
 
-import coffeeshop.DTO.Category;
-import coffeeshop.DAO.CategoryDao;
+import coffeeshop.DTO.User;
+import coffeeshop.DAO.UserDao;
 import java.util.Map;
 import javax.swing.JOptionPane;
 
@@ -17,7 +17,7 @@ import javax.swing.JOptionPane;
 public class JDDelete extends javax.swing.JDialog {
 
     CallbackDelete callback;
-    Category category;
+    User user;
 
     interface CallbackDelete {
 
@@ -27,13 +27,13 @@ public class JDDelete extends javax.swing.JDialog {
     /**
      * Creates new form JDCategoryCreate
      */
-    public JDDelete(java.awt.Frame parent, boolean modal, CallbackDelete callback, Category category) {
+    public JDDelete(java.awt.Frame parent, boolean modal, CallbackDelete callback, User user) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
         this.callback = callback;
-        this.category = category;
-        lblConfirm.setText("Bạn có chắc chắn muốn xoá danh mục tên: " + category.getName());
+        this.user = user;
+        lblConfirm.setText("Bạn có chắc chắn muốn xoá người dùng tên: " + user.getName());
 
     }
 
@@ -59,7 +59,7 @@ public class JDDelete extends javax.swing.JDialog {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_trash_can_50px_1.png"))); // NOI18N
-        jLabel1.setText("XOÁ DANH MỤC");
+        jLabel1.setText("XOÁ SẢN PHẨM");
 
         btnCancel.setBackground(new java.awt.Color(0, 204, 51));
         btnCancel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -112,7 +112,7 @@ public class JDDelete extends javax.swing.JDialog {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(lblConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -134,14 +134,14 @@ public class JDDelete extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        CategoryDao categoryDao = new CategoryDao();
-        Map<String, Object> result = categoryDao.delete(category.getId());
+        UserDao productDao = new UserDao();
+        Map<String, Object> result = productDao.delete(user.getId());
         if ((boolean) result.get("status") == true) {
-            JOptionPane.showMessageDialog(null, "Xoá danh mục thành công!");
+            JOptionPane.showMessageDialog(null, "Xoá người dùng thành công!");
             callback.actionDelete();
             dispose();
         } else {
-            JOptionPane.showMessageDialog(null, "Xoá danh mục thất bại, lỗi: " + result.get("message") + "!");
+            JOptionPane.showMessageDialog(null, "Xoá người dùng thất bại, lỗi: " + result.get("message") + "!");
             dispose();
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
@@ -175,6 +175,10 @@ public class JDDelete extends javax.swing.JDialog {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(JDDelete.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
