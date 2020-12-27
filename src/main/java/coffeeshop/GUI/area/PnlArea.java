@@ -17,22 +17,19 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 /**
  *
  * @author Minh
  */
-public class PnlArea extends javax.swing.JPanel implements JDModifyArea.CallbackAreaModify, JDDeleteArea.CallbackAreaDelete {
+public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.CallbackAreaModify, JDDeleteArea.CallbackAreaDelete {
 
     Frame parent;
-    List<Area> listArea = new ArrayList<Area>();
-    List<Table> listTable = new ArrayList<Table>();
+    List<Area> areas = new ArrayList<>();
+    List<Table> tables = new ArrayList<>();
     Area area;
 
     /**
@@ -42,6 +39,7 @@ public class PnlArea extends javax.swing.JPanel implements JDModifyArea.Callback
         initComponents();
         this.parent = parent;
         loading();
+
         if (role != 1) {
             lblAdd.setVisible(false);
             lblUpdate.setVisible(false);
@@ -52,19 +50,19 @@ public class PnlArea extends javax.swing.JPanel implements JDModifyArea.Callback
     public void loading() {
         tabbedPane.removeAll();
         AreaDao areaDao = new AreaDao();
-        listArea = areaDao.getAll();
+        areas = areaDao.getAll();
         TableDao tableDao = new TableDao();
-        listTable = tableDao.getAll();
-        for (Area area : listArea) {
+        tables = tableDao.getAll();
+
+        areas.forEach(area -> {
             JComponent panel = makeTextPanel();
             addTab(tabbedPane, area.getName(), panel);
             panel.setName(area.getName());
-            for (Table table : listTable) {
-                if (table.getArea_id() == area.getId()) {
-                    JLabel jp = makeTable(panel, table.getName());
-                }
-            }
-        }
+
+            tables.stream().filter(table -> (table.getArea_id() == area.getId())).forEachOrdered(table -> {
+                JLabel jp = makeTable(panel, table.getName());
+            });
+        });
         String name = tabbedPane.getSelectedComponent().getName();
         area = areaDao.findByName(name);
     }

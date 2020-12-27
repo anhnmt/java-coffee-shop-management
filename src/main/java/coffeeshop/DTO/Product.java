@@ -13,5 +13,6 @@ public class Product {
     private String name;
     private float price;
     private boolean status;
+    // Lấy thông tin từ id
     private String category_name;
 }
