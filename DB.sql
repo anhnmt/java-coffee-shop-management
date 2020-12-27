@@ -81,72 +81,14 @@ GO
 
 EXEC sp_insertUser @_name = N'Nhân viên',
                    @_email = 'user@gmail.com',
-                   @_password = '123456',
-                   @_role = 0;
+                   @_password = '123456';
 
 GO
 
-CREATE PROC sp_updateUser(@_id int,
-						  @_name nvarchar(100),
-                          @_email varchar(100),
-                          @_password varchar(100),
-                          @_role tinyint = 0,
-                          @_status bit = 1,
-                          @_outStt bit = 1 output,
-                          @_outMsg nvarchar(200) = '' output)
-AS
-BEGIN TRY
-    IF EXISTS(SELECT email FROM Users WHERE email = @_email and id != @_id)
-        BEGIN
-            SET @_outStt = 0;
-            SET @_outMsg = N'Email đã tồn tại, vui lòng nhập lại';
-        END
-    ELSE
-        BEGIN
-            UPDATE Users SET [name] = @_name,
-							 email = @_email,
-							 [password] = @_password,
-							 [role] = @_role,
-							 [status] = @_status
-			WHERE id = @_id
-
-            SET @_outStt = 1;
-            SET @_outMsg = N'Cập nhật người dùng thành công';
-        END
-END TRY
-BEGIN CATCH
-    BEGIN
-        SET @_outStt = 0;
-        SET @_outMsg = ERROR_MESSAGE()
-    END
-END CATCH
-
-GO
-
-CREATE PROC sp_deleteUser(@_id int,
-                          @_outStt bit = 1 output,
-                          @_outMsg nvarchar(200) = '' output)
-AS
-BEGIN TRY
-    BEGIN
-        DELETE Users WHERE id = @_id
-
-        SET @_outStt = 1;
-        SET @_outMsg = N'Xoá người dùng thành công';
-    END
-END TRY
-BEGIN CATCH
-    BEGIN
-        SET @_outStt = 0;
-        SET @_outMsg = ERROR_MESSAGE()
-    END
-END CATCH
-
-GO
-
-CREATE PROC sp_checkUser(
-	@_email varchar(100),
-    @_password varchar(100)
+CREATE PROC sp_checkUser
+(
+    @_email VARCHAR(100),
+    @_password VARCHAR(100)
 )
 AS
 BEGIN
@@ -252,7 +194,7 @@ BEGIN TRY
         SELECT [name]
         FROM Categories
         WHERE [name] = @_name
-              AND id != @_id
+              AND id <> @_id
     )
     BEGIN
         SET @_outStt = 0;
@@ -330,7 +272,7 @@ EXEC (@sql);
 
 GO
 
-EXEC sp_getAllCategory N'';
+EXEC sp_getAllCategory;
 
 GO
 
@@ -346,45 +288,6 @@ CREATE TABLE Products
     [status] BIT
         DEFAULT (1)
 );
-
-GO
-
-CREATE PROC sp_getAllProduct
-(
-    @_name NVARCHAR(100) = NULL,
-    @_category_id INT = NULL,
-    @_fromPrice FLOAT = NULL,
-    @_toPrice FLOAT = NULL,
-    @_status BIT = NULL
-)
-AS
-DECLARE @sql NVARCHAR(MAX)
-    = N'
-		SELECT p.*, c.[name] category_name
-		FROM Products p
-		JOIN Categories c
-        ON c.id = p.category_id WHERE 1=1';
-
-IF (@_name IS NOT NULL)
-    SET @sql = CONCAT(@sql, N' AND p.name LIKE ''%', @_name, N'%''');
-
-IF (@_category_id IS NOT NULL)
-    SET @sql = CONCAT(@sql, N' AND p.category_id=', @_category_id);
-
-IF (@_fromPrice IS NOT NULL)
-    SET @sql = CONCAT(@sql, N' AND p.price>=', @_fromPrice);
-
-IF (@_toPrice IS NOT NULL)
-    SET @sql = CONCAT(@sql, N' AND p.price<=', @_toPrice);
-
-IF (@_status IS NOT NULL)
-    SET @sql = CONCAT(@sql, N' AND p.status=', @_status);
-
-EXEC (@sql);
-
-GO
-
-EXEC dbo.sp_getAllProduct NULL, NULL, 35000, 40000, NULL;
 
 GO
 
@@ -451,6 +354,45 @@ EXEC sp_insertProduct 2, N'Cappuchino', 45000;
 
 GO
 
+CREATE PROC sp_getAllProduct
+(
+    @_name NVARCHAR(100) = NULL,
+    @_category_id INT = NULL,
+    @_fromPrice FLOAT = NULL,
+    @_toPrice FLOAT = NULL,
+    @_status BIT = NULL
+)
+AS
+DECLARE @sql NVARCHAR(MAX)
+    = N'
+		SELECT p.*, c.[name] category_name
+		FROM Products p
+		JOIN Categories c
+        ON c.id = p.category_id WHERE 1=1';
+
+IF (@_name IS NOT NULL)
+    SET @sql = CONCAT(@sql, N' AND p.name LIKE ''%', @_name, N'%''');
+
+IF (@_category_id IS NOT NULL)
+    SET @sql = CONCAT(@sql, N' AND p.category_id=', @_category_id);
+
+IF (@_fromPrice IS NOT NULL)
+    SET @sql = CONCAT(@sql, N' AND p.price>=', @_fromPrice);
+
+IF (@_toPrice IS NOT NULL)
+    SET @sql = CONCAT(@sql, N' AND p.price<=', @_toPrice);
+
+IF (@_status IS NOT NULL)
+    SET @sql = CONCAT(@sql, N' AND p.status=', @_status);
+
+EXEC (@sql);
+
+GO
+
+EXEC dbo.sp_getAllProduct N'Cà';
+
+GO
+
 CREATE PROC sp_updateProduct
 (
     @_id INT,
@@ -505,7 +447,7 @@ BEGIN TRY
     (
         SELECT *
         FROM Products p
-            JOIN OrderDetails o
+            JOIN BillDetail o
                 ON o.product_id = p.id
         WHERE p.id = @_id
     )
@@ -743,7 +685,7 @@ EXEC sp_insertTable @_area_id = 1, @_name = N'Bàn 3';
 
 GO
 
-CREATE TABLE Orders
+CREATE TABLE Bills
 (
     id INT PRIMARY KEY IDENTITY,
     user_id INT NOT NULL
@@ -762,11 +704,11 @@ CREATE TABLE Orders
 
 GO
 
-CREATE PROC sp_insertOrder
+CREATE PROC sp_insertBill
 (
     @_user_id INT,
     @_table_id INT,
-    @_total_price FLOAT,
+    @_total_price FLOAT = 0,
     @_discount FLOAT = 0,
     @_note NVARCHAR(150) = '',
     @_status BIT = 1,
@@ -785,9 +727,22 @@ BEGIN TRY
         SET @_outStt = 0;
         SET @_outMsg = N'Mã bàn không tồn tại, vui lòng nhập lại';
     END;
+    ELSE IF EXISTS
+    (
+        SELECT TOP 1
+               *
+        FROM Bills
+        WHERE table_id = @_table_id
+              AND [status] = 0
+        ORDER BY created_at DESC
+    )
+    BEGIN
+        SET @_outStt = 0;
+        SET @_outMsg = N'Bàn chưa thanh toán, vui lòng thử lại';
+    END;
     ELSE
     BEGIN
-        INSERT INTO Orders
+        INSERT INTO Bills
         (
             user_id,
             table_id,
@@ -811,10 +766,10 @@ END CATCH;
 
 GO
 
-CREATE TABLE OrderDetails
+CREATE TABLE BillDetail
 (
-    order_id INT NOT NULL
-        FOREIGN KEY REFERENCES Orders (id),
+    bill_id INT NOT NULL
+        FOREIGN KEY REFERENCES Bills (id),
     product_id INT NOT NULL
         FOREIGN KEY REFERENCES Products (id),
     amount INT
@@ -823,9 +778,9 @@ CREATE TABLE OrderDetails
 
 GO
 
-CREATE PROC sp_insertOrderDetail
+CREATE PROC sp_insertBillDetail
 (
-    @_order_id INT,
+    @_bill_id INT,
     @_product_id INT,
     @_amount INT,
     @_outStt BIT = 1 OUTPUT,
@@ -833,7 +788,7 @@ CREATE PROC sp_insertOrderDetail
 )
 AS
 BEGIN TRY
-    IF NOT EXISTS (SELECT id FROM Orders WHERE id = @_order_id)
+    IF NOT EXISTS (SELECT id FROM Bills WHERE id = @_bill_id)
     BEGIN
         SET @_outStt = 0;
         SET @_outMsg = N'Mã đơn hàng không tồn tại, vui lòng nhập lại';
@@ -848,16 +803,31 @@ BEGIN TRY
         SET @_outStt = 0;
         SET @_outMsg = N'Số lượng sản phẩm phải lớn hơn 0';
     END;
+    ELSE IF EXISTS
+    (
+        SELECT *
+        FROM BillDetail
+        WHERE bill_id = @_bill_id AND product_id = @_product_id
+    )
+    BEGIN
+        UPDATE BillDetail
+        SET amount += @_amount
+        WHERE bill_id = @_bill_id
+              AND product_id = @_product_id;
+
+        SET @_outStt = 1;
+        SET @_outMsg = N'Cập nhật chi tiết hoá đơn thành công';
+    END;
     ELSE
     BEGIN
-        INSERT INTO OrderDetails
+        INSERT INTO BillDetail
         (
-            order_id,
+            bill_id,
             product_id,
             amount
         )
         VALUES
-        (@_order_id, @_product_id, @_amount);
+        (@_bill_id, @_product_id, @_amount);
         BEGIN
             SET @_outStt = 1;
             SET @_outMsg = N'Thêm chi tiết hoá đơn thành công';
@@ -868,3 +838,43 @@ BEGIN CATCH
     SET @_outStt = 0;
     SET @_outMsg = N'Thêm không thành công: ' + ERROR_MESSAGE();
 END CATCH;
+
+GO
+
+EXEC sp_insertBill @_user_id = 1, @_table_id = 1, @_status = true;
+
+GO
+
+CREATE PROC sp_getBillByTableId
+(
+    @_table_id INT,
+    @_status BIT = 1
+)
+AS
+SELECT TOP 1
+       *
+FROM Bills
+WHERE table_id = @_table_id
+      AND [status] = @_status
+ORDER BY created_at DESC;
+
+GO
+
+EXEC sp_getBillByTableId 1;
+
+GO
+
+CREATE PROC sp_getBillDetailByBillId
+(@_bill_id INT)
+AS
+SELECT BD.*,
+       P.name 'product_name',
+       P.price 'product_price'
+FROM BillDetail BD
+    LEFT JOIN Products P
+        ON P.id = BD.product_id
+WHERE bill_id = @_bill_id;
+
+GO
+
+EXEC sp_getBillDetailByBillId 1;
