@@ -10,10 +10,10 @@ import coffeeshop.DTO.Category;
 import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import coffeeshop.DTO.User;
 
 /**
  *
@@ -29,11 +29,12 @@ public class PnlCategory extends javax.swing.JPanel implements JDModify.Callback
     /**
      * Creates new form PnlCategory
      */
-    public PnlCategory(Frame parent, int role) {
+    public PnlCategory(Frame parent, User user) {
         initComponents();
         this.parent = parent;
         loading(null, null);
-        if (role != 1) {
+
+        if (user.getRole() != 1) {
             lblAdd.setVisible(false);
             lblUpdate.setVisible(false);
             lblDelete.setVisible(false);

@@ -424,6 +424,7 @@ BEGIN TRY
             [price] = @_price,
             [status] = @_status
         WHERE id = @_id;
+
         SET @_outStt = 1;
         SET @_outMsg = N'Sửa đổi danh mục thành công';
     END;
@@ -512,6 +513,7 @@ BEGIN TRY
         )
         VALUES
         (@_name, @_status);
+
         SET @_outStt = 1;
         SET @_outMsg = N'Thêm khu vực thành công';
     END;
@@ -624,9 +626,20 @@ CREATE TABLE [Tables]
 GO
 
 CREATE PROC sp_getAllTable
+(@_name NVARCHAR(100) = NULL)
 AS
-SELECT *
-FROM Tables;
+DECLARE @sql NVARCHAR(MAX) = N'
+		SELECT *
+		FROM Tables WHERE 1=1';
+
+IF (@_name IS NOT NULL)
+    SET @sql = CONCAT(@sql, N' AND name LIKE ''%', @_name, N'%''');
+
+EXEC (@sql);
+
+GO
+
+EXEC sp_getAllTable N'Bàn 1';
 
 GO
 
@@ -662,6 +675,7 @@ BEGIN TRY
         )
         VALUES
         (@_area_id, @_name, @_note, @_status);
+
         SET @_outStt = 1;
         SET @_outMsg = N'Thêm bàn thành công';
     END;
@@ -753,16 +767,86 @@ BEGIN TRY
         )
         VALUES
         (@_user_id, @_table_id, @_total_price, @_discount, @_note, @_status);
-        BEGIN
-            SET @_outStt = 1;
-            SET @_outMsg = N'Thêm hoá đơn thành công';
-        END;
+
+        SET @_outStt = 1;
+        SET @_outMsg = N'Thêm hoá đơn thành công';
     END;
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
     SET @_outMsg = N'Thêm không thành công: ' + ERROR_MESSAGE();
 END CATCH;
+
+GO
+
+CREATE PROC sp_updateBill
+(
+    @_bill_id INT,
+    @_user_id INT,
+    @_table_id INT,
+    @_total_price FLOAT = 0,
+    @_discount FLOAT = 0,
+    @_note NVARCHAR(150) = '',
+    @_status BIT = 1,
+    @_outStt BIT = 1 OUTPUT,
+    @_outMsg NVARCHAR(200) = '' OUTPUT
+)
+AS
+BEGIN TRY
+    IF NOT EXISTS (SELECT id FROM Bills WHERE id = @_bill_id)
+    BEGIN
+        SET @_outStt = 0;
+        SET @_outMsg = N'Mã hoá đơn không tồn tại, vui lòng nhập lại';
+    END;
+    ELSE IF NOT EXISTS (SELECT id FROM Users WHERE id = @_user_id)
+    BEGIN
+        SET @_outStt = 0;
+        SET @_outMsg = N'Mã người dùng không tồn tại, vui lòng nhập lại';
+    END;
+    ELSE IF NOT EXISTS (SELECT id FROM Tables WHERE id = @_table_id)
+    BEGIN
+        SET @_outStt = 0;
+        SET @_outMsg = N'Mã bàn không tồn tại, vui lòng nhập lại';
+    END;
+    ELSE IF NOT EXISTS
+         (
+             SELECT TOP 1
+                    *
+             FROM Bills
+             WHERE table_id = @_table_id
+                   AND [status] = 0
+             ORDER BY created_at DESC
+         )
+    BEGIN
+        SET @_outStt = 0;
+        SET @_outMsg = N'Bàn đã thanh toán, vui lòng thử lại';
+    END;
+    ELSE
+    BEGIN
+        UPDATE Bills
+        SET [user_id] = @_user_id,
+            table_id = @_table_id,
+            total_price = @_total_price,
+            discount = @_discount,
+            note = @_note,
+            [status] = @_status
+        WHERE id = @_bill_id;
+
+        SET @_outStt = 1;
+        SET @_outMsg = N'Cập nhật hoá đơn thành công';
+    END;
+END TRY
+BEGIN CATCH
+    SET @_outStt = 0;
+    SET @_outMsg = N'Cập nhật không thành công: ' + ERROR_MESSAGE();
+END CATCH;
+
+GO
+
+--EXEC sp_updateBill @_bill_id = 2,
+--                   @_user_id = 1,
+--                   @_table_id = 1,
+--                   @_total_price = 490000;
 
 GO
 
@@ -807,7 +891,8 @@ BEGIN TRY
     (
         SELECT *
         FROM BillDetail
-        WHERE bill_id = @_bill_id AND product_id = @_product_id
+        WHERE bill_id = @_bill_id
+              AND product_id = @_product_id
     )
     BEGIN
         UPDATE BillDetail
@@ -841,7 +926,7 @@ END CATCH;
 
 GO
 
-EXEC sp_insertBill @_user_id = 1, @_table_id = 1, @_status = true;
+--EXEC sp_insertBill @_user_id = 1, @_table_id = 1, @_status = true;
 
 GO
 
@@ -860,7 +945,7 @@ ORDER BY created_at DESC;
 
 GO
 
-EXEC sp_getBillByTableId 1;
+--EXEC sp_getBillByTableId 1;
 
 GO
 

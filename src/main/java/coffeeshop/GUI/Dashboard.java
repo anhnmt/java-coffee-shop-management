@@ -11,13 +11,9 @@ import coffeeshop.GUI.area.PnlArea;
 import coffeeshop.GUI.user.PnlUser;
 import coffeeshop.GUI.category.PnlCategory;
 import coffeeshop.GUI.product.PnlProduct;
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
-import java.awt.LayoutManager;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 
 /**
@@ -47,10 +43,12 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
             lblName.setText(user.getName().toUpperCase());
             lblEmail.setText(user.getEmail());
             this.setVisible(true);
+
             if (user.getRole() != 1) {
                 lblUser.setVisible(false);
                 btnUser.setVisible(false);
             }
+
             btnDashboard.doClick();
         }
     }
@@ -489,7 +487,7 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
         lblBill.setBackground(new Color(255, 255, 255));
         lblUser.setBackground(new Color(255, 255, 255));
         pnlBody.removeAll();
-        PnlCategory pnl = new PnlCategory(this, user.getRole());
+        PnlCategory pnl = new PnlCategory(this, user);
 //        pnl.setVisible(true);
         pnlBody.add(pnl);
         pnlBody.repaint();
@@ -505,7 +503,7 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
         lblBill.setBackground(new Color(255, 255, 255));
         lblUser.setBackground(new Color(255, 255, 255));
         pnlBody.removeAll();
-        PnlProduct pnl = new PnlProduct(this, user.getRole());
+        PnlProduct pnl = new PnlProduct(this, user);
 //        pnl.setVisible(true);
         pnlBody.add(pnl);
         pnlBody.repaint();
@@ -521,7 +519,7 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
         lblArea.setBackground(new Color(255, 255, 255));
         lblUser.setBackground(new Color(255, 255, 255));
         pnlBody.removeAll();
-        PnlBill pnl = new PnlBill(this, user.getRole());
+        PnlBill pnl = new PnlBill(this, user);
 //        pnl.setVisible(true);
         pnlBody.add(pnl);
         pnlBody.repaint();
@@ -553,7 +551,7 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
         lblProduct.setBackground(new Color(255, 255, 255));
         lblUser.setBackground(new Color(255, 255, 255));
         pnlBody.removeAll();
-        PnlArea pnl = new PnlArea(this, user.getRole());
+        PnlArea pnl = new PnlArea(this, user);
 //        pnl.setVisible(true);
         pnlBody.add(pnl);
         pnlBody.repaint();
@@ -575,7 +573,7 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
         lblCategory.setBackground(new Color(255, 255, 255));
         lblProduct.setBackground(new Color(255, 255, 255));
         pnlBody.removeAll();
-        PnlUser pnl = new PnlUser(this, user.getId());
+        PnlUser pnl = new PnlUser(this, user);
         pnlBody.add(pnl);
         pnlBody.repaint();
         pnlBody.revalidate();

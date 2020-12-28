@@ -13,6 +13,7 @@ import java.util.List;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import coffeeshop.DTO.User;
 
 /**
  *
@@ -28,12 +29,12 @@ public class PnlProduct extends javax.swing.JPanel implements JDModify.CallbackM
     /**
      * Creates new form PnlCategory
      */
-    public PnlProduct(Frame parent, int role) {
+    public PnlProduct(Frame parent, User user) {
         initComponents();
         this.parent = parent;
         loading(null, null, null, null, null);
 
-        if (role != 1) {
+        if (user.getRole() != 1) {
             lblAdd.setVisible(false);
             lblUpdate.setVisible(false);
             lblDelete.setVisible(false);

@@ -92,4 +92,28 @@ public class TableDao implements GenericDao<Table> {
     public Map<String, Object> delete(int id) {
         return null;
     }
+
+    public Table getTableByName(String name) {
+        Table table = null;
+        String sql = "{CALL sp_getAllTable(?)}";
+
+        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql);) {
+            cs.setNString(1, name);
+            ResultSet rs = cs.executeQuery();
+
+            while (rs.next()) {
+                table = new Table(
+                        rs.getInt("id"),
+                        rs.getInt("area_id"),
+                        rs.getNString("name"),
+                        rs.getNString("note"),
+                        rs.getBoolean("status")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return table;
+    }
 }

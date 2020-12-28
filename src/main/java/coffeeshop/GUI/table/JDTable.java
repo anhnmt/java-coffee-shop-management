@@ -14,10 +14,12 @@ import coffeeshop.DTO.BillDetail;
 import coffeeshop.DTO.Product;
 import coffeeshop.DTO.Table;
 import coffeeshop.DTO.User;
+import coffeeshop.GUI.Dashboard;
 import coffeeshop.Utils.Common;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
@@ -32,9 +34,9 @@ public final class JDTable extends javax.swing.JDialog {
     Table table;
     Area area;
 
-    Product product = new Product();
-    Bill bill = new Bill();
-    BillDetail billDetail = new BillDetail();
+    Product product = null;
+    Bill bill = null;
+    BillDetail billDetail = null;
 
     List<Product> products = new ArrayList<>();
     List<BillDetail> billDetails = new ArrayList<>();
@@ -56,84 +58,100 @@ public final class JDTable extends javax.swing.JDialog {
 
         loadingProduct();
         loadingBill();
-        loadingBillDetail();
-
-        txtUserId.setText(String.valueOf(user.getId()));
-        txtTableId.setText(String.valueOf(table.getId()));
     }
 
     public void loadingProduct() {
-        tblProduct.removeAll();
-        products = productDao.getAll(null, null, null, null, null);
+        try {
+            tblProduct.removeAll();
+            products = productDao.getAll(null, null, null, null, null);
 
-        String columns[] = {"Id", "Tên sản phẩm", "Giá", "Tên danh mục"};
-        DefaultTableModel dtm = new DefaultTableModel(columns, 0);
+            String columns[] = {"Id", "Tên sản phẩm", "Giá", "Tên danh mục"};
+            DefaultTableModel dtm = new DefaultTableModel(columns, 0);
 
-        if (!products.isEmpty()) {
-            products.forEach(pro -> {
-                dtm.addRow(new Object[]{pro.getId(), pro.getName(), pro.getPrice(), pro.getCategory_name()});
-            });
+            if (!products.isEmpty()) {
+                products.forEach(pro -> {
+                    dtm.addRow(new Object[]{pro.getId(), pro.getName(), pro.getPrice(), pro.getCategory_name()});
+                });
 
-            tblProduct.getSelectionModel().addListSelectionListener((ListSelectionEvent lse) -> {
-                int position = tblProduct.getSelectedRow();
-                if (position < 0) {
-                    position = 0;
-                }
+                tblProduct.getSelectionModel().addListSelectionListener((ListSelectionEvent lse) -> {
+                    int position = tblProduct.getSelectedRow();
+                    if (position < 0) {
+                        position = 0;
+                    }
 
-                product = products.get(position);
+                    product = products.get(position);
 
-                txtProductId.setText(String.valueOf(product.getId()));
-                txtProductName.setText(String.valueOf(product.getName()));
-                txtProductPrice.setText(String.valueOf(product.getPrice()));
-                txtProductAmount.setText("");
-            });
+                    txtProductId.setText(String.valueOf(product.getId()));
+                    txtProductName.setText(String.valueOf(product.getName()));
+                    txtProductPrice.setText(String.valueOf(product.getPrice()));
+                    txtProductAmount.setText("");
+                });
 
-            tblProduct.changeSelection(0, 0, false, false);
+                tblProduct.changeSelection(0, 0, false, false);
 //          tblProduct.setRowSelectionInterval(0, 0);
-        }
+            }
 
-        tblProduct.setModel(dtm);
+            tblProduct.setModel(dtm);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void loadingBill() {
-        txtBillId.setText("");
-        txtBillTime.setText("");
+        try {
+            bill = null;
+            billDetail = null;
+            billDetails = new ArrayList<>();
 
-        bill = billDao.getBillByTableId(table.getId(), false);
+            txtUserId.setText(user.getName());
+            txtTableId.setText(table.getName());
 
-        System.out.println(bill);
+            txtBillId.setText("");
+            txtBillTime.setText("");
+            txtTotalPrice.setText("");
 
-        if (Common.isNullOrEmpty(bill)) {
-            btnAddProduct.setEnabled(false);
-            btnCheckout.setEnabled(false);
-            btnBook.setEnabled(true);
-        } else {
-            txtBillId.setText(String.valueOf(bill.getId()));
-            txtBillTime.setText(String.valueOf(bill.getCreated_at()));
-            btnBook.setEnabled(false);
-            btnAddProduct.setEnabled(true);
-            btnCheckout.setEnabled(true);
+            String columns[] = {"Id", "Tên sản phẩm", "Đơn giá", "Số lượng", "Thành tiền"};
+            DefaultTableModel dtm = new DefaultTableModel(columns, 0);
+            tblBillDetail.removeAll();
+            tblBillDetail.setModel(dtm);
+
+            bill = billDao.getBillByTableId(table.getId(), false);
+
+            if (Common.isNullOrEmpty(bill)) {
+                btnAddProduct.setEnabled(false);
+                btnCheckout.setEnabled(false);
+                btnBook.setEnabled(true);
+            } else {
+                txtBillId.setText(String.valueOf(bill.getId()));
+                txtBillTime.setText(String.valueOf(bill.getCreated_at()));
+
+                btnBook.setEnabled(false);
+                btnAddProduct.setEnabled(true);
+                btnCheckout.setEnabled(true);
+                loadingBillDetail();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
     }
 
     public void loadingBillDetail() {
-        tblBillDetail.removeAll();
-        billDetails = billDetailDao.getAllByBillId(bill.getId());
+        try {
+            tblBillDetail.removeAll();
+            billDetails = billDetailDao.getAllByBillId(bill.getId());
 
-        String columns[] = {"Id", "Tên sản phẩm", "Đơn giá", "Số lượng", "Thành tiền"};
-        DefaultTableModel dtm = new DefaultTableModel(columns, 0);
+            String columns[] = {"Id", "Tên sản phẩm", "Đơn giá", "Số lượng", "Thành tiền"};
+            DefaultTableModel dtm = new DefaultTableModel(columns, 0);
+            Float total_price = 0f;
 
-        Float total_price = 0f;
+            if (!billDetails.isEmpty()) {
+                for (BillDetail obj : billDetails) {
+                    float total = (float) (obj.getProduct_price() * obj.getAmount());
+                    total_price += total;
+                    dtm.addRow(new Object[]{obj.getProduct_id(), obj.getProduct_name(), obj.getProduct_price(), obj.getAmount(), total});
+                }
 
-        if (!billDetails.isEmpty()) {
-            for (BillDetail obj : billDetails) {
-                float total = (float) (obj.getProduct_price() * obj.getAmount());
-                total_price += total;
-                dtm.addRow(new Object[]{obj.getProduct_id(), obj.getProduct_name(), obj.getProduct_price(), obj.getAmount(), total});
-            }
-
-            txtTotalPrice.setText(String.valueOf(total_price));
+                txtTotalPrice.setText(String.valueOf(total_price));
 
 //            tblBillDetail.getSelectionModel().addListSelectionListener((ListSelectionEvent lse) -> {
 //                int position = tblBillDetail.getSelectedRow();
@@ -146,9 +164,12 @@ public final class JDTable extends javax.swing.JDialog {
 //
 //            tblBillDetail.changeSelection(0, 0, false, false);
 //          tblProduct.setRowSelectionInterval(0, 0);
-        }
+            }
 
-        tblBillDetail.setModel(dtm);
+            tblBillDetail.setModel(dtm);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -175,7 +196,7 @@ public final class JDTable extends javax.swing.JDialog {
         lblBillId = new javax.swing.JLabel();
         txtBillId = new javax.swing.JTextField();
         btnBook = new javax.swing.JButton();
-        lblBillId1 = new javax.swing.JLabel();
+        lblBillTime = new javax.swing.JLabel();
         txtBillTime = new javax.swing.JTextField();
         lblTableName = new javax.swing.JLabel();
         txtTableId = new javax.swing.JTextField();
@@ -280,12 +301,12 @@ public final class JDTable extends javax.swing.JDialog {
             }
         });
 
-        lblBillId1.setText("Thời gian:");
+        lblBillTime.setText("Thời gian:");
 
         txtBillTime.setEditable(false);
         txtBillTime.setFocusable(false);
 
-        lblTableName.setText("Mã bàn:");
+        lblTableName.setText("Tên bàn:");
 
         txtTableId.setEditable(false);
         txtTableId.setFocusable(false);
@@ -293,7 +314,7 @@ public final class JDTable extends javax.swing.JDialog {
         txtUserId.setEditable(false);
         txtUserId.setFocusable(false);
 
-        lblAreaName.setText("Mã nhân viên:");
+        lblAreaName.setText("Tên  nhân viên:");
 
         txtTotalPrice.setEditable(false);
         txtTotalPrice.setFocusable(false);
@@ -327,24 +348,26 @@ public final class JDTable extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtBillId))
                     .addGroup(pnlBillLayout.createSequentialGroup()
-                        .addComponent(lblBillId1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblBillTime, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtBillTime, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(72, 72, 72)
-                .addGroup(pnlBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblTotalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(pnlBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(lblTableName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblAreaName, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlBillLayout.createSequentialGroup()
+                        .addGap(86, 86, 86)
+                        .addComponent(lblTotalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtTotalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblVND, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(txtUserId)
-                    .addComponent(txtTableId))
+                        .addComponent(lblVND, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlBillLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblAreaName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblTableName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtUserId)
+                            .addComponent(txtTableId))))
                 .addContainerGap())
         );
         pnlBillLayout.setVerticalGroup(
@@ -358,7 +381,7 @@ public final class JDTable extends javax.swing.JDialog {
                             .addComponent(txtBillId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblBillId1)
+                            .addComponent(lblBillTime)
                             .addComponent(txtBillTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(pnlBillLayout.createSequentialGroup()
                         .addGroup(pnlBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -456,40 +479,62 @@ public final class JDTable extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBookActionPerformed
-        bill = new Bill();
-        bill.setUser_id(user.getId());
-        bill.setTable_id(table.getId());
-        bill.setStatus(false);
+        try {
+            bill = new Bill();
+            bill.setUser_id(user.getId());
+            bill.setTable_id(table.getId());
+            bill.setStatus(false);
 
-        Map<String, Object> billCreate = billDao.create(bill);
+            Map<String, Object> billCreate = billDao.create(bill);
 
-        if ((boolean) billCreate.get("status") == true) {
-            btnBook.setEnabled(false);
-            btnAddProduct.setEnabled(true);
-            btnCheckout.setEnabled(true);
+            if ((boolean) billCreate.get("status") == true) {
+                btnBook.setEnabled(false);
+                btnAddProduct.setEnabled(true);
+                btnCheckout.setEnabled(true);
+                loadingBill();
+            } else {
+                JOptionPane.showConfirmDialog(rootPane, billCreate.get("message"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }//GEN-LAST:event_btnBookActionPerformed
 
     private void btnAddProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddProductActionPerformed
-        billDetail = new BillDetail();
-        billDetail.setBill_id(bill.getId());
-        billDetail.setProduct_id(product.getId());
-        billDetail.setAmount(Integer.parseInt(txtProductAmount.getText()));
-        System.out.println(billDetail);
+        try {
+            billDetail = new BillDetail();
+            billDetail.setBill_id(bill.getId());
+            billDetail.setProduct_id(product.getId());
+            billDetail.setAmount(Integer.parseInt(txtProductAmount.getText()));
 
-        Map<String, Object> billDetailCreate = billDetailDao.create(billDetail);
+            Map<String, Object> billDetailUpdate = billDetailDao.create(billDetail);
 
-        if ((boolean) billDetailCreate.get("status") == true) {
-            loadingBillDetail();
-            txtProductAmount.setText("");
-        } else {
-            JOptionPane.showMessageDialog(rootPane, "Thêm sản phẩm vào hoá đơn không thành công!");
+            if ((boolean) billDetailUpdate.get("status") == true) {
+                loadingBillDetail();
+                txtProductAmount.setText("");
+            } else {
+                JOptionPane.showMessageDialog(rootPane, billDetailUpdate.get("message"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
     }//GEN-LAST:event_btnAddProductActionPerformed
 
     private void btnCheckoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckoutActionPerformed
-        // TODO add your handling code here:
+        try {
+            bill.setTotal_price(Float.parseFloat(txtTotalPrice.getText()));
+            bill.setStatus(true);
+
+            Map<String, Object> billCheckout = billDao.update(bill);
+
+            if ((boolean) billCheckout.get("status") == true) {
+                loadingBill();
+            } else {
+                JOptionPane.showMessageDialog(rootPane, billCheckout.get("message"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_btnCheckoutActionPerformed
 
     /**
@@ -548,7 +593,7 @@ public final class JDTable extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel lblAreaName;
     private javax.swing.JLabel lblBillId;
-    private javax.swing.JLabel lblBillId1;
+    private javax.swing.JLabel lblBillTime;
     private javax.swing.JLabel lblProductAmount;
     private javax.swing.JLabel lblProductId;
     private javax.swing.JLabel lblProductName;

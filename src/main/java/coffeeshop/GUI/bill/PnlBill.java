@@ -5,26 +5,26 @@
  */
 package coffeeshop.GUI.bill;
 
-import coffeeshop.DTO.Product;
 import java.awt.Frame;
-import java.util.ArrayList;
-import java.util.List;
+import coffeeshop.DTO.User;
 
 /**
  *
  * @author Minh
  */
 public class PnlBill extends javax.swing.JPanel {
+
     Frame parent;
+
     /**
      * Creates new form PnlCategory
      */
-    public PnlBill(Frame parent, int role) {
+    public PnlBill(Frame parent, User user) {
         initComponents();
         this.parent = parent;
-        if(role != 1){
+        if (user.getRole() != 1) {
             lblUpdate.setVisible(false);
-            lblDelete.setVisible(false);     
+            lblDelete.setVisible(false);
         }
     }
 

@@ -29,11 +29,11 @@ public class PnlUser extends javax.swing.JPanel implements JDModify.CallbackModi
     /**
      * Creates new form PnlCategory
      */
-    public PnlUser(Frame parent, int id) {
+    public PnlUser(Frame parent, User user) {
         initComponents();
         this.parent = parent;
-        loading();
         this.id = id;
+        loading();
     }
 
     public void loading() {
