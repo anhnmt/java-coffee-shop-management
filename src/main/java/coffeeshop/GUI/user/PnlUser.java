@@ -19,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Minh
  */
-public class PnlUser extends javax.swing.JPanel implements JDModify.CallbackModify, JDDelete.CallbackDelete {
+public class PnlUser extends javax.swing.JPanel implements JDModifyUser.CallbackModify, JDDeleteUser.CallbackDelete {
 
     Frame parent;
     List<User> list = new ArrayList<User>();
@@ -262,12 +262,12 @@ public class PnlUser extends javax.swing.JPanel implements JDModify.CallbackModi
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddMouseClicked
-        JDModify jdm = new JDModify(this.parent, true, this, null);
+        JDModifyUser jdm = new JDModifyUser(this.parent, true, this, null);
         jdm.setVisible(true);
     }//GEN-LAST:event_lblAddMouseClicked
 
     private void lblUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUpdateMouseClicked
-        JDModify jdm = new JDModify(this.parent, true, this, user);
+        JDModifyUser jdm = new JDModifyUser(this.parent, true, this, user);
         jdm.setVisible(true);
     }//GEN-LAST:event_lblUpdateMouseClicked
 
@@ -280,7 +280,7 @@ public class PnlUser extends javax.swing.JPanel implements JDModify.CallbackModi
         if (user.getId() == id) {
             JOptionPane.showMessageDialog(null, "Bạn không thể xoá tài khoản của chính bạn!");
         } else {
-            JDDelete jdd = new JDDelete(this.parent, true, this, user);
+            JDDeleteUser jdd = new JDDeleteUser(this.parent, true, this, user);
             jdd.setVisible(true);
         }
     }//GEN-LAST:event_lblDeleteMouseClicked

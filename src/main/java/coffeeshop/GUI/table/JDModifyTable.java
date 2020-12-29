@@ -3,78 +3,84 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package coffeeshop.GUI.product;
+package coffeeshop.GUI.table;
 
-import coffeeshop.DTO.Category;
-import coffeeshop.DTO.Product;
-import coffeeshop.DAO.CategoryDao;
-import coffeeshop.DAO.ProductDao;
+import coffeeshop.DAO.AreaDao;
+import coffeeshop.DTO.Area;
 import java.awt.Color;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import coffeeshop.DTO.Table;
+import coffeeshop.DAO.TableDao;
+import coffeeshop.Util.Common;
 
 /**
  *
  * @author Minh
  */
-public class JDModify extends javax.swing.JDialog {
+public final class JDModifyTable extends javax.swing.JDialog {
 
-    Product product;
-    CallbackModify callback;
-    List<Category> categories = new ArrayList<Category>();
+    CallbackTableModify callback;
 
-    interface CallbackModify {
+    Table table;
+    Area area;
+    List<Area> areas = new ArrayList<>();
 
-        public void actionModify();
+    AreaDao areaDao = new AreaDao();
+    TableDao tableDao = new TableDao();
+
+    public interface CallbackTableModify {
+
+        public void actionTableModify();
     }
 
     /**
      * Creates new form JDCategoryCreate
+     *
+     * @param parent
+     * @param modal
+     * @param callback
+     * @param table
+     * @param area
      */
-    public JDModify(java.awt.Frame parent, boolean modal, CallbackModify callback, Product product) {
+    public JDModifyTable(java.awt.Frame parent, boolean modal, CallbackTableModify callback, Table table, Area area) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
-        loadCategory();
         this.callback = callback;
+        this.area = area;
+        this.table = table;
+        loadArea();
 
-        if (product != null) {
+        if (!Common.isNullOrEmpty(table)) {
             lblTitle.setText("Sửa đổi sản phẩm");
             btnModify.setText("Sửa đổi");
-            this.product = product;
             loadingData();
         }
 
         lblNameError.setVisible(false);
-        lblPriceError.setVisible(false);
     }
 
-    public void loadCategory() {
-        CategoryDao categoryDao = new CategoryDao();
-        categories = categoryDao.getAll();
-        DefaultComboBoxModel<Category> dcbm = new DefaultComboBoxModel<>();
-        for (Category category : categories) {
-            dcbm.addElement(category);
-        }
-
-        cboCategory.setModel(dcbm);
+    public void loadArea() {
+        areas = areaDao.getAll();
+        DefaultComboBoxModel<Area> dcbm = new DefaultComboBoxModel<>();
+        areas.forEach(obj -> dcbm.addElement(obj));
+        cboArea.setModel(dcbm);
     }
 
     public void loadingData() {
-        txtName.setText(this.product.getName());
-        txtPrice.setText(String.valueOf(this.product.getPrice()));
-        rdoActive.setSelected(this.product.isStatus());
-        rdoNonActive.setSelected(this.product.isStatus() == false);
-        for (Category category : categories) {
-            if (category.getId() == this.product.getCategory_id()) {
-                cboCategory.setSelectedItem(category);
+        txtName.setText(table.getName());
+        rdoActive.setSelected(table.isStatus());
+        rdoNonActive.setSelected(table.isStatus() == false);
+        areas.forEach(obj -> {
+            if (obj.getId() == table.getArea_id()) {
+                cboArea.setSelectedItem(obj);
             }
-        }
+        });
     }
 
     /**
@@ -95,12 +101,9 @@ public class JDModify extends javax.swing.JDialog {
         rdoActive = new javax.swing.JRadioButton();
         rdoNonActive = new javax.swing.JRadioButton();
         btnModify = new javax.swing.JButton();
-        lblPrice = new javax.swing.JLabel();
-        txtPrice = new javax.swing.JTextField();
-        lblCategory = new javax.swing.JLabel();
-        cboCategory = new javax.swing.JComboBox<>();
+        lblArea = new javax.swing.JLabel();
+        cboArea = new javax.swing.JComboBox<>();
         lblNameError = new javax.swing.JLabel();
-        lblPriceError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -109,10 +112,10 @@ public class JDModify extends javax.swing.JDialog {
 
         lblTitle.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
         lblTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_product_50px_2.png"))); // NOI18N
-        lblTitle.setText("THÊM MỚI SẢN PHẨM");
+        lblTitle.setText("THÊM MỚI BÀN");
 
         lblName.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        lblName.setText("Tên sản phẩm");
+        lblName.setText("Tên bàn");
 
         lblStatus.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         lblStatus.setText("Trạng thái");
@@ -145,17 +148,11 @@ public class JDModify extends javax.swing.JDialog {
             }
         });
 
-        lblPrice.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        lblPrice.setText("Giá ");
-
-        lblCategory.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        lblCategory.setText("Danh mục");
+        lblArea.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        lblArea.setText("Khu vực");
 
         lblNameError.setForeground(new java.awt.Color(240, 71, 71));
         lblNameError.setText("Không được để trống");
-
-        lblPriceError.setForeground(new java.awt.Color(240, 71, 71));
-        lblPriceError.setText("Không được để trổng");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -167,16 +164,13 @@ public class JDModify extends javax.swing.JDialog {
                     .addComponent(lblTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtName)
-                    .addComponent(lblPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtPrice, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblCategory, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cboCategory, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblArea, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cboArea, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 427, Short.MAX_VALUE)
                         .addComponent(btnModify, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(lblNameError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblPriceError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(rdoActive, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -188,7 +182,7 @@ public class JDModify extends javax.swing.JDialog {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(lblName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -196,15 +190,9 @@ public class JDModify extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblNameError)
                 .addGap(18, 18, 18)
-                .addComponent(lblPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblArea, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblPriceError)
-                .addGap(18, 18, 18)
-                .addComponent(lblCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cboCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cboArea, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(lblStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -236,8 +224,7 @@ public class JDModify extends javax.swing.JDialog {
 
     private void btnModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyActionPerformed
         String name = (String) txtName.getText().trim();
-        float price = Float.parseFloat(txtPrice.getText());
-        int category_id = ((Category) cboCategory.getSelectedItem()).getId();
+        int area_id = ((Area) cboArea.getSelectedItem()).getId();
         boolean status = (boolean) rdoActive.isSelected();
         boolean validate = true;
 
@@ -250,54 +237,33 @@ public class JDModify extends javax.swing.JDialog {
             validate = false;
         }
 
-        if (txtPrice.getText().trim().equals("")) {
-            txtPrice.setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createLineBorder(new Color(240, 71, 71)),
-                    BorderFactory.createEmptyBorder(5, 8, 5, 8)));
-            lblPrice.setText("Không được để trống");
-            lblPrice.setForeground(new Color(240, 71, 71));
-            lblPriceError.setVisible(true);
-            validate = false;
-        } else if (price <= 0) {
-            txtPrice.setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createLineBorder(new Color(240, 71, 71)),
-                    BorderFactory.createEmptyBorder(5, 8, 5, 8)));
-            lblPrice.setText("Giá bạn nhập phải là một số thực dương!");
-            lblPrice.setForeground(new Color(240, 71, 71));
-            lblPriceError.setVisible(true);
-            validate = false;
-        }
-
         if (validate == true) {
             lblNameError.setVisible(false);
-            lblPriceError.setVisible(false);
             try {
-                Product product = new Product();
-                product.setName(name);
-                product.setPrice(price);
-                product.setCategory_id(category_id);
-                product.setStatus(status);
+                Table objTable = new Table();
+                objTable.setName(name);
+                objTable.setArea_id(area_id);
+                objTable.setStatus(status);
 
-                ProductDao productDao = new ProductDao();
-                if (this.product == null) {
-                    Map<String, Object> result = productDao.create(product);
+                if (Common.isNullOrEmpty(table)) {
+                    Map<String, Object> result = tableDao.create(objTable);
 
                     if ((boolean) result.get("status") == true) {
-                        JOptionPane.showMessageDialog(null, "Thêm sản phẩm thành công!");
-                        callback.actionModify();
+                        JOptionPane.showMessageDialog(null, "Thêm bàn thành công!");
+                        callback.actionTableModify();
                         dispose();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Thêm sản phẩm thất bại, lỗi: " + result.get("message") + "!");
+                        JOptionPane.showMessageDialog(null, "Thêm bàn thất bại, lỗi: " + result.get("message") + "!");
                     }
                 } else {
-                    product.setId(this.product.getId());
-                    Map<String, Object> result = productDao.update(product);
+                    objTable.setId(table.getId());
+                    Map<String, Object> result = tableDao.update(objTable);
                     if ((boolean) result.get("status") == true) {
-                        JOptionPane.showMessageDialog(null, "Sửa sản phẩm thành công!");
-                        callback.actionModify();
+                        JOptionPane.showMessageDialog(null, "Sửa bàn thành công!");
+                        callback.actionTableModify();
                         dispose();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Sửa sản phẩm thất bại, lỗi: " + result.get("message") + "!");
+                        JOptionPane.showMessageDialog(null, "Sửa bàn thất bại, lỗi: " + result.get("message") + "!");
                     }
                 }
 
@@ -325,14 +291,38 @@ public class JDModify extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JDModify.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JDModifyTable.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JDModify.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JDModifyTable.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JDModify.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JDModifyTable.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JDModify.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JDModifyTable.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -343,35 +333,30 @@ public class JDModify extends javax.swing.JDialog {
         //</editor-fold>
 
         /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                JDModify dialog = new JDModify(new javax.swing.JFrame(), true, null, null);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            JDModifyTable dialog = new JDModifyTable(new javax.swing.JFrame(), true, null, null, null);
+            dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent e) {
+                    System.exit(0);
+                }
+            });
+            dialog.setVisible(true);
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnModify;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JComboBox<Category> cboCategory;
+    private javax.swing.JComboBox<Area> cboArea;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel lblCategory;
+    private javax.swing.JLabel lblArea;
     private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblNameError;
-    private javax.swing.JLabel lblPrice;
-    private javax.swing.JLabel lblPriceError;
     private javax.swing.JLabel lblStatus;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JRadioButton rdoActive;
     private javax.swing.JRadioButton rdoNonActive;
     private javax.swing.JTextField txtName;
-    private javax.swing.JTextField txtPrice;
     // End of variables declaration//GEN-END:variables
 }

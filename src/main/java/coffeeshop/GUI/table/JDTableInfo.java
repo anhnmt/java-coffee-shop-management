@@ -5,21 +5,21 @@
  */
 package coffeeshop.GUI.table;
 
+import coffeeshop.DAO.AreaDao;
 import coffeeshop.DAO.BillDao;
 import coffeeshop.DAO.BillDetailDao;
 import coffeeshop.DAO.ProductDao;
+import coffeeshop.DAO.TableDao;
 import coffeeshop.DTO.Area;
 import coffeeshop.DTO.Bill;
 import coffeeshop.DTO.BillDetail;
 import coffeeshop.DTO.Product;
 import coffeeshop.DTO.Table;
 import coffeeshop.DTO.User;
-import coffeeshop.GUI.Dashboard;
-import coffeeshop.Utils.Common;
+import coffeeshop.Util.Common;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
@@ -28,7 +28,14 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author TUANANH-PC
  */
-public final class JDTable extends javax.swing.JDialog {
+public final class JDTableInfo extends javax.swing.JDialog {
+
+    CallbackTableExit callback;
+
+    public interface CallbackTableExit {
+
+        public void actionTableExit();
+    }
 
     User user;
     Table table;
@@ -47,12 +54,19 @@ public final class JDTable extends javax.swing.JDialog {
 
     /**
      * Creates new form JDBillDetail
+     *
+     * @param parent
+     * @param modal
+     * @param callback
+     * @param user
+     * @param table
      */
-    public JDTable(java.awt.Frame parent, boolean modal, User user, Table table) {
+    public JDTableInfo(java.awt.Frame parent, boolean modal, CallbackTableExit callback, User user, Table table) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
 
+        this.callback = callback;
         this.user = user;
         this.table = table;
 
@@ -554,14 +568,18 @@ public final class JDTable extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JDTable.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JDTableInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JDTable.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JDTableInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JDTable.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JDTableInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JDTable.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JDTableInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -575,7 +593,7 @@ public final class JDTable extends javax.swing.JDialog {
             Table t = new Table();
             t.setId(1);
 
-            JDTable dialog = new JDTable(new javax.swing.JFrame(), true, u, t);
+            JDTableInfo dialog = new JDTableInfo(new javax.swing.JFrame(), true, null, u, t);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {

@@ -16,7 +16,7 @@ import javax.swing.DefaultComboBoxModel;
  *
  * @author Minh
  */
-public final class JDSearch extends javax.swing.JDialog {
+public final class JDSearchProduct extends javax.swing.JDialog {
 
     CallbackSearch callback;
     Product product;
@@ -30,7 +30,7 @@ public final class JDSearch extends javax.swing.JDialog {
     /**
      * Creates new form JDCategoryCreate
      */
-    public JDSearch(java.awt.Frame parent, boolean modal, CallbackSearch callback) {
+    public JDSearchProduct(java.awt.Frame parent, boolean modal, CallbackSearch callback) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);

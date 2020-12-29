@@ -20,7 +20,7 @@ import javax.swing.JOptionPane;
  *
  * @author Minh
  */
-public class JDModify extends javax.swing.JDialog {
+public class JDModifyUser extends javax.swing.JDialog {
 
     User user;
     CallbackModify callback;
@@ -33,7 +33,7 @@ public class JDModify extends javax.swing.JDialog {
     /**
      * Creates new form JDCategoryCreate
      */
-    public JDModify(java.awt.Frame parent, boolean modal, CallbackModify callback, User user) {
+    public JDModifyUser(java.awt.Frame parent, boolean modal, CallbackModify callback, User user) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
@@ -302,14 +302,18 @@ public class JDModify extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JDModify.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JDModifyUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JDModify.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JDModifyUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JDModify.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JDModifyUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JDModify.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JDModifyUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -318,7 +322,7 @@ public class JDModify extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                JDModify dialog = new JDModify(new javax.swing.JFrame(), true, null, null);
+                JDModifyUser dialog = new JDModifyUser(new javax.swing.JFrame(), true, null, null);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

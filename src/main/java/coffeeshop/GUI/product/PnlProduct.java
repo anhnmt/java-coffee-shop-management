@@ -19,7 +19,7 @@ import coffeeshop.DTO.User;
  *
  * @author Minh
  */
-public class PnlProduct extends javax.swing.JPanel implements JDModify.CallbackModify, JDDelete.CallbackDelete, JDSearch.CallbackSearch {
+public class PnlProduct extends javax.swing.JPanel implements JDModifyProduct.CallbackModify, JDDeleteProduct.CallbackDelete, JDSearchProduct.CallbackSearch {
 
     Frame parent;
     List<Product> products = new ArrayList<Product>();
@@ -287,22 +287,22 @@ public class PnlProduct extends javax.swing.JPanel implements JDModify.CallbackM
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddMouseClicked
-        JDModify jdm = new JDModify(this.parent, true, this, null);
+        JDModifyProduct jdm = new JDModifyProduct(this.parent, true, this, null);
         jdm.setVisible(true);
     }//GEN-LAST:event_lblAddMouseClicked
 
     private void lblUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUpdateMouseClicked
-        JDModify jdm = new JDModify(this.parent, true, this, product);
+        JDModifyProduct jdm = new JDModifyProduct(this.parent, true, this, product);
         jdm.setVisible(true);
     }//GEN-LAST:event_lblUpdateMouseClicked
 
     private void lblSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSearchMouseClicked
-        JDSearch jds = new JDSearch(this.parent, true, this);
+        JDSearchProduct jds = new JDSearchProduct(this.parent, true, this);
         jds.setVisible(true);
     }//GEN-LAST:event_lblSearchMouseClicked
 
     private void lblDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDeleteMouseClicked
-        JDDelete jdd = new JDDelete(this.parent, true, this, product);
+        JDDeleteProduct jdd = new JDDeleteProduct(this.parent, true, this, product);
         jdd.setVisible(true);
     }//GEN-LAST:event_lblDeleteMouseClicked
 

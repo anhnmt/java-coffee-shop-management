@@ -25,7 +25,7 @@ public class JDModifyArea extends javax.swing.JDialog {
     CallbackAreaModify callback;
     Area area;
 
-    interface CallbackAreaModify {
+    public interface CallbackAreaModify {
 
         public void actionAreaModify();
     }

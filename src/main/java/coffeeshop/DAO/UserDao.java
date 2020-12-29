@@ -1,7 +1,7 @@
 package coffeeshop.DAO;
 
 import coffeeshop.DTO.User;
-import coffeeshop.Utils.DbUtil;
+import coffeeshop.Util.DbUtil;
 
 import java.sql.*;
 import java.util.ArrayList;

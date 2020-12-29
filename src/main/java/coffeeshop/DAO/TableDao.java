@@ -1,7 +1,7 @@
 package coffeeshop.DAO;
 
 import coffeeshop.DTO.Table;
-import coffeeshop.Utils.DbUtil;
+import coffeeshop.Util.DbUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,12 +11,24 @@ import java.util.Map;
 
 public class TableDao implements GenericDao<Table> {
 
+    Connection conn = null;
+    CallableStatement cs = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+
+    public TableDao() {
+        conn = new DbUtil().getInstance().getConnection();
+    }
+
     @Override
     public List<Table> getAll() {
         List<Table> list = new ArrayList<>();
         String sql = "{CALL sp_getAllTable}";
 
-        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql); ResultSet rs = cs.executeQuery()) {
+        try {
+            cs = conn.prepareCall(sql);
+            rs = cs.executeQuery();
+
             while (rs.next()) {
                 Table obj = new Table(
                         rs.getInt("id"),
@@ -25,10 +37,13 @@ public class TableDao implements GenericDao<Table> {
                         rs.getNString("note"),
                         rs.getBoolean("status")
                 );
+
                 list.add(obj);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+        } finally {
+            rs = null;
+            cs = null;
         }
 
         return list;
@@ -39,7 +54,8 @@ public class TableDao implements GenericDao<Table> {
         Map<String, Object> output = new HashMap<>();
         String sql = "{CALL sp_insertTable(?, ?, ?, ?, ?, ?)}";
 
-        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
+        try {
+            cs = conn.prepareCall(sql);
             cs.setInt(1, table.getArea_id());
             cs.setNString(2, table.getName());
             cs.setNString(3, table.getNote());
@@ -52,6 +68,8 @@ public class TableDao implements GenericDao<Table> {
             output.put("message", cs.getNString(6));
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            cs = null;
         }
 
         return output;
@@ -62,22 +80,23 @@ public class TableDao implements GenericDao<Table> {
         Table obj = null;
         String sql = "SELECT * FROM Tables WHERE id = ?";
 
-        try (Connection conn = new DbUtil().getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try {
+            ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
 
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    obj = new Table(
-                            rs.getInt("id"),
-                            rs.getInt("area_id"),
-                            rs.getNString("name"),
-                            rs.getNString("note"),
-                            rs.getBoolean("status")
-                    );
-                }
+            while (rs.next()) {
+                obj = new Table(
+                        rs.getInt("id"),
+                        rs.getInt("area_id"),
+                        rs.getNString("name"),
+                        rs.getNString("note"),
+                        rs.getBoolean("status")
+                );
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            ps = null;
         }
 
         return obj;
@@ -85,7 +104,29 @@ public class TableDao implements GenericDao<Table> {
 
     @Override
     public Map<String, Object> update(Table table) {
-        return null;
+        Map<String, Object> output = new HashMap<>();
+        String sql = "{CALL sp_updateTable(?, ?, ?, ?, ?, ?, ?)}";
+
+        try {
+            cs = conn.prepareCall(sql);
+            cs.setInt(1, table.getId());
+            cs.setInt(2, table.getArea_id());
+            cs.setNString(3, table.getName());
+            cs.setNString(4, table.getNote());
+            cs.setBoolean(5, table.isStatus());
+            cs.registerOutParameter(6, Types.BIT);
+            cs.registerOutParameter(7, Types.NVARCHAR);
+            cs.execute();
+
+            output.put("status", cs.getBoolean(6));
+            output.put("message", cs.getNString(7));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cs = null;
+        }
+
+        return output;
     }
 
     @Override
@@ -97,9 +138,10 @@ public class TableDao implements GenericDao<Table> {
         Table table = null;
         String sql = "{CALL sp_getAllTable(?)}";
 
-        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql);) {
+        try {
+            cs = conn.prepareCall(sql);
             cs.setNString(1, name);
-            ResultSet rs = cs.executeQuery();
+            rs = cs.executeQuery();
 
             while (rs.next()) {
                 table = new Table(
@@ -112,6 +154,9 @@ public class TableDao implements GenericDao<Table> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            rs = null;
+            cs = null;
         }
 
         return table;

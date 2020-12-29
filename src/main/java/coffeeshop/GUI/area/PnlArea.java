@@ -11,8 +11,8 @@ import coffeeshop.DTO.Table;
 import coffeeshop.DAO.AreaDao;
 import coffeeshop.DAO.BillDao;
 import coffeeshop.DAO.TableDao;
-import coffeeshop.GUI.table.JDTable;
-import coffeeshop.Utils.WrapLayout;
+import coffeeshop.GUI.table.JDTableInfo;
+import coffeeshop.Util.WrapLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Frame;
@@ -25,15 +25,19 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 import coffeeshop.DTO.Bill;
-import coffeeshop.Utils.Common;
+import coffeeshop.GUI.table.JDDeleteTable;
+import coffeeshop.GUI.table.JDModifyTable;
+import coffeeshop.Util.Common;
+import javax.swing.JPanel;
 
 /**
  *
  * @author Minh
  */
-public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.CallbackAreaModify, JDDeleteArea.CallbackAreaDelete {
+public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.CallbackAreaModify, JDDeleteArea.CallbackAreaDelete, JDModifyTable.CallbackTableModify, JDDeleteTable.CallbackTableDelete, JDTableInfo.CallbackTableExit {
 
     Frame parent;
+    JPanel self;
     Area area = null;
     Table table = null;
     User user = null;
@@ -52,6 +56,7 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
     public PnlArea(Frame parent, User user) {
         initComponents();
         this.parent = parent;
+        this.self = this;
         this.user = user;
         loading();
 
@@ -111,8 +116,10 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
         jl1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jl1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jl1.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-
+                JDModifyTable jdma = new JDModifyTable(parent, true, (JDModifyTable.CallbackTableModify) self, null, area);
+                jdma.setVisible(true);
             }
         });
 
@@ -143,7 +150,7 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 table = tableDao.getTableByName(objTable.getName());
 
-                JDTable jDTable = new JDTable(parent, true, user, table);
+                JDTableInfo jDTable = new JDTableInfo(parent, true, (JDTableInfo.CallbackTableExit) this, user, table);
                 jDTable.setVisible(true);
             }
         });
@@ -328,7 +335,6 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
         loading();
     }//GEN-LAST:event_lblRefreshMouseClicked
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -347,7 +353,22 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
     }
 
     @Override
-    public void actionDelete() {
+    public void actionAreaDelete() {
+        loading();
+    }
+
+    @Override
+    public void actionTableModify() {
+        loading();
+    }
+
+    @Override
+    public void actionTableDelete() {
+        loading();
+    }
+
+    @Override
+    public void actionTableExit() {
         loading();
     }
 }

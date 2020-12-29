@@ -1,4 +1,4 @@
-package coffeeshop.Utils;
+package coffeeshop.Util;
 
 
 import java.awt.*;

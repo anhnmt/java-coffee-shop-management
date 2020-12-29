@@ -697,6 +697,54 @@ GO
 
 EXEC sp_insertTable @_area_id = 1, @_name = N'Bàn 3';
 
+
+GO
+
+CREATE PROC sp_updateTable
+(
+    @_id INT,
+    @_area_id INT,
+    @_name NVARCHAR(100),
+    @_note NVARCHAR(150) = '',
+    @_status BIT = 1,
+    @_outStt BIT = 1 OUTPUT,
+    @_outMsg NVARCHAR(200) = '' OUTPUT
+)
+AS
+BEGIN TRY
+    IF NOT EXISTS (SELECT id FROM Tables WHERE id = @_id)
+    BEGIN
+        SET @_outStt = 0;
+        SET @_outMsg = N'Mã bàn không tồn tại, vui lòng nhập lại';
+    END;
+    ELSE IF NOT EXISTS (SELECT id FROM Areas WHERE id = @_area_id)
+    BEGIN
+        SET @_outStt = 0;
+        SET @_outMsg = N'Mã khu vực không tồn tại, vui lòng nhập lại';
+    END;
+    ELSE IF EXISTS (SELECT [name] FROM [Tables] WHERE [name] = @_name)
+    BEGIN
+        SET @_outStt = 0;
+        SET @_outMsg = N'Tên bàn đã tồn tại, vui lòng nhập lại';
+    END;
+    ELSE
+    BEGIN
+        UPDATE Tables
+        SET area_id = @_area_id,
+            [name] = @_name,
+            note = @_note,
+            [status] = @_status
+        WHERE id = @_id;
+
+        SET @_outStt = 1;
+        SET @_outMsg = N'Cập nhật bàn thành công';
+    END;
+END TRY
+BEGIN CATCH
+    SET @_outStt = 0;
+    SET @_outMsg = N'Cập nhật không thành công: ' + ERROR_MESSAGE();
+END CATCH;
+
 GO
 
 CREATE TABLE Bills
