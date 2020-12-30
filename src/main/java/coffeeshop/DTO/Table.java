@@ -8,9 +8,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Table {
-    private int id;
-    private int area_id;
+
+    private Integer id;
+    private Integer area_id;
     private String name;
     private String note;
-    private boolean status;
+    private Boolean status;
 }

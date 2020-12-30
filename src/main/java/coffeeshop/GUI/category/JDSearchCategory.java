@@ -6,6 +6,7 @@
 package coffeeshop.GUI.category;
 
 import coffeeshop.DTO.Category;
+import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
 import javax.swing.DefaultComboBoxModel;
 
@@ -21,7 +22,7 @@ public final class JDSearchCategory extends javax.swing.JDialog {
 
     interface CallbackSearch {
 
-        public void actionSearch(String name, Boolean status);
+        public void actionCategorySearch(Category category);
     }
 
     /**
@@ -143,9 +144,18 @@ public final class JDSearchCategory extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        Boolean status = "Không chọn".equals(cboStatus.getSelectedItem().toString()) ? null : "Hoạt động".equals(cboStatus.getSelectedItem().toString());
+        category = new Category();
 
-        callback.actionSearch(txtName.getText(), status);
+        if (!Common.isNullOrEmpty(txtName.getText().trim())) {
+            category.setName(txtName.getText().trim());
+        }
+
+        if (!"Không chọn".equals(cboStatus.getSelectedItem().toString())) {
+            category.setStatus("Hoạt động".equals(cboStatus.getSelectedItem().toString()));
+        }
+
+        System.out.println("search : " + category);
+        callback.actionCategorySearch(category);
         dispose();
     }//GEN-LAST:event_btnSearchActionPerformed
 

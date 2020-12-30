@@ -1,6 +1,7 @@
 package coffeeshop.DAO;
 
 import coffeeshop.DTO.Category;
+import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
 
 import java.sql.*;
@@ -19,44 +20,25 @@ public class CategoryDao implements GenericDao<Category> {
         conn = dbUtil.getInstance().getConnection();
     }
 
-    @Override
-    public List<Category> getAll() {
-        List<Category> list = new ArrayList<>();
-        String sql = "{CALL sp_getAllCategory}";
-
-        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql); ResultSet rs = cs.executeQuery()) {
-            while (rs.next()) {
-                Category obj = new Category(
-                        rs.getInt("id"),
-                        rs.getNString("name"),
-                        rs.getBoolean("status")
-                );
-                list.add(obj);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return list;
-    }
-
-    public List<Category> getAll(String name, Boolean status) {
+    public List<Category> getAll(Category category) {
         List<Category> list = new ArrayList<>();
 
         String sql = "{CALL sp_getAllCategory(?, ?)}";
 
-        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
-            if (name == null) {
-                cs.setNull(1, Types.NVARCHAR);
-            } else {
-                cs.setNString(1, name);
+        try {
+            cs = conn.prepareCall(sql);
+            cs.setNull(1, Types.NVARCHAR);
+            cs.setNull(2, Types.BOOLEAN);
+
+            if (!Common.isNullOrEmpty(category)) {
+                if (!Common.isNullOrEmpty(category.getName())) {
+                    cs.setNString(1, category.getName());
+                }
+                if (!Common.isNullOrEmpty(category.getStatus())) {
+                    cs.setBoolean(2, category.getStatus());
+                }
             }
-            if (status == null) {
-                cs.setNull(2, Types.BOOLEAN);
-            } else {
-                cs.setBoolean(2, status);
-            }
-            ResultSet rs = cs.executeQuery();
+            rs = cs.executeQuery();
 
             while (rs.next()) {
                 Category obj = new Category(
@@ -78,9 +60,10 @@ public class CategoryDao implements GenericDao<Category> {
         Map<String, Object> output = new HashMap<>();
         String sql = "{CALL sp_insertCategory(?, ?, ?, ?)}";
 
-        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
+        try {
+            cs = conn.prepareCall(sql);
             cs.setNString(1, category.getName());
-            cs.setBoolean(2, category.isStatus());
+            cs.setBoolean(2, category.getStatus());
             cs.registerOutParameter(3, Types.BIT);
             cs.registerOutParameter(4, Types.NVARCHAR);
             cs.execute();
@@ -99,17 +82,17 @@ public class CategoryDao implements GenericDao<Category> {
         Category obj = null;
         String sql = "SELECT * FROM Categories WHERE id = ?";
 
-        try (Connection conn = new DbUtil().getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
+            rs = ps.executeQuery();
 
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    obj = new Category(
-                            rs.getInt("id"),
-                            rs.getNString("name"),
-                            rs.getBoolean("status")
-                    );
-                }
+            while (rs.next()) {
+                obj = new Category(
+                        rs.getInt("id"),
+                        rs.getNString("name"),
+                        rs.getBoolean("status")
+                );
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -123,10 +106,11 @@ public class CategoryDao implements GenericDao<Category> {
         Map<String, Object> output = new HashMap<>();
         String sql = "{CALL sp_updateCategory(?, ?, ?, ?, ?)}";
 
-        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
+        try {
+            cs = conn.prepareCall(sql);
             cs.setInt(1, category.getId());
             cs.setNString(2, category.getName());
-            cs.setBoolean(3, category.isStatus());
+            cs.setBoolean(3, category.getStatus());
             cs.registerOutParameter(4, Types.BIT);
             cs.registerOutParameter(5, Types.NVARCHAR);
             cs.execute();
@@ -145,7 +129,8 @@ public class CategoryDao implements GenericDao<Category> {
         Map<String, Object> output = new HashMap<>();
         String sql = "{CALL sp_deleteCategory(?, ?, ?)}";
 
-        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
+        try {
+            cs = conn.prepareCall(sql);
             cs.setInt(1, id);
             cs.registerOutParameter(2, Types.BIT);
             cs.registerOutParameter(3, Types.NVARCHAR);

@@ -1,6 +1,7 @@
 package coffeeshop.DAO;
 
 import coffeeshop.DTO.Bill;
+import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
 
 import java.sql.*;
@@ -19,7 +20,6 @@ public class BillDao implements GenericDao<Bill> {
         conn = dbUtil.getInstance().getConnection();
     }
 
-    @Override
     public List<Bill> getAll() {
         List<Bill> list = new ArrayList<>();
         String sql = "{CALL sp_getAllBill}";
@@ -55,12 +55,33 @@ public class BillDao implements GenericDao<Bill> {
 
         try {
             cs = conn.prepareCall(sql);
-            cs.setInt(1, bill.getUser_id());
-            cs.setInt(2, bill.getTable_id());
-            cs.setFloat(3, bill.getTotal_price());
-            cs.setFloat(4, bill.getDiscount());
-            cs.setNString(5, bill.getNote());
-            cs.setBoolean(6, bill.isStatus());
+            cs.setNull(1, Types.INTEGER);
+            cs.setNull(2, Types.INTEGER);
+            cs.setNull(3, Types.FLOAT);
+            cs.setNull(4, Types.FLOAT);
+            cs.setNull(5, Types.NVARCHAR);
+            cs.setNull(6, Types.BOOLEAN);
+
+            if (!Common.isNullOrEmpty(bill)) {
+                if (!Common.isNullOrEmpty(bill.getUser_id())) {
+                    cs.setInt(1, bill.getUser_id());
+                }
+                if (!Common.isNullOrEmpty(bill.getTable_id())) {
+                    cs.setInt(2, bill.getTable_id());
+                }
+                if (!Common.isNullOrEmpty(bill.getTotal_price())) {
+                    cs.setFloat(3, bill.getTotal_price());
+                }
+                if (!Common.isNullOrEmpty(bill.getDiscount())) {
+                    cs.setFloat(4, bill.getDiscount());
+                }
+                if (!Common.isNullOrEmpty(bill.getNote())) {
+                    cs.setNString(5, bill.getNote());
+                }
+                if (!Common.isNullOrEmpty(bill.getStatus())) {
+                    cs.setBoolean(6, bill.getStatus());
+                }
+            }
             cs.registerOutParameter(7, Types.BIT);
             cs.registerOutParameter(8, Types.NVARCHAR);
             cs.execute();
@@ -116,7 +137,7 @@ public class BillDao implements GenericDao<Bill> {
             cs.setFloat(4, bill.getTotal_price());
             cs.setFloat(5, bill.getDiscount());
             cs.setNString(6, bill.getNote());
-            cs.setBoolean(7, bill.isStatus());
+            cs.setBoolean(7, bill.getStatus());
             cs.registerOutParameter(8, Types.BIT);
             cs.registerOutParameter(9, Types.NVARCHAR);
             cs.execute();

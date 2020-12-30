@@ -8,11 +8,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product {
-    private int id;
-    private int category_id;
+
+    private Integer id;
+    private Integer category_id;
     private String name;
-    private float price;
-    private boolean status;
+    private Float price;
+    private Boolean status;
     // Lấy thông tin từ id
     private String category_name;
 }

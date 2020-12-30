@@ -19,7 +19,6 @@ public class AreaDao implements GenericDao<Area> {
         conn = dbUtil.getInstance().getConnection();
     }
 
-    @Override
     public List<Area> getAll() {
         List<Area> list = new ArrayList<>();
         String sql = "{CALL sp_getAllArea}";
@@ -51,7 +50,7 @@ public class AreaDao implements GenericDao<Area> {
         try {
             cs = conn.prepareCall(sql);
             cs.setNString(1, area.getName());
-            cs.setBoolean(2, area.isStatus());
+            cs.setBoolean(2, area.getStatus());
             cs.registerOutParameter(3, Types.BIT);
             cs.registerOutParameter(4, Types.NVARCHAR);
             cs.execute();
@@ -98,7 +97,7 @@ public class AreaDao implements GenericDao<Area> {
             cs = conn.prepareCall(sql);
             cs.setInt(1, area.getId());
             cs.setNString(2, area.getName());
-            cs.setBoolean(3, area.isStatus());
+            cs.setBoolean(3, area.getStatus());
             cs.registerOutParameter(4, Types.BIT);
             cs.registerOutParameter(5, Types.NVARCHAR);
             cs.execute();

@@ -45,6 +45,7 @@ public final class JDModifyTable extends javax.swing.JDialog {
      *
      * @param parent
      * @param modal
+     * @param dbUtil
      * @param callback
      * @param table
      * @param area
@@ -74,8 +75,8 @@ public final class JDModifyTable extends javax.swing.JDialog {
             lblTitle.setText("Sửa đổi sản phẩm");
             btnModify.setText("Sửa đổi");
             txtName.setText(table.getName());
-            rdoActive.setSelected(table.isStatus());
-            rdoNonActive.setSelected(table.isStatus() == false);
+            rdoActive.setSelected(table.getStatus());
+            rdoNonActive.setSelected(table.getStatus() == false);
 
             areas.forEach(obj -> {
                 if (obj.getId() == table.getArea_id()) {

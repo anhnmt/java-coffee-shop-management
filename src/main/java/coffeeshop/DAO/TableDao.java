@@ -20,7 +20,6 @@ public class TableDao implements GenericDao<Table> {
         conn = dbUtil.getInstance().getConnection();
     }
 
-    @Override
     public List<Table> getAll() {
         List<Table> list = new ArrayList<>();
         String sql = "{CALL sp_getAllTable}";
@@ -59,7 +58,7 @@ public class TableDao implements GenericDao<Table> {
             cs.setInt(1, table.getArea_id());
             cs.setNString(2, table.getName());
             cs.setNString(3, table.getNote());
-            cs.setBoolean(4, table.isStatus());
+            cs.setBoolean(4, table.getStatus());
             cs.registerOutParameter(5, Types.BIT);
             cs.registerOutParameter(6, Types.NVARCHAR);
             cs.execute();
@@ -113,7 +112,7 @@ public class TableDao implements GenericDao<Table> {
             cs.setInt(2, table.getArea_id());
             cs.setNString(3, table.getName());
             cs.setNString(4, table.getNote());
-            cs.setBoolean(5, table.isStatus());
+            cs.setBoolean(5, table.getStatus());
             cs.registerOutParameter(6, Types.BIT);
             cs.registerOutParameter(7, Types.NVARCHAR);
             cs.execute();

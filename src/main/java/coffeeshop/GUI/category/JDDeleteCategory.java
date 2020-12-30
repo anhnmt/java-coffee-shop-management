@@ -24,7 +24,7 @@ public class JDDeleteCategory extends javax.swing.JDialog {
 
     interface CallbackDelete {
 
-        public void actionDelete();
+        public void actionCategoryDelete();
     }
 
     /**
@@ -149,7 +149,7 @@ public class JDDeleteCategory extends javax.swing.JDialog {
 
         if ((boolean) result.get("status") == true) {
             JOptionPane.showMessageDialog(null, "Xoá danh mục thành công!");
-            callback.actionDelete();
+            callback.actionCategoryDelete();
             dispose();
         } else {
             JOptionPane.showMessageDialog(null, "Xoá danh mục thất bại, lỗi: " + result.get("message") + "!");

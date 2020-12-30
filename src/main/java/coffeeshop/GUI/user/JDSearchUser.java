@@ -6,15 +6,9 @@
 package coffeeshop.GUI.user;
 
 import coffeeshop.DTO.User;
-import coffeeshop.DAO.UserDao;
 import java.awt.Color;
-import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -50,8 +44,8 @@ public final class JDSearchUser extends javax.swing.JDialog {
     public void loadingData() {
         txtName.setText(user.getName());
         txtEmail.setText(user.getEmail());
-        rdoActive.setSelected(user.isStatus());
-        rdoNonActive.setSelected(user.isStatus() == false);
+        rdoActive.setSelected(user.getStatus());
+        rdoNonActive.setSelected(user.getStatus() == false);
         cboPermission.setSelectedItem(user.getRole() == 1 ? "Super Admin" : "Nhân viên");
     }
 

@@ -8,6 +8,7 @@ package coffeeshop.GUI.product;
 import coffeeshop.DAO.CategoryDao;
 import coffeeshop.DTO.Category;
 import coffeeshop.DTO.Product;
+import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,14 +21,14 @@ import javax.swing.DefaultComboBoxModel;
 public final class JDSearchProduct extends javax.swing.JDialog {
 
     DbUtil dbUtil;
-    CallbackSearch callback;
+    CallbackProductSearch callback;
     Product product;
     List<Category> categories = new ArrayList<>();
     CategoryDao categoryDao;
 
-    interface CallbackSearch {
+    interface CallbackProductSearch {
 
-        public void actionSearch(String name, Integer category_id, Float fromPrice, Float toPrice, Boolean status);
+        public void actionProductSearch(Product product, Float fromPrice, Float toPrice);
     }
 
     /**
@@ -38,20 +39,21 @@ public final class JDSearchProduct extends javax.swing.JDialog {
      * @param dbUtil
      * @param callback
      */
-    public JDSearchProduct(java.awt.Frame parent, boolean modal, DbUtil dbUtil, CallbackSearch callback) {
+    public JDSearchProduct(java.awt.Frame parent, boolean modal, DbUtil dbUtil, CallbackProductSearch callback) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
-        this.callback = callback;
         this.dbUtil = dbUtil;
+        this.callback = callback;
         this.categoryDao = new CategoryDao(dbUtil);
+
         loadCategory();
         loadSatus();
     }
 
     public void loadCategory() {
         cboCategory.removeAllItems();
-        categories = categoryDao.getAll();
+        categories = categoryDao.getAll(null);
         DefaultComboBoxModel<Category> dcbm = new DefaultComboBoxModel<>();
         dcbm.addElement(new Category(0, "Không chọn", true));
         categories.forEach(category -> {
@@ -103,6 +105,8 @@ public final class JDSearchProduct extends javax.swing.JDialog {
         jLabel2.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         jLabel2.setText("Tên sản phẩm");
 
+        txtName.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+
         jLabel3.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         jLabel3.setText("Trạng thái");
 
@@ -121,13 +125,20 @@ public final class JDSearchProduct extends javax.swing.JDialog {
         jLabel4.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         jLabel4.setText("Khoảng giá");
 
+        txtFromPrice.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+
         jLabel5.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         jLabel5.setText("Danh mục");
+
+        cboCategory.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+
+        txtToPrice.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
 
         jLabel6.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("đến");
 
+        cboStatus.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         cboStatus.setToolTipText("");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -201,18 +212,24 @@ public final class JDSearchProduct extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyActionPerformed
-        Integer category_id = ((Category) cboCategory.getSelectedItem()).getId() == 0 ? null : ((Category) cboCategory.getSelectedItem()).getId();
+        product = new Product();
         Float fromPrice = "".equals(txtFromPrice.getText()) ? null : Float.parseFloat(txtFromPrice.getText());
         Float toPrice = "".equals(txtToPrice.getText()) ? null : Float.parseFloat(txtToPrice.getText());
-        Boolean status = "Không chọn".equals(cboStatus.getSelectedItem().toString()) ? null : "Hoạt động".equals(cboStatus.getSelectedItem().toString());
 
-        System.out.println("txtName: " + txtName.getText());
-        System.out.println("category_id: " + category_id);
-        System.out.println("fromPrice: " + fromPrice);
-        System.out.println("toPrice: " + toPrice);
-        System.out.println("status: " + status);
+        if (!Common.isNullOrEmpty(txtName.getText().trim())) {
+            product.setName(txtName.getText().trim());
+        }
 
-        callback.actionSearch(txtName.getText(), category_id, fromPrice, toPrice, status);
+        if (((Category) cboCategory.getSelectedItem()).getId() != 0) {
+            product.setCategory_id(((Category) cboCategory.getSelectedItem()).getId());
+        }
+
+        if (!"Không chọn".equals(cboStatus.getSelectedItem().toString())) {
+            product.setStatus("Hoạt động".equals(cboStatus.getSelectedItem().toString()));
+        }
+
+        System.out.println("JD: " + product);
+        callback.actionProductSearch(product, fromPrice, toPrice);
         dispose();
     }//GEN-LAST:event_btnModifyActionPerformed
 

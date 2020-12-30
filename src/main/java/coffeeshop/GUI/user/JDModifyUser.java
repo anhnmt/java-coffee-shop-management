@@ -63,8 +63,8 @@ public final class JDModifyUser extends javax.swing.JDialog {
         txtName.setText(this.user.getName());
         txtPassword.setText(this.user.getPassword());
         txtEmail.setText(this.user.getEmail());
-        rdoActive.setSelected(this.user.isStatus());
-        rdoNonActive.setSelected(this.user.isStatus() == false);
+        rdoActive.setSelected(this.user.getStatus());
+        rdoNonActive.setSelected(this.user.getStatus() == false);
         cboPermission.setSelectedItem(this.user.getRole() == 1 ? "Super Admin" : "Nhân viên");
     }
 

@@ -53,8 +53,8 @@ public class JDModifyArea extends javax.swing.JDialog {
         lblTitle.setText("Sửa đổi khu vực");
         btnModify.setText("Sửa đổi");
         txtName.setText(area.getName());
-        rdoActive.setSelected(area.isStatus());
-        rdoNonActive.setSelected(area.isStatus() == false);
+        rdoActive.setSelected(area.getStatus());
+        rdoNonActive.setSelected(area.getStatus() == false);
     }
 
     /**

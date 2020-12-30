@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Area {
 
-    private int id;
+    private Integer id;
     private String name;
-    private boolean status;
+    private Boolean status;
 
     @Override
     public String toString() {

@@ -15,6 +15,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -27,14 +28,14 @@ public final class JDModifyProduct extends javax.swing.JDialog {
 
     Product product;
     DbUtil dbUtil;
-    CallbackModify callback;
+    CallbackProductModify callback;
     List<Category> categories = new ArrayList<>();
     CategoryDao categoryDao;
     ProductDao productDao;
 
-    interface CallbackModify {
+    interface CallbackProductModify {
 
-        public void actionModify();
+        public void actionProductModify();
     }
 
     /**
@@ -46,11 +47,10 @@ public final class JDModifyProduct extends javax.swing.JDialog {
      * @param product
      * @param callback
      */
-    public JDModifyProduct(java.awt.Frame parent, boolean modal, DbUtil dbUtil, CallbackModify callback, Product product) {
+    public JDModifyProduct(java.awt.Frame parent, boolean modal, DbUtil dbUtil, CallbackProductModify callback, Product product) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
-        loadCategory();
         this.callback = callback;
         this.dbUtil = dbUtil;
         this.categoryDao = new CategoryDao(dbUtil);
@@ -63,30 +63,29 @@ public final class JDModifyProduct extends javax.swing.JDialog {
             loadingData();
         }
 
+        loadCategory();
         lblNameError.setVisible(false);
         lblPriceError.setVisible(false);
     }
 
     public void loadCategory() {
-        categories = categoryDao.getAll();
+        categories = categoryDao.getAll(null);
         DefaultComboBoxModel<Category> dcbm = new DefaultComboBoxModel<>();
-        for (Category category : categories) {
+        categories.forEach(category -> {
             dcbm.addElement(category);
-        }
+        });
 
         cboCategory.setModel(dcbm);
     }
 
     public void loadingData() {
-        txtName.setText(this.product.getName());
+        txtName.setText(product.getName());
         txtPrice.setText(String.valueOf(this.product.getPrice()));
-        rdoActive.setSelected(this.product.isStatus());
-        rdoNonActive.setSelected(this.product.isStatus() == false);
-        for (Category category : categories) {
-            if (category.getId() == this.product.getCategory_id()) {
-                cboCategory.setSelectedItem(category);
-            }
-        }
+        rdoActive.setSelected(product.getStatus());
+        rdoNonActive.setSelected(product.getStatus() == false);
+        categories.stream().filter(category -> (Objects.equals(category.getId(), product.getCategory_id()))).forEachOrdered(category -> {
+            cboCategory.setSelectedItem(category);
+        });
     }
 
     /**
@@ -284,18 +283,18 @@ public final class JDModifyProduct extends javax.swing.JDialog {
             lblNameError.setVisible(false);
             lblPriceError.setVisible(false);
             try {
-                Product product = new Product();
+                product = new Product();
                 product.setName(name);
                 product.setPrice(price);
                 product.setCategory_id(category_id);
                 product.setStatus(status);
 
-                if (this.product == null) {
+                if (Common.isNullOrEmpty(this.product)) {
                     Map<String, Object> result = productDao.create(product);
 
                     if ((boolean) result.get("status") == true) {
                         JOptionPane.showMessageDialog(null, "Thêm sản phẩm thành công!");
-                        callback.actionModify();
+                        callback.actionProductModify();
                         dispose();
                     } else {
                         JOptionPane.showMessageDialog(null, "Thêm sản phẩm thất bại, lỗi: " + result.get("message") + "!");
@@ -305,7 +304,7 @@ public final class JDModifyProduct extends javax.swing.JDialog {
                     Map<String, Object> result = productDao.update(product);
                     if ((boolean) result.get("status") == true) {
                         JOptionPane.showMessageDialog(null, "Sửa sản phẩm thành công!");
-                        callback.actionModify();
+                        callback.actionProductModify();
                         dispose();
                     } else {
                         JOptionPane.showMessageDialog(null, "Sửa sản phẩm thất bại, lỗi: " + result.get("message") + "!");

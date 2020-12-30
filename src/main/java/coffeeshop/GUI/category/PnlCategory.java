@@ -11,7 +11,6 @@ import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import coffeeshop.DTO.User;
 import coffeeshop.Util.DbUtil;
@@ -40,7 +39,7 @@ public final class PnlCategory extends javax.swing.JPanel implements JDModifyCat
         this.parent = parent;
         this.dbUtil = dbUtil;
         this.categoryDao = new CategoryDao(dbUtil);
-        loading(null, null);
+        loading(null);
 
         if (user.getRole() != 1) {
             lblAdd.setVisible(false);
@@ -49,19 +48,17 @@ public final class PnlCategory extends javax.swing.JPanel implements JDModifyCat
         }
     }
 
-    public void loading(String name, Boolean status) {
+    public void loading(Category newCategory) {
         tblCategory.removeAll();
         category = null;
-        categories = categoryDao.getAll(name, status);
-
-        System.out.println(categories);
+        categories = categoryDao.getAll(newCategory);
 
         String columns[] = {"Id", "Tên", "Trạng thái"};
         DefaultTableModel dtm = new DefaultTableModel(columns, 0);
 
         if (!categories.isEmpty()) {
             categories.forEach(obj -> {
-                dtm.addRow(new Object[]{obj.getId(), obj.getName(), obj.isStatus() ? "Hoạt động" : "Không hoạt động"});
+                dtm.addRow(new Object[]{obj.getId(), obj.getName(), obj.getStatus() ? "Hoạt động" : "Không hoạt động"});
             });
 
             tblCategory.getSelectionModel().addListSelectionListener((ListSelectionEvent lse) -> {
@@ -316,7 +313,7 @@ public final class PnlCategory extends javax.swing.JPanel implements JDModifyCat
     }//GEN-LAST:event_lblDeleteMouseClicked
 
     private void lblRefreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRefreshMouseClicked
-        loading(null, null);
+        loading(null);
     }//GEN-LAST:event_lblRefreshMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -334,17 +331,17 @@ public final class PnlCategory extends javax.swing.JPanel implements JDModifyCat
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void actionModify() {
-        loading(null, null);
+    public void actionCategoryModify() {
+        loading(null);
     }
 
     @Override
-    public void actionDelete() {
-        loading(null, null);
+    public void actionCategoryDelete() {
+        loading(null);
     }
 
     @Override
-    public void actionSearch(String name, Boolean status) {
-        loading(name, status);
+    public void actionCategorySearch(Category category) {
+        loading(category);
     }
 }

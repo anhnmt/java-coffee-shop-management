@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class BillDetail {
 
-    private int bill_id;
-    private int product_id;
-    private int amount;
+    private Integer bill_id;
+    private Integer product_id;
+    private Integer amount;
     // Lấy thông tin từ id
     private String product_name;
-    private float product_price;
+    private Float product_price;
 
     public BillDetail(int bill_id, int product_id, int amount) {
         this.bill_id = bill_id;

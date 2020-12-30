@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Bill {
 
-    private int id;
-    private int user_id;
-    private int table_id;
-    private float total_price;
-    private float discount;
+    private Integer id;
+    private Integer user_id;
+    private Integer table_id;
+    private Float total_price;
+    private Float discount;
     private String note;
-    private boolean status;
+    private Boolean status;
     private String created_at;
 }

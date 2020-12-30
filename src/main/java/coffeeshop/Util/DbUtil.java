@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class DbUtil {
+
     private static DbUtil instance;
     private static Connection conn;
 

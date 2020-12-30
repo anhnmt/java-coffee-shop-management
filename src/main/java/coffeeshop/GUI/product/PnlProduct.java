@@ -19,7 +19,7 @@ import coffeeshop.Util.DbUtil;
  *
  * @author Minh
  */
-public final class PnlProduct extends javax.swing.JPanel implements JDModifyProduct.CallbackModify, JDDeleteProduct.CallbackDelete, JDSearchProduct.CallbackSearch {
+public final class PnlProduct extends javax.swing.JPanel implements JDModifyProduct.CallbackProductModify, JDDeleteProduct.CallbackProductDelete, JDSearchProduct.CallbackProductSearch {
 
     Frame parent;
     DbUtil dbUtil;
@@ -39,7 +39,7 @@ public final class PnlProduct extends javax.swing.JPanel implements JDModifyProd
         this.parent = parent;
         this.dbUtil = dbUtil;
         this.productDao = new ProductDao(dbUtil);
-        loading(null, null, null, null, null);
+        loading(null, null, null);
 
         if (user.getRole() != 1) {
             lblAdd.setVisible(false);
@@ -48,16 +48,16 @@ public final class PnlProduct extends javax.swing.JPanel implements JDModifyProd
         }
     }
 
-    public void loading(String name, Integer category_id, Float fromPrice, Float toPrice, Boolean status) {
+    public void loading(Product newProduct, Float fromPrice, Float toPrice) {
         tblProduct.removeAll();
-        products = productDao.getAll(name, category_id, fromPrice, toPrice, status);
+        products = productDao.getAll(newProduct, fromPrice, toPrice);
 
         String columns[] = {"Id", "Tên", "Giá", "Tên danh mục", "Trạng thái"};
         DefaultTableModel dtm = new DefaultTableModel(columns, 0);
 
         if (!products.isEmpty()) {
             products.forEach(obj -> {
-                dtm.addRow(new Object[]{obj.getId(), obj.getName(), obj.getPrice(), obj.getCategory_name(), obj.isStatus() ? "Hoạt động" : "Không hoạt động"});
+                dtm.addRow(new Object[]{obj.getId(), obj.getName(), obj.getPrice(), obj.getCategory_name(), obj.getStatus() ? "Hoạt động" : "Không hoạt động"});
             });
 
             tblProduct.getSelectionModel().addListSelectionListener((ListSelectionEvent lse) -> {
@@ -311,7 +311,7 @@ public final class PnlProduct extends javax.swing.JPanel implements JDModifyProd
     }//GEN-LAST:event_lblDeleteMouseClicked
 
     private void lblRefreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRefreshMouseClicked
-        loading(null, null, null, null, null);
+        loading(null, null, null);
     }//GEN-LAST:event_lblRefreshMouseClicked
 
 
@@ -330,17 +330,17 @@ public final class PnlProduct extends javax.swing.JPanel implements JDModifyProd
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void actionModify() {
-        loading(null, null, null, null, null);
+    public void actionProductModify() {
+        loading(null, null, null);
     }
 
     @Override
-    public void actionDelete() {
-        loading(null, null, null, null, null);
+    public void actionProductDelete() {
+        loading(null, null, null);
     }
 
     @Override
-    public void actionSearch(String name, Integer category_id, Float fromPrice, Float toPrice, Boolean status) {
-        loading(name, category_id, fromPrice, toPrice, status);
+    public void actionProductSearch(Product product, Float fromPrice, Float toPrice) {
+        loading(product, fromPrice, toPrice);
     }
 }

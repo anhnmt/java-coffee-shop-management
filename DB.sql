@@ -136,11 +136,11 @@ EXEC sp_getAllUser;
 GO
 
 CREATE PROC sp_getUserById
-(
-    @_id INT
-)
+(@_id INT)
 AS
-	SELECT * FROM Users WHERE id = @_id
+SELECT *
+FROM Users
+WHERE id = @_id;
 
 GO
 
@@ -516,11 +516,11 @@ END CATCH;
 GO
 
 CREATE PROC sp_getProductById
-(
-    @_id INT
-)
+(@_id INT)
 AS
-	SELECT * FROM Products WHERE id = @_id
+SELECT *
+FROM Products
+WHERE id = @_id;
 
 GO
 
@@ -1034,27 +1034,59 @@ GO
 
 GO
 
+CREATE PROC sp_deleteBillDetail
+(
+    @_bill_id INT,
+    @_product_id INT,
+    @_outStt BIT = 1 OUTPUT,
+    @_outMsg NVARCHAR(200) = '' OUTPUT
+)
+AS
+BEGIN TRY
+    IF NOT EXISTS (SELECT * FROM Bills WHERE id = @_bill_id)
+    BEGIN
+        SET @_outStt = 0;
+        SET @_outMsg = N'Không tìm thấy hoá đơn này';
+    END;
+    ELSE IF NOT EXISTS (SELECT * FROM Products WHERE id = @_product_id)
+    BEGIN
+        SET @_outStt = 0;
+        SET @_outMsg = N'Không tìm thấy sản phẩm này';
+    END;
+    ELSE
+    BEGIN
+        DELETE BillDetail
+        WHERE bill_id = @_bill_id
+              AND product_id = @_product_id;
+
+        SET @_outStt = 1;
+        SET @_outMsg = N'Xoá thành công';
+    END;
+END TRY
+BEGIN CATCH
+    SET @_outStt = 0;
+    SET @_outMsg = ERROR_MESSAGE();
+END CATCH;
+
+GO
+
 CREATE PROC sp_getAllBill
 AS
-SELECT 
-       *
-FROM Bills
+SELECT *
+FROM Bills;
 
 GO
 
 CREATE PROC sp_getBillById
-(
-    @_id INT
-)
+(@_id INT)
 AS
-SELECT 
-       *
+SELECT *
 FROM Bills
 WHERE id = @_id;
 
 GO
 
-EXEC sp_getBillById 2;
+--EXEC sp_getBillById 2;
 
 GO
 
@@ -1090,4 +1122,4 @@ WHERE bill_id = @_bill_id;
 
 GO
 
-EXEC sp_getBillDetailByBillId 1;
+--EXEC sp_getBillDetailByBillId 2;

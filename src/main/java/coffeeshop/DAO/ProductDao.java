@@ -1,6 +1,7 @@
 package coffeeshop.DAO;
 
 import coffeeshop.DTO.Product;
+import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
 
 import java.sql.*;
@@ -19,65 +20,34 @@ public class ProductDao implements GenericDao<Product> {
         conn = dbUtil.getInstance().getConnection();
     }
 
-    @Override
-    public List<Product> getAll() {
-        List<Product> list = new ArrayList<>();
-        String sql = "{CALL sp_getAllProduct}";
-
-        try {
-            cs = conn.prepareCall(sql);
-            rs = cs.executeQuery();
-
-            while (rs.next()) {
-                Product obj = new Product(
-                        rs.getInt("id"),
-                        rs.getInt("category_id"),
-                        rs.getNString("name"),
-                        rs.getFloat("price"),
-                        rs.getBoolean("status"),
-                        rs.getString("category_name")
-                );
-
-                list.add(obj);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return list;
-    }
-
-    public List<Product> getAll(String name, Integer category_id, Float fromPrice, Float toPrice, Boolean status) {
+    public List<Product> getAll(Product product, Float fromPrice, Float toPrice) {
         List<Product> list = new ArrayList<>();
         String sql = "{CALL sp_getAllProduct(?, ?, ?, ?, ?)}";
 
         try {
             cs = conn.prepareCall(sql);
+            cs.setNull(1, Types.NVARCHAR);
+            cs.setNull(2, Types.INTEGER);
+            cs.setNull(3, Types.FLOAT);
+            cs.setNull(4, Types.FLOAT);
+            cs.setNull(5, Types.BOOLEAN);
 
-            if (name == null) {
-                cs.setNull(1, Types.NVARCHAR);
-            } else {
-                cs.setNString(1, name);
-            }
-            if (category_id == null) {
-                cs.setNull(2, Types.INTEGER);
-            } else {
-                cs.setInt(2, category_id);
-            }
-            if (fromPrice == null) {
-                cs.setNull(3, Types.FLOAT);
-            } else {
-                cs.setFloat(3, fromPrice);
-            }
-            if (toPrice == null) {
-                cs.setNull(4, Types.FLOAT);
-            } else {
-                cs.setFloat(4, toPrice);
-            }
-            if (status == null) {
-                cs.setNull(5, Types.BOOLEAN);
-            } else {
-                cs.setBoolean(5, status);
+            if (!Common.isNullOrEmpty(product)) {
+                if (!Common.isNullOrEmpty(product.getName())) {
+                    cs.setNString(1, product.getName());
+                }
+                if (!Common.isNullOrEmpty(product.getCategory_id())) {
+                    cs.setInt(2, product.getCategory_id());
+                }
+                if (!Common.isNullOrEmpty(fromPrice)) {
+                    cs.setFloat(3, fromPrice);
+                }
+                if (!Common.isNullOrEmpty(toPrice)) {
+                    cs.setFloat(4, toPrice);
+                }
+                if (!Common.isNullOrEmpty(product.getStatus())) {
+                    cs.setBoolean(5, product.getStatus());
+                }
             }
             rs = cs.executeQuery();
 
@@ -110,7 +80,7 @@ public class ProductDao implements GenericDao<Product> {
             cs.setInt(1, product.getCategory_id());
             cs.setNString(2, product.getName());
             cs.setFloat(3, product.getPrice());
-            cs.setBoolean(4, product.isStatus());
+            cs.setBoolean(4, product.getStatus());
             cs.registerOutParameter(5, Types.BIT);
             cs.registerOutParameter(6, Types.NVARCHAR);
             cs.execute();
@@ -162,7 +132,7 @@ public class ProductDao implements GenericDao<Product> {
             cs.setInt(2, product.getCategory_id());
             cs.setNString(3, product.getName());
             cs.setFloat(4, product.getPrice());
-            cs.setBoolean(5, product.isStatus());
+            cs.setBoolean(5, product.getStatus());
             cs.registerOutParameter(6, Types.BIT);
             cs.registerOutParameter(7, Types.NVARCHAR);
             cs.execute();

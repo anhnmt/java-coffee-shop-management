@@ -1,6 +1,5 @@
 package coffeeshop.DAO;
 
-import coffeeshop.DTO.Bill;
 import coffeeshop.DTO.BillDetail;
 import coffeeshop.Util.DbUtil;
 
@@ -20,18 +19,14 @@ public class BillDetailDao implements GenericDao<BillDetail> {
         conn = dbUtil.getInstance().getConnection();
     }
 
-    @Override
-    public List<BillDetail> getAll() {
-        return null;
-    }
-
-    public List<BillDetail> getAllByBillId(int bill_id) {
+    public List<BillDetail> getAll(int bill_id) {
         List<BillDetail> obj = new ArrayList<>();
         String sql = "{CALL sp_getBillDetailByBillId(?)}";
 
         try {
-            rs = cs.executeQuery();
+            cs = conn.prepareCall(sql);
             cs.setInt(1, bill_id);
+            rs = cs.executeQuery();
 
             while (rs.next()) {
                 BillDetail billDetail = new BillDetail(
@@ -87,5 +82,27 @@ public class BillDetailDao implements GenericDao<BillDetail> {
     @Override
     public Map<String, Object> delete(int bill_id) {
         return null;
+    }
+
+    public Map<String, Object> delete(BillDetail billDetail) {
+
+        Map<String, Object> output = new HashMap<>();
+        String sql = "{CALL sp_deleteBillDetail(?, ?, ?, ?)}";
+
+        try {
+            cs = conn.prepareCall(sql);
+            cs.setInt(1, billDetail.getBill_id());
+            cs.setInt(2, billDetail.getProduct_id());
+            cs.registerOutParameter(3, Types.BIT);
+            cs.registerOutParameter(4, Types.NVARCHAR);
+            cs.execute();
+
+            output.put("status", cs.getBoolean(3));
+            output.put("message", cs.getNString(4));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return output;
     }
 }

@@ -3,28 +3,30 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package coffeeshop.GUI.product;
+package coffeeshop.GUI.table;
 
-import coffeeshop.DTO.Product;
-import coffeeshop.DAO.ProductDao;
+import coffeeshop.DAO.BillDetailDao;
 import coffeeshop.Util.DbUtil;
 import java.util.Map;
 import javax.swing.JOptionPane;
+import coffeeshop.DTO.BillDetail;
+import javax.swing.JDialog;
 
 /**
  *
  * @author Minh
  */
-public class JDDeleteProduct extends javax.swing.JDialog {
+public class JDDeleteBillDetail extends javax.swing.JDialog {
 
-    CallbackProductDelete callback;
-    Product product;
-    ProductDao productDao;
+//    JDialog parent;
+    CallbackBillDetailDelete callback;
     DbUtil dbUtil;
+    BillDetail billDetail = null;
+    BillDetailDao billDetailDao;
 
-    interface CallbackProductDelete {
+    public interface CallbackBillDetailDelete {
 
-        public void actionProductDelete();
+        public void actionBillDetailDelete();
     }
 
     /**
@@ -32,19 +34,20 @@ public class JDDeleteProduct extends javax.swing.JDialog {
      *
      * @param parent
      * @param modal
-     * @param product
      * @param dbUtil
+     * @param billDetail
      * @param callback
      */
-    public JDDeleteProduct(java.awt.Frame parent, boolean modal, DbUtil dbUtil, CallbackProductDelete callback, Product product) {
+    public JDDeleteBillDetail(JDialog parent, boolean modal, DbUtil dbUtil, CallbackBillDetailDelete callback, BillDetail billDetail) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
+//        this.parent = parent;
         this.callback = callback;
-        this.product = product;
+        this.billDetail = billDetail;
         this.dbUtil = dbUtil;
-        this.productDao = new ProductDao(dbUtil);
-        lblConfirm.setText("Bạn có chắc chắn muốn xoá sản phẩm tên: " + product.getName());
+        this.billDetailDao = new BillDetailDao(dbUtil);
+        lblConfirm.setText("Bạn có chắc chắn muốn thông tin hoá đơn: " + billDetail.getProduct_name());
 
     }
 
@@ -70,7 +73,7 @@ public class JDDeleteProduct extends javax.swing.JDialog {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_trash_can_50px_1.png"))); // NOI18N
-        jLabel1.setText("XOÁ SẢN PHẨM");
+        jLabel1.setText("XOÁ THÔNG TIN HOÁ ĐƠN");
 
         btnCancel.setBackground(new java.awt.Color(0, 204, 51));
         btnCancel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -85,7 +88,7 @@ public class JDDeleteProduct extends javax.swing.JDialog {
         });
 
         lblConfirm.setFont(new java.awt.Font("Segoe UI Semibold", 1, 18)); // NOI18N
-        lblConfirm.setText("Bạn có chắc chắn muốn xoá");
+        lblConfirm.setText("Bạn có chắc chắn muốn xoá?");
 
         btnDelete.setBackground(new java.awt.Color(255, 51, 51));
         btnDelete.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -120,10 +123,10 @@ public class JDDeleteProduct extends javax.swing.JDialog {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(lblConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -145,14 +148,14 @@ public class JDDeleteProduct extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        Map<String, Object> result = productDao.delete(product.getId());
+        Map<String, Object> result = billDetailDao.delete(billDetail);
 
         if ((boolean) result.get("status") == true) {
-            JOptionPane.showMessageDialog(null, "Xoá danh mục thành công!");
-            callback.actionProductDelete();
+            JOptionPane.showMessageDialog(null, "Xoá sản phẩm trong hoá đơn thành công!");
+            callback.actionBillDetailDelete();
             dispose();
         } else {
-            JOptionPane.showMessageDialog(null, "Xoá danh mục thất bại, lỗi: " + result.get("message") + "!");
+            JOptionPane.showMessageDialog(null, "Xoá sản phẩm thất bại, lỗi: " + result.get("message") + "!");
             dispose();
         }
     }//GEN-LAST:event_btnDeleteActionPerformed

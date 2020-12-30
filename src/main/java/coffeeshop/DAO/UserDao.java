@@ -1,6 +1,7 @@
 package coffeeshop.DAO;
 
 import coffeeshop.DTO.User;
+import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
 
 import java.sql.*;
@@ -19,21 +20,32 @@ public class UserDao implements GenericDao<User> {
         conn = dbUtil.getInstance().getConnection();
     }
 
-    @Override
-    public List<User> getAll() {
-        return null;
-    }
-
     public List<User> getAll(User user) {
         List<User> list = new ArrayList<>();
         String sql = "{CALL sp_getAllUser(?, ?, ?, ?)}";
 
         try {
             cs = conn.prepareCall(sql);
-            cs.setNString(1, user.getName());
-            cs.setString(2, user.getEmail());
-            cs.setInt(3, user.getRole());
-            cs.setBoolean(4, user.isStatus());
+
+            cs.setNull(1, Types.NVARCHAR);
+            cs.setNull(2, Types.VARCHAR);
+            cs.setNull(3, Types.INTEGER);
+            cs.setNull(4, Types.BOOLEAN);
+
+            if (!Common.isNullOrEmpty(user)) {
+                if (!Common.isNullOrEmpty(user.getName())) {
+                    cs.setNString(1, user.getName());
+                }
+                if (!Common.isNullOrEmpty(user.getEmail())) {
+                    cs.setString(2, user.getEmail());
+                }
+                if (!Common.isNullOrEmpty(user.getRole())) {
+                    cs.setInt(3, user.getRole());
+                }
+                if (!Common.isNullOrEmpty(user.getStatus())) {
+                    cs.setBoolean(4, user.getStatus());
+                }
+            }
             rs = cs.executeQuery();
 
             while (rs.next()) {
@@ -65,7 +77,7 @@ public class UserDao implements GenericDao<User> {
             cs.setString(2, user.getEmail());
             cs.setString(3, user.getPassword());
             cs.setInt(4, user.getRole());
-            cs.setBoolean(5, user.isStatus());
+            cs.setBoolean(5, user.getStatus());
             cs.registerOutParameter(6, Types.BIT);
             cs.registerOutParameter(7, Types.NVARCHAR);
             cs.execute();
@@ -118,7 +130,7 @@ public class UserDao implements GenericDao<User> {
             cs.setString(3, user.getEmail());
             cs.setString(4, user.getPassword());
             cs.setInt(5, user.getRole());
-            cs.setBoolean(6, user.isStatus());
+            cs.setBoolean(6, user.getStatus());
             cs.registerOutParameter(7, Types.BIT);
             cs.registerOutParameter(8, Types.NVARCHAR);
             cs.execute();

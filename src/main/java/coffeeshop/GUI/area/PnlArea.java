@@ -11,7 +11,7 @@ import coffeeshop.DTO.Table;
 import coffeeshop.DAO.AreaDao;
 import coffeeshop.DAO.BillDao;
 import coffeeshop.DAO.TableDao;
-import coffeeshop.GUI.table.JDTableInfo;
+import coffeeshop.GUI.table.JDTable;
 import coffeeshop.Util.WrapLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -35,7 +35,7 @@ import javax.swing.JPanel;
  *
  * @author Minh
  */
-public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.CallbackAreaModify, JDDeleteArea.CallbackAreaDelete, JDModifyTable.CallbackTableModify, JDDeleteTable.CallbackTableDelete, JDTableInfo.CallbackTableExit {
+public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.CallbackAreaModify, JDDeleteArea.CallbackAreaDelete, JDModifyTable.CallbackTableModify, JDDeleteTable.CallbackTableDelete, JDTable.CallbackTableExit {
 
     Frame parent;
     JPanel self;
@@ -162,7 +162,7 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 table = tableDao.getTableByName(objTable.getName());
 
-                JDTableInfo jDTable = new JDTableInfo(parent, true, dbUtil, (JDTableInfo.CallbackTableExit) self, user, table);
+                JDTable jDTable = new JDTable(parent, true, dbUtil, (JDTable.CallbackTableExit) self, user, table);
                 jDTable.setVisible(true);
             }
         });

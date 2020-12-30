@@ -53,7 +53,7 @@ public final class PnlUser extends javax.swing.JPanel implements JDModifyUser.Ca
 
         if (!Common.isNullOrEmpty(list)) {
             list.forEach(obj -> {
-                dtm.addRow(new Object[]{obj.getId(), obj.getName(), obj.getEmail(), obj.getRole() == 1 ? "Super Admin" : "Nhân viên", obj.isStatus() == true ? "Hoạt động" : "Không hoạt động"});
+                dtm.addRow(new Object[]{obj.getId(), obj.getName(), obj.getEmail(), obj.getRole() == 1 ? "Super Admin" : "Nhân viên", obj.getStatus() == true ? "Hoạt động" : "Không hoạt động"});
             });
 
             tblUser.getSelectionModel().addListSelectionListener((ListSelectionEvent lse) -> {
