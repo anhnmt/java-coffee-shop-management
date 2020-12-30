@@ -14,24 +14,32 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import coffeeshop.DTO.User;
+import coffeeshop.Util.DbUtil;
 
 /**
  *
  * @author Minh
  */
-public class PnlCategory extends javax.swing.JPanel implements JDModify.CallbackModify, JDDelete.CallbackDelete, JDSearch.CallbackSearch {
+public final class PnlCategory extends javax.swing.JPanel implements JDModifyCategory.CallbackModify, JDDeleteCategory.CallbackDelete, JDSearchCategory.CallbackSearch {
 
     Frame parent;
-    List<Category> categories = new ArrayList<Category>();
+    List<Category> categories = new ArrayList<>();
     Category category;
-    CategoryDao categoryDao = new CategoryDao();
+    CategoryDao categoryDao;
+    DbUtil dbUtil;
 
     /**
      * Creates new form PnlCategory
+     *
+     * @param parent
+     * @param dbUtil
+     * @param user
      */
-    public PnlCategory(Frame parent, User user) {
+    public PnlCategory(Frame parent, DbUtil dbUtil, User user) {
         initComponents();
         this.parent = parent;
+        this.dbUtil = dbUtil;
+        this.categoryDao = new CategoryDao(dbUtil);
         loading(null, null);
 
         if (user.getRole() != 1) {
@@ -43,6 +51,7 @@ public class PnlCategory extends javax.swing.JPanel implements JDModify.Callback
 
     public void loading(String name, Boolean status) {
         tblCategory.removeAll();
+        category = null;
         categories = categoryDao.getAll(name, status);
 
         System.out.println(categories);
@@ -51,20 +60,17 @@ public class PnlCategory extends javax.swing.JPanel implements JDModify.Callback
         DefaultTableModel dtm = new DefaultTableModel(columns, 0);
 
         if (!categories.isEmpty()) {
-            for (Category category : categories) {
-                dtm.addRow(new Object[]{category.getId(), category.getName(), category.isStatus() ? "Hoạt động" : "Không hoạt động"});
-            }
+            categories.forEach(obj -> {
+                dtm.addRow(new Object[]{obj.getId(), obj.getName(), obj.isStatus() ? "Hoạt động" : "Không hoạt động"});
+            });
 
-            tblCategory.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-                @Override
-                public void valueChanged(ListSelectionEvent lse) {
-                    int position = tblCategory.getSelectedRow();
-                    if (position < 0) {
-                        position = 0;
-                    }
-
-                    category = categories.get(position);
+            tblCategory.getSelectionModel().addListSelectionListener((ListSelectionEvent lse) -> {
+                int position = tblCategory.getSelectedRow();
+                if (position < 0) {
+                    position = 0;
                 }
+
+                category = categories.get(position);
             });
 
             tblCategory.changeSelection(0, 0, false, false);
@@ -290,29 +296,28 @@ public class PnlCategory extends javax.swing.JPanel implements JDModify.Callback
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddMouseClicked
-        JDModify jdm = new JDModify(this.parent, true, this, null);
+        JDModifyCategory jdm = new JDModifyCategory(this.parent, true, dbUtil, this, null);
         jdm.setVisible(true);
     }//GEN-LAST:event_lblAddMouseClicked
 
     private void lblUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUpdateMouseClicked
-        JDModify jdm = new JDModify(this.parent, true, this, category);
+        JDModifyCategory jdm = new JDModifyCategory(this.parent, true, dbUtil, this, category);
         jdm.setVisible(true);
     }//GEN-LAST:event_lblUpdateMouseClicked
 
     private void lblSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSearchMouseClicked
-        JDSearch jds = new JDSearch(this.parent, true, this);
+        JDSearchCategory jds = new JDSearchCategory(this.parent, true, dbUtil, this);
         jds.setVisible(true);
     }//GEN-LAST:event_lblSearchMouseClicked
 
     private void lblDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDeleteMouseClicked
-        JDDelete jdd = new JDDelete(this.parent, true, this, category);
+        JDDeleteCategory jdd = new JDDeleteCategory(this.parent, true, dbUtil, this, category);
         jdd.setVisible(true);
     }//GEN-LAST:event_lblDeleteMouseClicked
 
     private void lblRefreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRefreshMouseClicked
         loading(null, null);
     }//GEN-LAST:event_lblRefreshMouseClicked
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;

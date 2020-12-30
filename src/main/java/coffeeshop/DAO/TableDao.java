@@ -16,8 +16,8 @@ public class TableDao implements GenericDao<Table> {
     PreparedStatement ps = null;
     ResultSet rs = null;
 
-    public TableDao() {
-        conn = new DbUtil().getInstance().getConnection();
+    public TableDao(DbUtil dbUtil) {
+        conn = dbUtil.getInstance().getConnection();
     }
 
     @Override

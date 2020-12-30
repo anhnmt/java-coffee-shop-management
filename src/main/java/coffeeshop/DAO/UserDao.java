@@ -11,12 +11,31 @@ import java.util.Map;
 
 public class UserDao implements GenericDao<User> {
 
+    Connection conn = null;
+    CallableStatement cs = null;
+    ResultSet rs = null;
+
+    public UserDao(DbUtil dbUtil) {
+        conn = dbUtil.getInstance().getConnection();
+    }
+
     @Override
     public List<User> getAll() {
-        List<User> list = new ArrayList<>();
-        String sql = "SELECT * FROM Users";
+        return null;
+    }
 
-        try (Connection conn = new DbUtil().getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+    public List<User> getAll(User user) {
+        List<User> list = new ArrayList<>();
+        String sql = "{CALL sp_getAllUser(?, ?, ?, ?)}";
+
+        try {
+            cs = conn.prepareCall(sql);
+            cs.setNString(1, user.getName());
+            cs.setString(2, user.getEmail());
+            cs.setInt(3, user.getRole());
+            cs.setBoolean(4, user.isStatus());
+            rs = cs.executeQuery();
+
             while (rs.next()) {
                 User obj = new User(
                         rs.getInt("id"),
@@ -40,7 +59,8 @@ public class UserDao implements GenericDao<User> {
         Map<String, Object> output = new HashMap<>();
         String sql = "{CALL sp_insertUser(?, ?, ?, ?, ?, ?, ?)}";
 
-        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
+        try {
+            cs = conn.prepareCall(sql);
             cs.setNString(1, user.getName());
             cs.setString(2, user.getEmail());
             cs.setString(3, user.getPassword());
@@ -62,22 +82,22 @@ public class UserDao implements GenericDao<User> {
     @Override
     public User read(int id) {
         User obj = null;
-        String sql = "SELECT * FROM Users WHERE id = ?";
+        String sql = "{CALL sp_getUserById(?)}";
 
-        try (Connection conn = new DbUtil().getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
+        try {
+            cs = conn.prepareCall(sql);
+            cs.setInt(1, id);
+            rs = cs.executeQuery();
 
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    obj = new User(
-                            rs.getInt("id"),
-                            rs.getNString("name"),
-                            rs.getString("email"),
-                            rs.getString("password"),
-                            rs.getInt("role"),
-                            rs.getBoolean("status")
-                    );
-                }
+            while (rs.next()) {
+                obj = new User(
+                        rs.getInt("id"),
+                        rs.getNString("name"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getInt("role"),
+                        rs.getBoolean("status")
+                );
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -91,7 +111,8 @@ public class UserDao implements GenericDao<User> {
         Map<String, Object> output = new HashMap<>();
         String sql = "{CALL sp_updateUser(?, ?, ?, ?, ?, ?, ?, ?)}";
 
-        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
+        try {
+            cs = conn.prepareCall(sql);
             cs.setInt(1, user.getId());
             cs.setNString(2, user.getName());
             cs.setString(3, user.getEmail());
@@ -116,7 +137,8 @@ public class UserDao implements GenericDao<User> {
         Map<String, Object> output = new HashMap<>();
         String sql = "{CALL sp_deleteUser(?, ?, ?)}";
 
-        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
+        try {
+            cs = conn.prepareCall(sql);
             cs.setInt(1, id);
             cs.registerOutParameter(2, Types.BIT);
             cs.registerOutParameter(3, Types.NVARCHAR);
@@ -135,23 +157,21 @@ public class UserDao implements GenericDao<User> {
         User obj = null;
         String sql = "{CALL sp_checkUser(?, ?)}";
 
-        try (
-                Connection conn = new DbUtil().getInstance().getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, email);
-            ps.setString(2, password);
+        try {
+            cs = conn.prepareCall(sql);
+            cs.setString(1, email);
+            cs.setString(2, password);
+            rs = cs.executeQuery();
 
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    obj = new User(
-                            rs.getInt("id"),
-                            rs.getNString("name"),
-                            rs.getString("email"),
-                            rs.getString("password"),
-                            rs.getInt("role"),
-                            rs.getBoolean("status")
-                    );
-                }
+            while (rs.next()) {
+                obj = new User(
+                        rs.getInt("id"),
+                        rs.getNString("name"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getInt("role"),
+                        rs.getBoolean("status")
+                );
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -12,6 +12,14 @@ import java.util.Map;
 
 public class BillDetailDao implements GenericDao<BillDetail> {
 
+    Connection conn = null;
+    CallableStatement cs = null;
+    ResultSet rs = null;
+
+    public BillDetailDao(DbUtil dbUtil) {
+        conn = dbUtil.getInstance().getConnection();
+    }
+
     @Override
     public List<BillDetail> getAll() {
         return null;
@@ -21,21 +29,20 @@ public class BillDetailDao implements GenericDao<BillDetail> {
         List<BillDetail> obj = new ArrayList<>();
         String sql = "{CALL sp_getBillDetailByBillId(?)}";
 
-        try ( Connection conn = new DbUtil().getInstance().getConnection();  CallableStatement cs = conn.prepareCall(sql)) {
+        try {
+            rs = cs.executeQuery();
             cs.setInt(1, bill_id);
 
-            try ( ResultSet rs = cs.executeQuery()) {
-                while (rs.next()) {
-                    BillDetail billDetail = new BillDetail(
-                            rs.getInt("bill_id"),
-                            rs.getInt("product_id"),
-                            rs.getInt("amount"),
-                            rs.getNString("product_name"),
-                            rs.getFloat("product_price")
-                    );
+            while (rs.next()) {
+                BillDetail billDetail = new BillDetail(
+                        rs.getInt("bill_id"),
+                        rs.getInt("product_id"),
+                        rs.getInt("amount"),
+                        rs.getNString("product_name"),
+                        rs.getFloat("product_price")
+                );
 
-                    obj.add(billDetail);
-                }
+                obj.add(billDetail);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -49,7 +56,8 @@ public class BillDetailDao implements GenericDao<BillDetail> {
         Map<String, Object> output = new HashMap<>();
         String sql = "{CALL sp_insertBillDetail(?, ?, ?, ?, ?)}";
 
-        try ( Connection conn = new DbUtil().getInstance().getConnection();  CallableStatement cs = conn.prepareCall(sql)) {
+        try {
+            cs = conn.prepareCall(sql);
             cs.setInt(1, billDetail.getBill_id());
             cs.setInt(2, billDetail.getProduct_id());
             cs.setInt(3, billDetail.getAmount());

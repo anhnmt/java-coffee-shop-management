@@ -4,22 +4,24 @@ import coffeeshop.GUI.Dashboard;
 
 import javax.swing.*;
 import java.sql.Connection;
-import java.sql.SQLException;
 
 public class MainClass {
 
     public static void main(String[] args) {
-        try (Connection conn = new DbUtil().getInstance().getConnection()) {
-            if (conn != null) {
-                System.out.println("Kết nối thành công");
+        try {
+            DbUtil dbUtil = new DbUtil();
+            Connection conn = dbUtil.getInstance().getConnection();
 
-                Dashboard dashboard = new Dashboard();
-                dashboard.setVisible(true);
-            } else {
+            if (Common.isNullOrEmpty(conn)) {
                 System.out.println("Kết nối không thành công");
                 JOptionPane.showMessageDialog(null, "Kết nối CSDL không thành công.", "Có lỗi xảy ra", JOptionPane.ERROR_MESSAGE);
+            } else {
+                System.out.println("Kết nối thành công");
+
+                Dashboard dashboard = new Dashboard(dbUtil);
+                dashboard.setVisible(true);
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

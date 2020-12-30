@@ -7,6 +7,7 @@ package coffeeshop.GUI.category;
 
 import coffeeshop.DTO.Category;
 import coffeeshop.DAO.CategoryDao;
+import coffeeshop.Util.DbUtil;
 import java.util.Map;
 import javax.swing.JOptionPane;
 
@@ -14,10 +15,12 @@ import javax.swing.JOptionPane;
  *
  * @author Minh
  */
-public class JDDelete extends javax.swing.JDialog {
+public class JDDeleteCategory extends javax.swing.JDialog {
 
     CallbackDelete callback;
     Category category;
+    DbUtil dbUtil;
+    CategoryDao categoryDao;
 
     interface CallbackDelete {
 
@@ -26,13 +29,21 @@ public class JDDelete extends javax.swing.JDialog {
 
     /**
      * Creates new form JDCategoryCreate
+     *
+     * @param parent
+     * @param modal
+     * @param dbUtil
+     * @param callback
+     * @param category
      */
-    public JDDelete(java.awt.Frame parent, boolean modal, CallbackDelete callback, Category category) {
+    public JDDeleteCategory(java.awt.Frame parent, boolean modal, DbUtil dbUtil, CallbackDelete callback, Category category) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
         this.callback = callback;
         this.category = category;
+        this.dbUtil = dbUtil;
+        this.categoryDao = new CategoryDao(dbUtil);
         lblConfirm.setText("Bạn có chắc chắn muốn xoá danh mục tên: " + category.getName());
 
     }
@@ -134,8 +145,8 @@ public class JDDelete extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        CategoryDao categoryDao = new CategoryDao();
         Map<String, Object> result = categoryDao.delete(category.getId());
+
         if ((boolean) result.get("status") == true) {
             JOptionPane.showMessageDialog(null, "Xoá danh mục thành công!");
             callback.actionDelete();
@@ -149,51 +160,6 @@ public class JDDelete extends javax.swing.JDialog {
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JDDelete.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JDDelete.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JDDelete.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JDDelete.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                JDDelete dialog = new JDDelete(new javax.swing.JFrame(), true, null, null);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;

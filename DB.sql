@@ -105,6 +105,49 @@ EXEC sp_checkUser 'admin@gmail.com', '123456';
 
 GO
 
+CREATE PROC sp_getAllUser
+(
+    @_name NVARCHAR(100) = NULL,
+    @_email VARCHAR(100) = NULL,
+    @_role TINYINT = NULL,
+    @_status BIT = NULL
+)
+AS
+DECLARE @sql NVARCHAR(MAX) = N'SELECT * FROM Users WHERE 1=1';
+
+IF (@_name IS NOT NULL)
+    SET @sql = CONCAT(@sql, N' AND name LIKE ''%', @_name, N'%''');
+
+IF (@_email IS NOT NULL)
+    SET @sql = CONCAT(@sql, N' AND email=', @_email);
+
+IF (@_role IS NOT NULL)
+    SET @sql = CONCAT(@sql, N' AND role=', @_role);
+
+IF (@_status IS NOT NULL)
+    SET @sql = CONCAT(@sql, N' AND status=', @_status);
+
+EXEC (@sql);
+
+GO
+
+EXEC sp_getAllUser;
+
+GO
+
+CREATE PROC sp_getUserById
+(
+    @_id INT
+)
+AS
+	SELECT * FROM Users WHERE id = @_id
+
+GO
+
+EXEC sp_getUserById 1;
+
+GO
+
 CREATE TABLE Categories
 (
     id INT PRIMARY KEY IDENTITY,
@@ -469,6 +512,19 @@ BEGIN CATCH
     SET @_outStt = 0;
     SET @_outMsg = ERROR_MESSAGE();
 END CATCH;
+
+GO
+
+CREATE PROC sp_getProductById
+(
+    @_id INT
+)
+AS
+	SELECT * FROM Products WHERE id = @_id
+
+GO
+
+EXEC sp_getProductById 1;
 
 GO
 
@@ -975,6 +1031,30 @@ END CATCH;
 GO
 
 --EXEC sp_insertBill @_user_id = 1, @_table_id = 1, @_status = true;
+
+GO
+
+CREATE PROC sp_getAllBill
+AS
+SELECT 
+       *
+FROM Bills
+
+GO
+
+CREATE PROC sp_getBillById
+(
+    @_id INT
+)
+AS
+SELECT 
+       *
+FROM Bills
+WHERE id = @_id;
+
+GO
+
+EXEC sp_getBillById 2;
 
 GO
 

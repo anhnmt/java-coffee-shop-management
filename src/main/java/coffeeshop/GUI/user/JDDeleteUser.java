@@ -7,6 +7,8 @@ package coffeeshop.GUI.user;
 
 import coffeeshop.DTO.User;
 import coffeeshop.DAO.UserDao;
+import coffeeshop.Util.Common;
+import coffeeshop.Util.DbUtil;
 import java.util.Map;
 import javax.swing.JOptionPane;
 
@@ -16,24 +18,35 @@ import javax.swing.JOptionPane;
  */
 public class JDDeleteUser extends javax.swing.JDialog {
 
-    CallbackDelete callback;
+    CallbackUserDelete callback;
     User user;
+    UserDao userDao;
 
-    interface CallbackDelete {
+    interface CallbackUserDelete {
 
-        public void actionDelete();
+        public void actionUserDelete();
     }
 
     /**
      * Creates new form JDCategoryCreate
+     *
+     * @param parent
+     * @param modal
+     * @param dbUtil
+     * @param callback
+     * @param user
      */
-    public JDDeleteUser(java.awt.Frame parent, boolean modal, CallbackDelete callback, User user) {
+    public JDDeleteUser(java.awt.Frame parent, boolean modal, DbUtil dbUtil, CallbackUserDelete callback, User user) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
         this.callback = callback;
         this.user = user;
-        lblConfirm.setText("Bạn có chắc chắn muốn xoá người dùng tên: " + user.getName());
+        this.userDao = new UserDao(dbUtil);
+
+        if (!Common.isNullOrEmpty(user)) {
+            lblConfirm.setText("Bạn có chắc chắn muốn xoá người dùng tên: " + user.getName());
+        }
 
     }
 
@@ -134,11 +147,11 @@ public class JDDeleteUser extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        UserDao userDao = new UserDao();
         Map<String, Object> result = userDao.delete(user.getId());
+
         if ((boolean) result.get("status") == true) {
             JOptionPane.showMessageDialog(null, "Xoá người dùng thành công!");
-            callback.actionDelete();
+            callback.actionUserDelete();
             dispose();
         } else {
             JOptionPane.showMessageDialog(null, "Xoá người dùng thất bại, lỗi: " + result.get("message") + "!");
@@ -149,63 +162,6 @@ public class JDDeleteUser extends javax.swing.JDialog {
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JDDeleteUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JDDeleteUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JDDeleteUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JDDeleteUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                JDDeleteUser dialog = new JDDeleteUser(new javax.swing.JFrame(), true, null, null);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;

@@ -11,27 +11,34 @@ import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import coffeeshop.DTO.User;
+import coffeeshop.Util.DbUtil;
 
 /**
  *
  * @author Minh
  */
-public class PnlProduct extends javax.swing.JPanel implements JDModifyProduct.CallbackModify, JDDeleteProduct.CallbackDelete, JDSearchProduct.CallbackSearch {
+public final class PnlProduct extends javax.swing.JPanel implements JDModifyProduct.CallbackModify, JDDeleteProduct.CallbackDelete, JDSearchProduct.CallbackSearch {
 
     Frame parent;
-    List<Product> products = new ArrayList<Product>();
+    DbUtil dbUtil;
+    List<Product> products = new ArrayList<>();
     Product product;
-    ProductDao productDao = new ProductDao();
+    ProductDao productDao;
 
     /**
      * Creates new form PnlCategory
+     *
+     * @param parent
+     * @param dbUtil
+     * @param user
      */
-    public PnlProduct(Frame parent, User user) {
+    public PnlProduct(Frame parent, DbUtil dbUtil, User user) {
         initComponents();
         this.parent = parent;
+        this.dbUtil = dbUtil;
+        this.productDao = new ProductDao(dbUtil);
         loading(null, null, null, null, null);
 
         if (user.getRole() != 1) {
@@ -49,20 +56,17 @@ public class PnlProduct extends javax.swing.JPanel implements JDModifyProduct.Ca
         DefaultTableModel dtm = new DefaultTableModel(columns, 0);
 
         if (!products.isEmpty()) {
-            for (Product product : products) {
-                dtm.addRow(new Object[]{product.getId(), product.getName(), product.getPrice(), product.getCategory_name(), product.isStatus() ? "Hoạt động" : "Không hoạt động"});
-            }
+            products.forEach(obj -> {
+                dtm.addRow(new Object[]{obj.getId(), obj.getName(), obj.getPrice(), obj.getCategory_name(), obj.isStatus() ? "Hoạt động" : "Không hoạt động"});
+            });
 
-            tblProduct.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-                @Override
-                public void valueChanged(ListSelectionEvent lse) {
-                    int position = tblProduct.getSelectedRow();
-                    if (position < 0) {
-                        position = 0;
-                    }
-
-                    product = products.get(position);
+            tblProduct.getSelectionModel().addListSelectionListener((ListSelectionEvent lse) -> {
+                int position = tblProduct.getSelectedRow();
+                if (position < 0) {
+                    position = 0;
                 }
+
+                product = products.get(position);
             });
 
             tblProduct.changeSelection(0, 0, false, false);
@@ -287,22 +291,22 @@ public class PnlProduct extends javax.swing.JPanel implements JDModifyProduct.Ca
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddMouseClicked
-        JDModifyProduct jdm = new JDModifyProduct(this.parent, true, this, null);
+        JDModifyProduct jdm = new JDModifyProduct(this.parent, true, dbUtil, this, null);
         jdm.setVisible(true);
     }//GEN-LAST:event_lblAddMouseClicked
 
     private void lblUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUpdateMouseClicked
-        JDModifyProduct jdm = new JDModifyProduct(this.parent, true, this, product);
+        JDModifyProduct jdm = new JDModifyProduct(this.parent, true, dbUtil, this, product);
         jdm.setVisible(true);
     }//GEN-LAST:event_lblUpdateMouseClicked
 
     private void lblSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSearchMouseClicked
-        JDSearchProduct jds = new JDSearchProduct(this.parent, true, this);
+        JDSearchProduct jds = new JDSearchProduct(this.parent, true, dbUtil, this);
         jds.setVisible(true);
     }//GEN-LAST:event_lblSearchMouseClicked
 
     private void lblDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDeleteMouseClicked
-        JDDeleteProduct jdd = new JDDeleteProduct(this.parent, true, this, product);
+        JDDeleteProduct jdd = new JDDeleteProduct(this.parent, true, dbUtil, this, product);
         jdd.setVisible(true);
     }//GEN-LAST:event_lblDeleteMouseClicked
 

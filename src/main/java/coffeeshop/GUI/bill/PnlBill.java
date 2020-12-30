@@ -213,17 +213,17 @@ public class PnlBill extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUpdateMouseClicked
-        JDModify jdm = new JDModify(this.parent, true);
+        JDModifyBill jdm = new JDModifyBill(this.parent, true);
         jdm.setVisible(true);
     }//GEN-LAST:event_lblUpdateMouseClicked
 
     private void lblSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSearchMouseClicked
-        JDSearch jds = new JDSearch(this.parent, true);
+        JDSearchBill jds = new JDSearchBill(this.parent, true);
         jds.setVisible(true);
     }//GEN-LAST:event_lblSearchMouseClicked
 
     private void lblDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDeleteMouseClicked
-        JDDelete jdd = new JDDelete(this.parent, true);
+        JDDeleteBill jdd = new JDDeleteBill(this.parent, true);
         jdd.setVisible(true);
     }//GEN-LAST:event_lblDeleteMouseClicked
 

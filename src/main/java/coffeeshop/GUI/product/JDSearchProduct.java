@@ -8,6 +8,7 @@ package coffeeshop.GUI.product;
 import coffeeshop.DAO.CategoryDao;
 import coffeeshop.DTO.Category;
 import coffeeshop.DTO.Product;
+import coffeeshop.Util.DbUtil;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
@@ -18,9 +19,11 @@ import javax.swing.DefaultComboBoxModel;
  */
 public final class JDSearchProduct extends javax.swing.JDialog {
 
+    DbUtil dbUtil;
     CallbackSearch callback;
     Product product;
     List<Category> categories = new ArrayList<>();
+    CategoryDao categoryDao;
 
     interface CallbackSearch {
 
@@ -29,19 +32,25 @@ public final class JDSearchProduct extends javax.swing.JDialog {
 
     /**
      * Creates new form JDCategoryCreate
+     *
+     * @param parent
+     * @param modal
+     * @param dbUtil
+     * @param callback
      */
-    public JDSearchProduct(java.awt.Frame parent, boolean modal, CallbackSearch callback) {
+    public JDSearchProduct(java.awt.Frame parent, boolean modal, DbUtil dbUtil, CallbackSearch callback) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
         this.callback = callback;
+        this.dbUtil = dbUtil;
+        this.categoryDao = new CategoryDao(dbUtil);
         loadCategory();
         loadSatus();
     }
 
     public void loadCategory() {
         cboCategory.removeAllItems();
-        CategoryDao categoryDao = new CategoryDao();
         categories = categoryDao.getAll();
         DefaultComboBoxModel<Category> dcbm = new DefaultComboBoxModel<>();
         dcbm.addElement(new Category(0, "Không chọn", true));

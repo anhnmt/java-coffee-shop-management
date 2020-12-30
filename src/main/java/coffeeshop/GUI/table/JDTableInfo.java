@@ -5,11 +5,9 @@
  */
 package coffeeshop.GUI.table;
 
-import coffeeshop.DAO.AreaDao;
 import coffeeshop.DAO.BillDao;
 import coffeeshop.DAO.BillDetailDao;
 import coffeeshop.DAO.ProductDao;
-import coffeeshop.DAO.TableDao;
 import coffeeshop.DTO.Area;
 import coffeeshop.DTO.Bill;
 import coffeeshop.DTO.BillDetail;
@@ -17,9 +15,12 @@ import coffeeshop.DTO.Product;
 import coffeeshop.DTO.Table;
 import coffeeshop.DTO.User;
 import coffeeshop.Util.Common;
+import coffeeshop.Util.DbUtil;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
@@ -37,6 +38,8 @@ public final class JDTableInfo extends javax.swing.JDialog {
         public void actionTableExit();
     }
 
+    DbUtil dbUtil;
+
     User user;
     Table table;
     Area area;
@@ -48,20 +51,21 @@ public final class JDTableInfo extends javax.swing.JDialog {
     List<Product> products = new ArrayList<>();
     List<BillDetail> billDetails = new ArrayList<>();
 
-    ProductDao productDao = new ProductDao();
-    BillDao billDao = new BillDao();
-    BillDetailDao billDetailDao = new BillDetailDao();
+    ProductDao productDao;
+    BillDao billDao;
+    BillDetailDao billDetailDao;
 
     /**
      * Creates new form JDBillDetail
      *
      * @param parent
      * @param modal
+     * @param dbUtil
      * @param callback
      * @param user
      * @param table
      */
-    public JDTableInfo(java.awt.Frame parent, boolean modal, CallbackTableExit callback, User user, Table table) {
+    public JDTableInfo(java.awt.Frame parent, boolean modal, DbUtil dbUtil, CallbackTableExit callback, User user, Table table) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
@@ -70,13 +74,27 @@ public final class JDTableInfo extends javax.swing.JDialog {
         this.user = user;
         this.table = table;
 
+        this.dbUtil = dbUtil;
+        this.productDao = new ProductDao(dbUtil);
+        this.billDao = new BillDao(dbUtil);
+        this.billDetailDao = new BillDetailDao(dbUtil);
+
         loadingProduct();
         loadingBill();
+
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                callback.actionTableExit();
+                dispose();
+            }
+        });
     }
 
     public void loadingProduct() {
         try {
             tblProduct.removeAll();
+            lblProductAmountError.setVisible(false);
             products = productDao.getAll(null, null, null, null, null);
 
             String columns[] = {"Id", "Tên sản phẩm", "Giá", "Tên danh mục"};
@@ -141,7 +159,6 @@ public final class JDTableInfo extends javax.swing.JDialog {
 
                 btnBook.setEnabled(false);
                 btnAddProduct.setEnabled(true);
-                btnCheckout.setEnabled(true);
                 loadingBillDetail();
             }
         } catch (Exception e) {
@@ -152,13 +169,16 @@ public final class JDTableInfo extends javax.swing.JDialog {
     public void loadingBillDetail() {
         try {
             tblBillDetail.removeAll();
+            btnCheckout.setEnabled(false);
             billDetails = billDetailDao.getAllByBillId(bill.getId());
 
             String columns[] = {"Id", "Tên sản phẩm", "Đơn giá", "Số lượng", "Thành tiền"};
             DefaultTableModel dtm = new DefaultTableModel(columns, 0);
             Float total_price = 0f;
 
-            if (!billDetails.isEmpty()) {
+            if (!Common.isNullOrEmpty(billDetails)) {
+                btnCheckout.setEnabled(true);
+
                 for (BillDetail obj : billDetails) {
                     float total = (float) (obj.getProduct_price() * obj.getAmount());
                     total_price += total;
@@ -206,6 +226,7 @@ public final class JDTableInfo extends javax.swing.JDialog {
         txtProductPrice = new javax.swing.JTextField();
         txtProductAmount = new javax.swing.JTextField();
         btnAddProduct = new javax.swing.JButton();
+        lblProductAmountError = new javax.swing.JLabel();
         pnlBill = new javax.swing.JPanel();
         lblBillId = new javax.swing.JLabel();
         txtBillId = new javax.swing.JTextField();
@@ -253,28 +274,36 @@ public final class JDTableInfo extends javax.swing.JDialog {
             }
         });
 
+        lblProductAmountError.setForeground(new java.awt.Color(240, 71, 71));
+        lblProductAmountError.setText("Không được để trống");
+
         javax.swing.GroupLayout pnlAddProductLayout = new javax.swing.GroupLayout(pnlAddProduct);
         pnlAddProduct.setLayout(pnlAddProductLayout);
         pnlAddProductLayout.setHorizontalGroup(
             pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlAddProductLayout.createSequentialGroup()
+            .addGroup(pnlAddProductLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblProductId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblProductName, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtProductId)
-                    .addComponent(txtProductName))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblProductPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblProductAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnAddProduct, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                    .addComponent(txtProductPrice, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                    .addComponent(txtProductAmount))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlAddProductLayout.createSequentialGroup()
+                        .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblProductId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblProductName, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtProductId, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
+                            .addComponent(txtProductName))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblProductPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblProductAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnAddProduct, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                            .addComponent(txtProductPrice, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                            .addComponent(txtProductAmount)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlAddProductLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(lblProductAmountError, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         pnlAddProductLayout.setVerticalGroup(
@@ -298,7 +327,9 @@ public final class JDTableInfo extends javax.swing.JDialog {
                         .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblProductName)
                             .addComponent(txtProductName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblProductAmountError)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAddProduct)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -469,7 +500,7 @@ public final class JDTableInfo extends javax.swing.JDialog {
                     .addComponent(pnlAddProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrollPaneProduct, javax.swing.GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE)
+                    .addComponent(scrollPaneProduct, javax.swing.GroupLayout.DEFAULT_SIZE, 431, Short.MAX_VALUE)
                     .addComponent(scrollPaneBillDetail))
                 .addContainerGap())
         );
@@ -504,7 +535,6 @@ public final class JDTableInfo extends javax.swing.JDialog {
             if ((boolean) billCreate.get("status") == true) {
                 btnBook.setEnabled(false);
                 btnAddProduct.setEnabled(true);
-                btnCheckout.setEnabled(true);
                 loadingBill();
             } else {
                 JOptionPane.showConfirmDialog(rootPane, billCreate.get("message"));
@@ -516,18 +546,51 @@ public final class JDTableInfo extends javax.swing.JDialog {
 
     private void btnAddProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddProductActionPerformed
         try {
-            billDetail = new BillDetail();
-            billDetail.setBill_id(bill.getId());
-            billDetail.setProduct_id(product.getId());
-            billDetail.setAmount(Integer.parseInt(txtProductAmount.getText()));
+            int amount = 0;
+            String product_amount = txtProductAmount.getText().trim();
+            boolean validate = true;
+            txtProductAmount.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(new Color(34, 36, 40)),
+                    BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+            lblProductAmount.setForeground(new Color(220, 221, 222));
+            lblProductAmountError.setVisible(false);
 
-            Map<String, Object> billDetailUpdate = billDetailDao.create(billDetail);
-
-            if ((boolean) billDetailUpdate.get("status") == true) {
-                loadingBillDetail();
-                txtProductAmount.setText("");
+            if (product_amount.equals("")) {
+                txtProductAmount.setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(new Color(240, 71, 71)),
+                        BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+                lblProductAmount.setForeground(new Color(240, 71, 71));
+                lblProductAmountError.setText("Số lượng không được để trống");
+                lblProductAmountError.setVisible(true);
+                validate = false;
             } else {
-                JOptionPane.showMessageDialog(rootPane, billDetailUpdate.get("message"));
+                amount = Integer.valueOf(product_amount);
+
+                if (amount <= 0) {
+                    txtProductAmount.setBorder(BorderFactory.createCompoundBorder(
+                            BorderFactory.createLineBorder(new Color(240, 71, 71)),
+                            BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+                    lblProductAmount.setForeground(new Color(240, 71, 71));
+                    lblProductAmountError.setText("Số lượng phải lớn hơn 0");
+                    lblProductAmountError.setVisible(true);
+                    validate = false;
+                }
+            }
+
+            if (validate == true) {
+                billDetail = new BillDetail();
+                billDetail.setBill_id(bill.getId());
+                billDetail.setProduct_id(product.getId());
+                billDetail.setAmount(amount);
+
+                Map<String, Object> billDetailUpdate = billDetailDao.create(billDetail);
+
+                if ((boolean) billDetailUpdate.get("status") == true) {
+                    loadingBillDetail();
+                    txtProductAmount.setText("");
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, billDetailUpdate.get("message"));
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -543,6 +606,7 @@ public final class JDTableInfo extends javax.swing.JDialog {
 
             if ((boolean) billCheckout.get("status") == true) {
                 loadingBill();
+                JOptionPane.showConfirmDialog(rootPane, billCheckout.get("message"));
             } else {
                 JOptionPane.showMessageDialog(rootPane, billCheckout.get("message"));
             }
@@ -550,59 +614,6 @@ public final class JDTableInfo extends javax.swing.JDialog {
             e.printStackTrace();
         }
     }//GEN-LAST:event_btnCheckoutActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JDTableInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JDTableInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JDTableInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JDTableInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(() -> {
-            User u = new User();
-            u.setId(1);
-
-            Table t = new Table();
-            t.setId(1);
-
-            JDTableInfo dialog = new JDTableInfo(new javax.swing.JFrame(), true, null, u, t);
-            dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                @Override
-                public void windowClosing(java.awt.event.WindowEvent e) {
-                    System.exit(0);
-                }
-            });
-            dialog.setVisible(true);
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddProduct;
@@ -613,6 +624,7 @@ public final class JDTableInfo extends javax.swing.JDialog {
     private javax.swing.JLabel lblBillId;
     private javax.swing.JLabel lblBillTime;
     private javax.swing.JLabel lblProductAmount;
+    private javax.swing.JLabel lblProductAmountError;
     private javax.swing.JLabel lblProductId;
     private javax.swing.JLabel lblProductName;
     private javax.swing.JLabel lblProductPrice;

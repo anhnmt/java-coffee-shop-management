@@ -9,8 +9,9 @@ import coffeeshop.DTO.Category;
 import coffeeshop.DTO.Product;
 import coffeeshop.DAO.CategoryDao;
 import coffeeshop.DAO.ProductDao;
+import coffeeshop.Util.Common;
+import coffeeshop.Util.DbUtil;
 import java.awt.Color;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,11 +23,14 @@ import javax.swing.JOptionPane;
  *
  * @author Minh
  */
-public class JDModifyProduct extends javax.swing.JDialog {
+public final class JDModifyProduct extends javax.swing.JDialog {
 
     Product product;
+    DbUtil dbUtil;
     CallbackModify callback;
-    List<Category> categories = new ArrayList<Category>();
+    List<Category> categories = new ArrayList<>();
+    CategoryDao categoryDao;
+    ProductDao productDao;
 
     interface CallbackModify {
 
@@ -35,15 +39,24 @@ public class JDModifyProduct extends javax.swing.JDialog {
 
     /**
      * Creates new form JDCategoryCreate
+     *
+     * @param parent
+     * @param modal
+     * @param dbUtil
+     * @param product
+     * @param callback
      */
-    public JDModifyProduct(java.awt.Frame parent, boolean modal, CallbackModify callback, Product product) {
+    public JDModifyProduct(java.awt.Frame parent, boolean modal, DbUtil dbUtil, CallbackModify callback, Product product) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
         loadCategory();
         this.callback = callback;
+        this.dbUtil = dbUtil;
+        this.categoryDao = new CategoryDao(dbUtil);
+        this.productDao = new ProductDao(dbUtil);
 
-        if (product != null) {
+        if (!Common.isNullOrEmpty(product)) {
             lblTitle.setText("Sửa đổi sản phẩm");
             btnModify.setText("Sửa đổi");
             this.product = product;
@@ -55,7 +68,6 @@ public class JDModifyProduct extends javax.swing.JDialog {
     }
 
     public void loadCategory() {
-        CategoryDao categoryDao = new CategoryDao();
         categories = categoryDao.getAll();
         DefaultComboBoxModel<Category> dcbm = new DefaultComboBoxModel<>();
         for (Category category : categories) {
@@ -278,7 +290,6 @@ public class JDModifyProduct extends javax.swing.JDialog {
                 product.setCategory_id(category_id);
                 product.setStatus(status);
 
-                ProductDao productDao = new ProductDao();
                 if (this.product == null) {
                     Map<String, Object> result = productDao.create(product);
 
@@ -307,63 +318,6 @@ public class JDModifyProduct extends javax.swing.JDialog {
         }
 
     }//GEN-LAST:event_btnModifyActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JDModifyProduct.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JDModifyProduct.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JDModifyProduct.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JDModifyProduct.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                JDModifyProduct dialog = new JDModifyProduct(new javax.swing.JFrame(), true, null, null);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnModify;

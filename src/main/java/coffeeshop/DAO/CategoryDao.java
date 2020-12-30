@@ -11,6 +11,14 @@ import java.util.Map;
 
 public class CategoryDao implements GenericDao<Category> {
 
+    Connection conn = null;
+    CallableStatement cs = null;
+    ResultSet rs = null;
+
+    public CategoryDao(DbUtil dbUtil) {
+        conn = dbUtil.getInstance().getConnection();
+    }
+
     @Override
     public List<Category> getAll() {
         List<Category> list = new ArrayList<>();

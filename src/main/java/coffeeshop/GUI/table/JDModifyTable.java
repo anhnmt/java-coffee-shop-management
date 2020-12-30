@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 import coffeeshop.DTO.Table;
 import coffeeshop.DAO.TableDao;
 import coffeeshop.Util.Common;
+import coffeeshop.Util.DbUtil;
 
 /**
  *
@@ -25,13 +26,14 @@ import coffeeshop.Util.Common;
 public final class JDModifyTable extends javax.swing.JDialog {
 
     CallbackTableModify callback;
+    DbUtil dbUtil;
 
     Table table;
     Area area;
     List<Area> areas = new ArrayList<>();
 
-    AreaDao areaDao = new AreaDao();
-    TableDao tableDao = new TableDao();
+    AreaDao areaDao;
+    TableDao tableDao;
 
     public interface CallbackTableModify {
 
@@ -47,19 +49,39 @@ public final class JDModifyTable extends javax.swing.JDialog {
      * @param table
      * @param area
      */
-    public JDModifyTable(java.awt.Frame parent, boolean modal, CallbackTableModify callback, Table table, Area area) {
+    public JDModifyTable(java.awt.Frame parent, boolean modal, DbUtil dbUtil, CallbackTableModify callback, Table table, Area area) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
         this.callback = callback;
         this.area = area;
         this.table = table;
+        this.dbUtil = dbUtil;
+
+        this.areaDao = new AreaDao(dbUtil);
+        this.tableDao = new TableDao(dbUtil);
         loadArea();
+
+        if (!Common.isNullOrEmpty(area)) {
+            areas.forEach(obj -> {
+                if (obj.getId() == area.getId()) {
+                    cboArea.setSelectedItem(obj);
+                }
+            });
+        }
 
         if (!Common.isNullOrEmpty(table)) {
             lblTitle.setText("Sửa đổi sản phẩm");
             btnModify.setText("Sửa đổi");
-            loadingData();
+            txtName.setText(table.getName());
+            rdoActive.setSelected(table.isStatus());
+            rdoNonActive.setSelected(table.isStatus() == false);
+
+            areas.forEach(obj -> {
+                if (obj.getId() == table.getArea_id()) {
+                    cboArea.setSelectedItem(obj);
+                }
+            });
         }
 
         lblNameError.setVisible(false);
@@ -68,19 +90,10 @@ public final class JDModifyTable extends javax.swing.JDialog {
     public void loadArea() {
         areas = areaDao.getAll();
         DefaultComboBoxModel<Area> dcbm = new DefaultComboBoxModel<>();
-        areas.forEach(obj -> dcbm.addElement(obj));
-        cboArea.setModel(dcbm);
-    }
-
-    public void loadingData() {
-        txtName.setText(table.getName());
-        rdoActive.setSelected(table.isStatus());
-        rdoNonActive.setSelected(table.isStatus() == false);
         areas.forEach(obj -> {
-            if (obj.getId() == table.getArea_id()) {
-                cboArea.setSelectedItem(obj);
-            }
+            dcbm.addElement(obj);
         });
+        cboArea.setModel(dcbm);
     }
 
     /**
@@ -273,77 +286,6 @@ public final class JDModifyTable extends javax.swing.JDialog {
         }
 
     }//GEN-LAST:event_btnModifyActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JDModifyTable.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JDModifyTable.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JDModifyTable.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JDModifyTable.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(() -> {
-            JDModifyTable dialog = new JDModifyTable(new javax.swing.JFrame(), true, null, null, null);
-            dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                @Override
-                public void windowClosing(java.awt.event.WindowEvent e) {
-                    System.exit(0);
-                }
-            });
-            dialog.setVisible(true);
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnModify;

@@ -11,12 +11,23 @@ import java.util.Map;
 
 public class AreaDao implements GenericDao<Area> {
 
+    Connection conn = null;
+    CallableStatement cs = null;
+    ResultSet rs = null;
+
+    public AreaDao(DbUtil dbUtil) {
+        conn = dbUtil.getInstance().getConnection();
+    }
+
     @Override
     public List<Area> getAll() {
         List<Area> list = new ArrayList<>();
         String sql = "{CALL sp_getAllArea}";
 
-        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql); ResultSet rs = cs.executeQuery()) {
+        try {
+            cs = conn.prepareCall(sql);
+            rs = cs.executeQuery();
+
             while (rs.next()) {
                 Area obj = new Area(
                         rs.getInt("id"),
@@ -37,7 +48,8 @@ public class AreaDao implements GenericDao<Area> {
         Map<String, Object> output = new HashMap<>();
         String sql = "{CALL sp_insertArea(?, ?, ?, ?)}";
 
-        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
+        try {
+            cs = conn.prepareCall(sql);
             cs.setNString(1, area.getName());
             cs.setBoolean(2, area.isStatus());
             cs.registerOutParameter(3, Types.BIT);
@@ -57,7 +69,8 @@ public class AreaDao implements GenericDao<Area> {
         Area obj = null;
         String sql = "{CALL sp_findAreaByName(?)}";
 
-        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
+        try {
+            cs = conn.prepareCall(sql);
             cs.setNString(1, name);
 
             try (ResultSet rs = cs.executeQuery()) {
@@ -81,7 +94,8 @@ public class AreaDao implements GenericDao<Area> {
         Map<String, Object> output = new HashMap<>();
         String sql = "{CALL sp_updateArea(?, ?, ?, ?, ?)}";
 
-        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
+        try {
+            cs = conn.prepareCall(sql);
             cs.setInt(1, area.getId());
             cs.setNString(2, area.getName());
             cs.setBoolean(3, area.isStatus());
@@ -103,7 +117,8 @@ public class AreaDao implements GenericDao<Area> {
         Map<String, Object> output = new HashMap<>();
         String sql = "{CALL sp_deleteArea(?, ?, ?)}";
 
-        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
+        try {
+            cs = conn.prepareCall(sql);
             cs.setInt(1, id);
             cs.registerOutParameter(2, Types.BIT);
             cs.registerOutParameter(3, Types.NVARCHAR);
@@ -120,6 +135,6 @@ public class AreaDao implements GenericDao<Area> {
 
     @Override
     public Area read(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 }

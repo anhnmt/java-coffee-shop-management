@@ -7,6 +7,8 @@ package coffeeshop.GUI.category;
 
 import coffeeshop.DAO.CategoryDao;
 import coffeeshop.DTO.Category;
+import coffeeshop.Util.Common;
+import coffeeshop.Util.DbUtil;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.util.Map;
@@ -17,27 +19,39 @@ import javax.swing.JOptionPane;
  *
  * @author Minh
  */
-public class JDModify extends javax.swing.JDialog {
+public final class JDModifyCategory extends javax.swing.JDialog {
 
     /**
      * Creates new form JDCategoryCreate
      */
     CallbackModify callback;
     Category category;
+    DbUtil dbUtil;
+    CategoryDao categoryDao;
 
     interface CallbackModify {
 
         public void actionModify();
     }
 
-    public JDModify(java.awt.Frame parent, boolean modal, CallbackModify callback, Category category) {
+    /**
+     *
+     * @param parent
+     * @param modal
+     * @param dbUtil
+     * @param callback
+     * @param category
+     */
+    public JDModifyCategory(java.awt.Frame parent, boolean modal, DbUtil dbUtil, CallbackModify callback, Category category) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
         lblNameError.setVisible(false);
         this.callback = callback;
-        System.out.println(category);
-        if (category != null) {
+        this.dbUtil = dbUtil;
+        this.categoryDao = new CategoryDao(dbUtil);
+
+        if (!Common.isNullOrEmpty(category)) {
             this.category = category;
             loadData();
         }
@@ -180,7 +194,6 @@ public class JDModify extends javax.swing.JDialog {
     private void btnModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyActionPerformed
         String name = txtName.getText().trim();
         boolean status = rdoActive.isSelected();
-        boolean validate = true;
 
         if (name.equals("")) {
             txtName.setBorder(BorderFactory.createCompoundBorder(
@@ -188,14 +201,13 @@ public class JDModify extends javax.swing.JDialog {
                     BorderFactory.createEmptyBorder(5, 8, 5, 8)));
             lblName.setForeground(new Color(240, 71, 71));
             lblNameError.setVisible(true);
-            validate = false;
         } else {
             try {
-                Category category = new Category();
                 if (this.category == null) {
+                    category = new Category();
                     category.setName(name);
                     category.setStatus(status);
-                    CategoryDao categoryDao = new CategoryDao();
+
                     Map<String, Object> result = categoryDao.create(category);
 
                     if ((boolean) result.get("status") == true) {
@@ -209,7 +221,7 @@ public class JDModify extends javax.swing.JDialog {
                     category.setId(this.category.getId());
                     category.setName(name);
                     category.setStatus(status);
-                    CategoryDao categoryDao = new CategoryDao();
+
                     Map<String, Object> result = categoryDao.update(category);
 
                     if ((boolean) result.get("status") == true) {
@@ -220,7 +232,6 @@ public class JDModify extends javax.swing.JDialog {
                         JOptionPane.showMessageDialog(null, "Sửa đổi danh mục thất bại, lỗi: " + result.get("message") + "!");
                     }
                 }
-
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -233,49 +244,6 @@ public class JDModify extends javax.swing.JDialog {
             btnModify.doClick();
         }
     }//GEN-LAST:event_txtNameKeyPressed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JDModify.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JDModify.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JDModify.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JDModify.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                JDModify dialog = new JDModify(new javax.swing.JFrame(), true, null, null);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnModify;

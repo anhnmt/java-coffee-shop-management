@@ -7,6 +7,8 @@ package coffeeshop.GUI.area;
 
 import coffeeshop.DAO.AreaDao;
 import coffeeshop.DTO.Area;
+import coffeeshop.Util.Common;
+import coffeeshop.Util.DbUtil;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.util.Map;
@@ -24,19 +26,24 @@ public class JDModifyArea extends javax.swing.JDialog {
      */
     CallbackAreaModify callback;
     Area area;
+    DbUtil dbUtil;
+    AreaDao areaDao;
 
     public interface CallbackAreaModify {
 
         public void actionAreaModify();
     }
 
-    public JDModifyArea(java.awt.Frame parent, boolean modal, CallbackAreaModify callback, Area area) {
+    public JDModifyArea(java.awt.Frame parent, boolean modal, DbUtil dbUtil, CallbackAreaModify callback, Area area) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
         lblNameError.setVisible(false);
         this.callback = callback;
-        if (area != null) {
+        this.dbUtil = dbUtil;
+        this.areaDao = new AreaDao(dbUtil);
+
+        if (!Common.isNullOrEmpty(area)) {
             this.area = area;
             loadData();
         }
@@ -179,7 +186,6 @@ public class JDModifyArea extends javax.swing.JDialog {
     private void btnModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyActionPerformed
         String name = txtName.getText().trim();
         boolean status = rdoActive.isSelected();
-        boolean validate = true;
 
         if (name.equals("")) {
             txtName.setBorder(BorderFactory.createCompoundBorder(
@@ -187,14 +193,12 @@ public class JDModifyArea extends javax.swing.JDialog {
                     BorderFactory.createEmptyBorder(5, 8, 5, 8)));
             lblName.setForeground(new Color(240, 71, 71));
             lblNameError.setVisible(true);
-            validate = false;
         } else {
             try {
-                Area area = new Area();
                 if (this.area == null) {
+                    area = new Area();
                     area.setName(name);
                     area.setStatus(status);
-                    AreaDao areaDao = new AreaDao();
                     Map<String, Object> result = areaDao.create(area);
 
                     if ((boolean) result.get("status") == true) {
@@ -208,7 +212,6 @@ public class JDModifyArea extends javax.swing.JDialog {
                     area.setId(this.area.getId());
                     area.setName(name);
                     area.setStatus(status);
-                    AreaDao areaDao = new AreaDao();
                     Map<String, Object> result = areaDao.update(area);
 
                     if ((boolean) result.get("status") == true) {
@@ -232,51 +235,6 @@ public class JDModifyArea extends javax.swing.JDialog {
             btnModify.doClick();
         }
     }//GEN-LAST:event_txtNameKeyPressed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JDModifyArea.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JDModifyArea.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JDModifyArea.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JDModifyArea.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                JDModifyArea dialog = new JDModifyArea(new javax.swing.JFrame(), true, null, null);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnModify;

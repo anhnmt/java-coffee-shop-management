@@ -28,6 +28,7 @@ import coffeeshop.DTO.Bill;
 import coffeeshop.GUI.table.JDDeleteTable;
 import coffeeshop.GUI.table.JDModifyTable;
 import coffeeshop.Util.Common;
+import coffeeshop.Util.DbUtil;
 import javax.swing.JPanel;
 
 /**
@@ -38,6 +39,8 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
 
     Frame parent;
     JPanel self;
+    DbUtil dbUtil;
+
     Area area = null;
     Table table = null;
     User user = null;
@@ -46,18 +49,27 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
     List<Area> areas = new ArrayList<>();
     List<Table> tables = new ArrayList<>();
 
-    AreaDao areaDao = new AreaDao();
-    TableDao tableDao = new TableDao();
-    BillDao billDao = new BillDao();
+    AreaDao areaDao;
+    TableDao tableDao;
+    BillDao billDao;
 
     /**
      * Creates new form PnlCategory
+     *
+     * @param parent
+     * @param dbUtil
+     * @param user
      */
-    public PnlArea(Frame parent, User user) {
+    public PnlArea(Frame parent, DbUtil dbUtil, User user) {
         initComponents();
         this.parent = parent;
         this.self = this;
+        this.dbUtil = dbUtil;
         this.user = user;
+
+        this.areaDao = new AreaDao(dbUtil);
+        this.tableDao = new TableDao(dbUtil);
+        this.billDao = new BillDao(dbUtil);
         loading();
 
         if (user.getRole() != 1) {
@@ -118,7 +130,7 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
         jl1.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                JDModifyTable jdma = new JDModifyTable(parent, true, (JDModifyTable.CallbackTableModify) self, null, area);
+                JDModifyTable jdma = new JDModifyTable(parent, true, dbUtil, (JDModifyTable.CallbackTableModify) self, null, area);
                 jdma.setVisible(true);
             }
         });
@@ -150,7 +162,7 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 table = tableDao.getTableByName(objTable.getName());
 
-                JDTableInfo jDTable = new JDTableInfo(parent, true, (JDTableInfo.CallbackTableExit) this, user, table);
+                JDTableInfo jDTable = new JDTableInfo(parent, true, dbUtil, (JDTableInfo.CallbackTableExit) self, user, table);
                 jDTable.setVisible(true);
             }
         });
@@ -310,12 +322,12 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddMouseClicked
-        JDModifyArea jdma = new JDModifyArea(parent, true, this, null);
+        JDModifyArea jdma = new JDModifyArea(parent, true, dbUtil, this, null);
         jdma.setVisible(true);
     }//GEN-LAST:event_lblAddMouseClicked
 
     private void lblUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUpdateMouseClicked
-        JDModifyArea jdma = new JDModifyArea(parent, true, this, area);
+        JDModifyArea jdma = new JDModifyArea(parent, true, dbUtil, this, area);
         jdma.setVisible(true);
     }//GEN-LAST:event_lblUpdateMouseClicked
 
@@ -323,11 +335,12 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
         if (tabbedPane.getComponents().length > 0) {
             String name = tabbedPane.getSelectedComponent().getName();
             area = areaDao.findByName(name);
+            System.out.println(area);
         }
     }//GEN-LAST:event_tabbedPaneMouseClicked
 
     private void lblDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDeleteMouseClicked
-        JDDeleteArea jdda = new JDDeleteArea(parent, true, this, area);
+        JDDeleteArea jdda = new JDDeleteArea(parent, true, dbUtil, this, area);
         jdda.setVisible(true);
     }//GEN-LAST:event_lblDeleteMouseClicked
 

@@ -11,12 +11,23 @@ import java.util.Map;
 
 public class BillDao implements GenericDao<Bill> {
 
+    Connection conn = null;
+    CallableStatement cs = null;
+    ResultSet rs = null;
+
+    public BillDao(DbUtil dbUtil) {
+        conn = dbUtil.getInstance().getConnection();
+    }
+
     @Override
     public List<Bill> getAll() {
         List<Bill> list = new ArrayList<>();
-        String sql = "SELECT * FROM Products";
+        String sql = "{CALL sp_getAllBill}";
 
-        try (Connection conn = new DbUtil().getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+        try {
+            cs = conn.prepareCall(sql);
+            rs = cs.executeQuery();
+
             while (rs.next()) {
                 Bill obj = new Bill(
                         rs.getInt("id"),
@@ -42,7 +53,8 @@ public class BillDao implements GenericDao<Bill> {
         Map<String, Object> output = new HashMap<>();
         String sql = "{CALL sp_insertBill(?, ?, ?, ?, ?, ?, ?, ?)}";
 
-        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
+        try {
+            cs = conn.prepareCall(sql);
             cs.setInt(1, bill.getUser_id());
             cs.setInt(2, bill.getTable_id());
             cs.setFloat(3, bill.getTotal_price());
@@ -65,24 +77,24 @@ public class BillDao implements GenericDao<Bill> {
     @Override
     public Bill read(int id) {
         Bill obj = null;
-        String sql = "SELECT * FROM Orders WHERE id = ?";
+        String sql = "{CALL sp_getBillById(?)}";
 
-        try (Connection conn = new DbUtil().getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
+        try {
+            cs = conn.prepareCall(sql);
+            cs.setInt(1, id);
+            rs = cs.executeQuery();
 
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    obj = new Bill(
-                            rs.getInt("id"),
-                            rs.getInt("user_id"),
-                            rs.getInt("table_id"),
-                            rs.getFloat("total_price"),
-                            rs.getFloat("discount"),
-                            rs.getNString("note"),
-                            rs.getBoolean("status"),
-                            rs.getString("created_at")
-                    );
-                }
+            while (rs.next()) {
+                obj = new Bill(
+                        rs.getInt("id"),
+                        rs.getInt("user_id"),
+                        rs.getInt("table_id"),
+                        rs.getFloat("total_price"),
+                        rs.getFloat("discount"),
+                        rs.getNString("note"),
+                        rs.getBoolean("status"),
+                        rs.getString("created_at")
+                );
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -96,8 +108,9 @@ public class BillDao implements GenericDao<Bill> {
         Map<String, Object> output = new HashMap<>();
         String sql = "{CALL sp_updateBill(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 
-        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
-            cs.setInt(1, bill.getId()); 
+        try {
+            cs = conn.prepareCall(sql);
+            cs.setInt(1, bill.getId());
             cs.setInt(2, bill.getUser_id());
             cs.setInt(3, bill.getTable_id());
             cs.setFloat(4, bill.getTotal_price());
@@ -126,7 +139,8 @@ public class BillDao implements GenericDao<Bill> {
         Bill obj = null;
         String sql = "{CALL sp_getBillByTableId(?, ?)}";
 
-        try (Connection conn = new DbUtil().getInstance().getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
+        try {
+            cs = conn.prepareCall(sql);
             cs.setInt(1, table_id);
 
             if (status == null) {
@@ -135,19 +149,18 @@ public class BillDao implements GenericDao<Bill> {
                 cs.setBoolean(2, status);
             }
 
-            try (ResultSet rs = cs.executeQuery()) {
-                while (rs.next()) {
-                    obj = new Bill(
-                            rs.getInt("id"),
-                            rs.getInt("user_id"),
-                            rs.getInt("table_id"),
-                            rs.getFloat("total_price"),
-                            rs.getFloat("discount"),
-                            rs.getNString("note"),
-                            rs.getBoolean("status"),
-                            rs.getString("created_at")
-                    );
-                }
+            rs = cs.executeQuery();
+            while (rs.next()) {
+                obj = new Bill(
+                        rs.getInt("id"),
+                        rs.getInt("user_id"),
+                        rs.getInt("table_id"),
+                        rs.getFloat("total_price"),
+                        rs.getFloat("discount"),
+                        rs.getNString("note"),
+                        rs.getBoolean("status"),
+                        rs.getString("created_at")
+                );
             }
         } catch (SQLException e) {
             e.printStackTrace();

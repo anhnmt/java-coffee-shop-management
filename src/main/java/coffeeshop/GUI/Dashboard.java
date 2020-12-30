@@ -11,6 +11,8 @@ import coffeeshop.GUI.area.PnlArea;
 import coffeeshop.GUI.user.PnlUser;
 import coffeeshop.GUI.category.PnlCategory;
 import coffeeshop.GUI.product.PnlProduct;
+import coffeeshop.Util.Common;
+import coffeeshop.Util.DbUtil;
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
@@ -20,25 +22,26 @@ import javax.swing.JFrame;
  *
  * @author Rahmans
  */
-public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLogin {
+public final class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLogin {
 
     static boolean maximized = true;
     int xMouse;
     int yMouse;
     User user;
     JDLogin jDLogin;
+    DbUtil dbUtil;
 
-    public Dashboard() {
+    public Dashboard(DbUtil dbUtil) {
         initComponents();
         loadUser(null);
+        this.dbUtil = dbUtil;
 
-        JDLogin jDLogin = new JDLogin(this, true, this);
-        this.jDLogin = jDLogin;
+        this.jDLogin = new JDLogin(this, true, dbUtil, this);
         jDLogin.setVisible(true);
     }
 
     public void loadUser(User user) {
-        if (user != null) {
+        if (!Common.isNullOrEmpty(user)) {
             this.user = user;
             lblName.setText(user.getName().toUpperCase());
             lblEmail.setText(user.getEmail());
@@ -487,7 +490,7 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
         lblBill.setBackground(new Color(255, 255, 255));
         lblUser.setBackground(new Color(255, 255, 255));
         pnlBody.removeAll();
-        PnlCategory pnl = new PnlCategory(this, user);
+        PnlCategory pnl = new PnlCategory(this, dbUtil, user);
 //        pnl.setVisible(true);
         pnlBody.add(pnl);
         pnlBody.repaint();
@@ -503,7 +506,8 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
         lblBill.setBackground(new Color(255, 255, 255));
         lblUser.setBackground(new Color(255, 255, 255));
         pnlBody.removeAll();
-        PnlProduct pnl = new PnlProduct(this, user);
+
+        PnlProduct pnl = new PnlProduct(this, dbUtil, user);
 //        pnl.setVisible(true);
         pnlBody.add(pnl);
         pnlBody.repaint();
@@ -551,7 +555,7 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
         lblProduct.setBackground(new Color(255, 255, 255));
         lblUser.setBackground(new Color(255, 255, 255));
         pnlBody.removeAll();
-        PnlArea pnl = new PnlArea(this, user);
+        PnlArea pnl = new PnlArea(this, dbUtil, user);
 //        pnl.setVisible(true);
         pnlBody.add(pnl);
         pnlBody.repaint();
@@ -573,46 +577,12 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
         lblCategory.setBackground(new Color(255, 255, 255));
         lblProduct.setBackground(new Color(255, 255, 255));
         pnlBody.removeAll();
-        PnlUser pnl = new PnlUser(this, user);
+
+        PnlUser pnl = new PnlUser(this, dbUtil, user);
         pnlBody.add(pnl);
         pnlBody.repaint();
         pnlBody.revalidate();
     }//GEN-LAST:event_btnUserActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Windows".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Dashboard().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnArea;
