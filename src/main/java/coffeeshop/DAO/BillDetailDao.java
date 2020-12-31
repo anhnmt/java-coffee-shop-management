@@ -76,7 +76,25 @@ public class BillDetailDao implements GenericDao<BillDetail> {
 
     @Override
     public Map<String, Object> update(BillDetail billDetail) {
-        return null;
+        Map<String, Object> output = new HashMap<>();
+        String sql = "{CALL sp_updateBillDetail(?, ?, ?, ?, ?)}";
+
+        try {
+            cs = conn.prepareCall(sql);
+            cs.setInt(1, billDetail.getBill_id());
+            cs.setInt(2, billDetail.getProduct_id());
+            cs.setInt(3, billDetail.getAmount());
+            cs.registerOutParameter(4, Types.BIT);
+            cs.registerOutParameter(5, Types.NVARCHAR);
+            cs.execute();
+
+            output.put("status", cs.getBoolean(4));
+            output.put("message", cs.getNString(5));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return output;
     }
 
     @Override

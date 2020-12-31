@@ -1034,6 +1034,60 @@ GO
 
 GO
 
+CREATE PROC sp_updateBillDetail
+(
+    @_bill_id INT,
+    @_product_id INT,
+    @_amount INT,
+    @_outStt BIT = 1 OUTPUT,
+    @_outMsg NVARCHAR(200) = '' OUTPUT
+)
+AS
+BEGIN TRY
+    IF NOT EXISTS (SELECT id FROM Bills WHERE id = @_bill_id)
+    BEGIN
+        SET @_outStt = 0;
+        SET @_outMsg = N'Mã đơn hàng không tồn tại, vui lòng nhập lại';
+    END;
+    ELSE IF NOT EXISTS (SELECT id FROM Products WHERE id = @_product_id)
+    BEGIN
+        SET @_outStt = 0;
+        SET @_outMsg = N'Mã sản phẩm không tồn tại, vui lòng nhập lại';
+    END;
+    ELSE IF @_amount < 1
+    BEGIN
+        SET @_outStt = 0;
+        SET @_outMsg = N'Số lượng sản phẩm phải lớn hơn 0';
+    END;
+    ELSE IF NOT EXISTS
+         (
+             SELECT *
+             FROM BillDetail
+             WHERE bill_id = @_bill_id
+                   AND product_id = @_product_id
+         )
+    BEGIN
+        SET @_outStt = 0;
+        SET @_outMsg = N'Sản phẩm không có trong hoá đơn';
+    END;
+    ELSE
+    BEGIN
+        UPDATE BillDetail
+        SET amount = @_amount
+        WHERE bill_id = @_bill_id
+              AND product_id = @_product_id;
+
+        SET @_outStt = 1;
+        SET @_outMsg = N'Cập nhật chi tiết hoá đơn thành công';
+    END;
+END TRY
+BEGIN CATCH
+    SET @_outStt = 0;
+    SET @_outMsg = N'Cập nhật không thành công: ' + ERROR_MESSAGE();
+END CATCH;
+
+GO
+
 CREATE PROC sp_deleteBillDetail
 (
     @_bill_id INT,

@@ -6,18 +6,20 @@
 package coffeeshop.GUI.table;
 
 import coffeeshop.DAO.AreaDao;
+import coffeeshop.DAO.BillDetailDao;
 import coffeeshop.DTO.Area;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import coffeeshop.DTO.Table;
 import coffeeshop.DAO.TableDao;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
+import coffeeshop.DTO.BillDetail;
+import javax.swing.JDialog;
 
 /**
  *
@@ -25,19 +27,15 @@ import coffeeshop.Util.DbUtil;
  */
 public final class JDModifyBillDetail extends javax.swing.JDialog {
 
-    CallbackTableModify callback;
+    CallbackBillDetailModify callback;
     DbUtil dbUtil;
 
-    Table table;
-    Area area;
-    List<Area> areas = new ArrayList<>();
+    BillDetail billDetail = null;
+    BillDetailDao billDetailDao = null;
 
-    AreaDao areaDao;
-    TableDao tableDao;
+    public interface CallbackBillDetailModify {
 
-    public interface CallbackTableModify {
-
-        public void actionTableModify();
+        public void actionBillDetailModify();
     }
 
     /**
@@ -47,54 +45,35 @@ public final class JDModifyBillDetail extends javax.swing.JDialog {
      * @param modal
      * @param dbUtil
      * @param callback
-     * @param table
-     * @param area
+     * @param billDetail
      */
-    public JDModifyBillDetail(java.awt.Frame parent, boolean modal, DbUtil dbUtil, CallbackTableModify callback, Table table, Area area) {
+    public JDModifyBillDetail(JDialog parent, boolean modal, DbUtil dbUtil, CallbackBillDetailModify callback, BillDetail billDetail) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
         this.callback = callback;
-        this.area = area;
-        this.table = table;
+        this.billDetail = billDetail;
         this.dbUtil = dbUtil;
+        this.billDetailDao = new BillDetailDao(dbUtil);
 
-        this.areaDao = new AreaDao(dbUtil);
-        this.tableDao = new TableDao(dbUtil);
-        loadArea();
-
-        if (!Common.isNullOrEmpty(area)) {
-            areas.forEach(obj -> {
-                if (obj.getId() == area.getId()) {
-                    cboArea.setSelectedItem(obj);
-                }
-            });
+        if (!Common.isNullOrEmpty(billDetail)) {
+//            lblTitle.setText("Sửa đổi sản phẩm");
+//            btnModify.setText("Sửa đổi");
+            txtProductName.setText(billDetail.getProduct_name());
+            txtProductPrice.setText(String.valueOf(billDetail.getProduct_price()));
+            txtProductAmount.setText(String.valueOf(billDetail.getAmount()));
         }
 
-        if (!Common.isNullOrEmpty(table)) {
-            lblTitle.setText("Sửa đổi sản phẩm");
-            btnModify.setText("Sửa đổi");
-            txtName.setText(table.getName());
-            rdoActive.setSelected(table.getStatus());
-            rdoNonActive.setSelected(table.getStatus() == false);
-
-            areas.forEach(obj -> {
-                if (obj.getId() == table.getArea_id()) {
-                    cboArea.setSelectedItem(obj);
-                }
-            });
-        }
-
-        lblNameError.setVisible(false);
-    }
-
-    public void loadArea() {
-        areas = areaDao.getAll();
-        DefaultComboBoxModel<Area> dcbm = new DefaultComboBoxModel<>();
-        areas.forEach(obj -> {
-            dcbm.addElement(obj);
-        });
-        cboArea.setModel(dcbm);
+        txtProductName.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(240, 240, 240)),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+        txtProductPrice.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(240, 240, 240)),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+        txtProductAmount.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(240, 240, 240)),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+        lblProductAmountError.setVisible(false);
     }
 
     /**
@@ -109,51 +88,34 @@ public final class JDModifyBillDetail extends javax.swing.JDialog {
         buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         lblTitle = new javax.swing.JLabel();
-        lblName = new javax.swing.JLabel();
-        txtName = new javax.swing.JTextField();
-        lblStatus = new javax.swing.JLabel();
-        rdoActive = new javax.swing.JRadioButton();
-        rdoNonActive = new javax.swing.JRadioButton();
+        lblProductName = new javax.swing.JLabel();
+        txtProductName = new javax.swing.JTextField();
         btnModify = new javax.swing.JButton();
-        lblArea = new javax.swing.JLabel();
-        cboArea = new javax.swing.JComboBox<>();
-        lblNameError = new javax.swing.JLabel();
+        lblProductPrice = new javax.swing.JLabel();
+        txtProductPrice = new javax.swing.JTextField();
+        lblProductAmountError = new javax.swing.JLabel();
+        txtProductAmount = new javax.swing.JTextField();
+        lblProductAmount = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("SỬA THÔNG TIN HOÁ ĐƠN");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        lblTitle.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
+        lblTitle.setFont(new java.awt.Font("Segoe UI Semibold", 0, 24)); // NOI18N
         lblTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_product_50px_2.png"))); // NOI18N
-        lblTitle.setText("THÊM MỚI BÀN");
+        lblTitle.setText("SỬA THÔNG TIN HOÁ ĐƠN");
 
-        lblName.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        lblName.setText("Tên bàn");
+        lblProductName.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        lblProductName.setText("Tên sản phẩm");
 
-        lblStatus.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        lblStatus.setText("Trạng thái");
-
-        rdoActive.setBackground(new java.awt.Color(255, 255, 255));
-        buttonGroup1.add(rdoActive);
-        rdoActive.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        rdoActive.setSelected(true);
-        rdoActive.setText("Hoạt động");
-
-        rdoNonActive.setBackground(new java.awt.Color(255, 255, 255));
-        buttonGroup1.add(rdoNonActive);
-        rdoNonActive.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        rdoNonActive.setText("Không hoạt động");
-        rdoNonActive.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rdoNonActiveActionPerformed(evt);
-            }
-        });
+        txtProductName.setEditable(false);
 
         btnModify.setBackground(new java.awt.Color(0, 204, 106));
         btnModify.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnModify.setForeground(new java.awt.Color(255, 255, 255));
-        btnModify.setText("Thêm mới");
+        btnModify.setText("Cập nhật");
         btnModify.setBorderPainted(false);
         btnModify.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnModify.addActionListener(new java.awt.event.ActionListener() {
@@ -162,11 +124,16 @@ public final class JDModifyBillDetail extends javax.swing.JDialog {
             }
         });
 
-        lblArea.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        lblArea.setText("Khu vực");
+        lblProductPrice.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        lblProductPrice.setText("Đơn giá");
 
-        lblNameError.setForeground(new java.awt.Color(240, 71, 71));
-        lblNameError.setText("Không được để trống");
+        txtProductPrice.setEditable(false);
+
+        lblProductAmountError.setForeground(new java.awt.Color(240, 71, 71));
+        lblProductAmountError.setText("Không được để trống");
+
+        lblProductAmount.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        lblProductAmount.setText("Số lượng");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -176,20 +143,16 @@ public final class JDModifyBillDetail extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtName)
-                    .addComponent(lblArea, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cboArea, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtProductName)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 427, Short.MAX_VALUE)
                         .addComponent(btnModify, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(lblNameError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(rdoActive, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(rdoNonActive, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                    .addComponent(lblProductName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblProductPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtProductPrice)
+                    .addComponent(lblProductAmountError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtProductAmount)
+                    .addComponent(lblProductAmount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -198,22 +161,20 @@ public final class JDModifyBillDetail extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(lblTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(lblName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addComponent(lblProductPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblNameError)
+                .addComponent(txtProductPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addComponent(lblProductAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtProductAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblProductAmountError)
                 .addGap(18, 18, 18)
-                .addComponent(lblArea, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cboArea, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(lblStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rdoActive)
-                    .addComponent(rdoNonActive))
-                .addGap(35, 35, 35)
                 .addComponent(btnModify, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -232,74 +193,77 @@ public final class JDModifyBillDetail extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void rdoNonActiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoNonActiveActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rdoNonActiveActionPerformed
-
     private void btnModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyActionPerformed
-        String name = (String) txtName.getText().trim();
-        int area_id = ((Area) cboArea.getSelectedItem()).getId();
-        boolean status = (boolean) rdoActive.isSelected();
         boolean validate = true;
+        lblProductAmountError.setVisible(false);
+        txtProductAmount.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(240, 240, 240)),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+        lblProductAmount.setForeground(new Color(0, 0, 0));
 
-        if (name.equals("")) {
-            txtName.setBorder(BorderFactory.createCompoundBorder(
+        String amount = (String) txtProductAmount.getText().trim();
+        int product_amount = Integer.parseInt(amount);
+
+        if (Common.isNullOrEmpty(amount)) {
+            txtProductAmount.setBorder(BorderFactory.createCompoundBorder(
                     BorderFactory.createLineBorder(new Color(240, 71, 71)),
                     BorderFactory.createEmptyBorder(5, 8, 5, 8)));
-            lblName.setForeground(new Color(240, 71, 71));
-            lblNameError.setVisible(true);
+            lblProductAmount.setForeground(new Color(240, 71, 71));
+            lblProductAmountError.setVisible(true);
+            lblProductAmountError.setText("Sô lượng không được để trống");
             validate = false;
         }
 
+        if (!Common.isInteger(amount)) {
+            txtProductAmount.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(new Color(240, 71, 71)),
+                    BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+            lblProductAmount.setForeground(new Color(240, 71, 71));
+            lblProductAmountError.setVisible(true);
+            lblProductAmountError.setText("Sô lượng phải là kiểu số nguyên");
+            validate = false;
+        } else {
+            if (product_amount <= 0) {
+                txtProductAmount.setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(new Color(240, 71, 71)),
+                        BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+                lblProductAmount.setForeground(new Color(240, 71, 71));
+                lblProductAmountError.setVisible(true);
+                lblProductAmountError.setText("Sô lượng phải lớn hơn 0");
+                validate = false;
+            }
+        }
+
         if (validate == true) {
-            lblNameError.setVisible(false);
             try {
-                Table objTable = new Table();
-                objTable.setName(name);
-                objTable.setArea_id(area_id);
-                objTable.setStatus(status);
+                billDetail.setAmount(product_amount);
 
-                if (Common.isNullOrEmpty(table)) {
-                    Map<String, Object> result = tableDao.create(objTable);
-
-                    if ((boolean) result.get("status") == true) {
-                        JOptionPane.showMessageDialog(null, "Thêm bàn thành công!");
-                        callback.actionTableModify();
-                        dispose();
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Thêm bàn thất bại, lỗi: " + result.get("message") + "!");
-                    }
+                Map<String, Object> result = billDetailDao.update(billDetail);
+                if ((boolean) result.get("status") == true) {
+                    JOptionPane.showMessageDialog(this, "Cập nhật thông tin hoá đơn thành công!");
+                    callback.actionBillDetailModify();
+                    dispose();
                 } else {
-                    objTable.setId(table.getId());
-                    Map<String, Object> result = tableDao.update(objTable);
-                    if ((boolean) result.get("status") == true) {
-                        JOptionPane.showMessageDialog(null, "Sửa bàn thành công!");
-                        callback.actionTableModify();
-                        dispose();
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Sửa bàn thất bại, lỗi: " + result.get("message") + "!");
-                    }
+                    JOptionPane.showMessageDialog(this, "Cập nhật thất bại, lỗi: " + result.get("message") + "!");
                 }
 
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
-
     }//GEN-LAST:event_btnModifyActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnModify;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JComboBox<Area> cboArea;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel lblArea;
-    private javax.swing.JLabel lblName;
-    private javax.swing.JLabel lblNameError;
-    private javax.swing.JLabel lblStatus;
+    private javax.swing.JLabel lblProductAmount;
+    private javax.swing.JLabel lblProductAmountError;
+    private javax.swing.JLabel lblProductName;
+    private javax.swing.JLabel lblProductPrice;
     private javax.swing.JLabel lblTitle;
-    private javax.swing.JRadioButton rdoActive;
-    private javax.swing.JRadioButton rdoNonActive;
-    private javax.swing.JTextField txtName;
+    private javax.swing.JTextField txtProductAmount;
+    private javax.swing.JTextField txtProductName;
+    private javax.swing.JTextField txtProductPrice;
     // End of variables declaration//GEN-END:variables
 }

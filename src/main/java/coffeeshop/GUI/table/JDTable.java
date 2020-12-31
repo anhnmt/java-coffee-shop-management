@@ -17,7 +17,6 @@ import coffeeshop.DTO.User;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
 import java.awt.Color;
-import java.awt.Frame;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,19 +24,23 @@ import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author TUANANH-PC
  */
-public final class JDTable extends javax.swing.JDialog implements JDDeleteBillDetail.CallbackBillDetailDelete {
+public final class JDTable extends javax.swing.JDialog implements JDModifyBillDetail.CallbackBillDetailModify, JDDeleteBillDetail.CallbackBillDetailDelete {
 
     CallbackTableExit callback;
 
     @Override
     public void actionBillDetailDelete() {
+        loadingBill();
+    }
+
+    @Override
+    public void actionBillDetailModify() {
         loadingBill();
     }
 
@@ -90,14 +93,6 @@ public final class JDTable extends javax.swing.JDialog implements JDDeleteBillDe
 
         loadingProduct();
         loadingBill();
-
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent e) {
-                callback.actionTableExit();
-                dispose();
-            }
-        });
     }
 
     public void loadingProduct() {
@@ -271,6 +266,11 @@ public final class JDTable extends javax.swing.JDialog implements JDDeleteBillDe
         popupMenu.add(menuItemDelete);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -404,7 +404,6 @@ public final class JDTable extends javax.swing.JDialog implements JDDeleteBillDe
         txtTotalPrice.setFocusable(false);
 
         lblVND.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        lblVND.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         lblVND.setText("VNĐ");
 
         lblTotalPrice.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
@@ -667,6 +666,10 @@ public final class JDTable extends javax.swing.JDialog implements JDDeleteBillDe
 
     private void menuItemEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemEditActionPerformed
         System.out.println("bill detail: " + billDetail);
+        if (!Common.isNullOrEmpty(billDetail)) {
+            JDModifyBillDetail dModifyBillDetail = new JDModifyBillDetail(this, true, dbUtil, this, billDetail);
+            dModifyBillDetail.setVisible(true);
+        }
     }//GEN-LAST:event_menuItemEditActionPerformed
 
     private void tblBillDetailMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBillDetailMouseClicked
@@ -682,6 +685,11 @@ public final class JDTable extends javax.swing.JDialog implements JDDeleteBillDe
             jDDeleteBillDetail.setVisible(true);
         }
     }//GEN-LAST:event_menuItemDeleteActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        callback.actionTableExit();
+        dispose();
+    }//GEN-LAST:event_formWindowClosing
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddProduct;
