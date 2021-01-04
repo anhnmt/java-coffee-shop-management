@@ -122,11 +122,11 @@ public final class JDTable extends javax.swing.JDialog implements JDModifyBillDe
                         txtProductAmount.setText("");
                     }
                 });
+
+                tblProduct.changeSelection(0, 0, false, false);
             }
 
             tblProduct.setModel(dtm);
-            tblProduct.changeSelection(0, 0, false, false);
-            tblProduct.setRowSelectionInterval(0, 0);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -198,11 +198,11 @@ public final class JDTable extends javax.swing.JDialog implements JDModifyBillDe
                         billDetail = billDetails.get(position);
                     }
                 });
+
+                tblBillDetail.changeSelection(0, 0, false, false);
             }
 
             tblBillDetail.setModel(dtm);
-            tblBillDetail.changeSelection(0, 0, false, false);
-            tblProduct.setRowSelectionInterval(0, 0);
         } catch (Exception e) {
             e.printStackTrace();
         }

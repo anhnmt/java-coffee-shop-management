@@ -24,10 +24,29 @@ public class BillDao implements IBillDao {
     @Override
     public List<Bill> getAll(Bill bill) {
         List<Bill> list = new ArrayList<>();
-        String sql = "{CALL sp_getAllBill}";
+        String sql = "{CALL sp_getAllBill(?, ?, ?, ?)}";
 
         try {
             cs = conn.prepareCall(sql);
+            cs.setNull(1, Types.INTEGER);
+            cs.setNull(2, Types.INTEGER);
+            cs.setNull(3, Types.INTEGER);
+            cs.setNull(4, Types.BOOLEAN);
+
+            if (!Common.isNullOrEmpty(bill)) {
+                if (!Common.isNullOrEmpty(bill.getId())) {
+                    cs.setInt(1, bill.getId());
+                }
+                if (!Common.isNullOrEmpty(bill.getUser_id())) {
+                    cs.setInt(2, bill.getUser_id());
+                }
+                if (!Common.isNullOrEmpty(bill.getTable_id())) {
+                    cs.setInt(3, bill.getTable_id());
+                }
+                if (!Common.isNullOrEmpty(bill.getStatus())) {
+                    cs.setBoolean(4, bill.getStatus());
+                }
+            }
             rs = cs.executeQuery();
 
             while (rs.next()) {

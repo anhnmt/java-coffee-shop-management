@@ -22,7 +22,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Minh
  */
-public class PnlBill extends javax.swing.JPanel implements JDDeleteBill.CallbackBillDelete {
+public class PnlBill extends javax.swing.JPanel implements JDSearchBill.CallbackBillSearch, JDDeleteBill.CallbackBillDelete, JDBill.CallbackBillExit {
 
     Frame parent;
     DbUtil dbUtil;
@@ -44,7 +44,7 @@ public class PnlBill extends javax.swing.JPanel implements JDDeleteBill.Callback
         this.parent = parent;
         this.dbUtil = dbUtil;
         this.billDao = new BillDao(dbUtil);
-        loading();
+        loading(null);
 
         if (user.getRole() != 1) {
             lblView.setVisible(false);
@@ -52,16 +52,16 @@ public class PnlBill extends javax.swing.JPanel implements JDDeleteBill.Callback
         }
     }
 
-    private void loading() {
+    private void loading(Bill newBill) {
         tblBill.removeAll();
-        bills = billDao.getAll(null);
+        bills = billDao.getAll(newBill);
 
         String columns[] = {"Id", "Nhân viên", "Bàn", "Tổng tiền", "Giảm giá", "Trạng thái", "Thời gian"};
         DefaultTableModel dtm = new DefaultTableModel(columns, 0);
 
         if (!Common.isNullOrEmpty(bills)) {
             bills.forEach(obj -> {
-                dtm.addRow(new Object[]{obj.getId(), obj.getUser_id(), obj.getTable_id(), obj.getTotal_price(), obj.getDiscount(), obj.getStatus() ? "Đã thanh toán" : "Chưa thanh toán", obj.getCreated_at()});
+                dtm.addRow(new Object[]{obj.getId(), obj.getUser_name(), obj.getTable_name(), obj.getTotal_price(), obj.getDiscount(), obj.getStatus() ? "Đã thanh toán" : "Chưa thanh toán", obj.getCreated_at()});
             });
 
             tblBill.getSelectionModel().addListSelectionListener((ListSelectionEvent lse) -> {
@@ -74,7 +74,6 @@ public class PnlBill extends javax.swing.JPanel implements JDDeleteBill.Callback
             });
 
             tblBill.changeSelection(0, 0, false, false);
-//          tblProduct.setRowSelectionInterval(0, 0);
         }
 
         tblBill.setModel(dtm);
@@ -95,9 +94,9 @@ public class PnlBill extends javax.swing.JPanel implements JDDeleteBill.Callback
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         lblView = new javax.swing.JLabel();
-        lblUpdate1 = new javax.swing.JLabel();
         lblSearch = new javax.swing.JLabel();
         lblDelete = new javax.swing.JLabel();
+        lblRefresh = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblBill = new javax.swing.JTable();
 
@@ -135,20 +134,6 @@ public class PnlBill extends javax.swing.JPanel implements JDDeleteBill.Callback
         });
         jPanel2.add(lblView);
 
-        lblUpdate1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        lblUpdate1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblUpdate1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_update_50px.png"))); // NOI18N
-        lblUpdate1.setText("Sửa đổi");
-        lblUpdate1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        lblUpdate1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        lblUpdate1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        lblUpdate1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblUpdateMouseClicked(evt);
-            }
-        });
-        jPanel2.add(lblUpdate1);
-
         lblSearch.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         lblSearch.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_search_50px_1.png"))); // NOI18N
@@ -176,6 +161,20 @@ public class PnlBill extends javax.swing.JPanel implements JDDeleteBill.Callback
             }
         });
         jPanel2.add(lblDelete);
+
+        lblRefresh.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        lblRefresh.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_repeat_50px_1.png"))); // NOI18N
+        lblRefresh.setText("Làm mới");
+        lblRefresh.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblRefresh.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lblRefresh.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        lblRefresh.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblRefreshMouseClicked(evt);
+            }
+        });
+        jPanel2.add(lblRefresh);
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_START);
 
@@ -281,14 +280,16 @@ public class PnlBill extends javax.swing.JPanel implements JDDeleteBill.Callback
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblViewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblViewMouseClicked
-        JDModifyBill jdm = new JDModifyBill(this.parent, true);
-        jdm.setVisible(true);
+        if (!Common.isNullOrEmpty(bill)) {
+            JDBill jdb = new JDBill(this.parent, true, dbUtil, this, bill);
+            jdb.setVisible(true);
+        }
     }//GEN-LAST:event_lblViewMouseClicked
 
     private void lblSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSearchMouseClicked
         if (!Common.isNullOrEmpty(bill)) {
-            JDSearchBill searchBill = new JDSearchBill(this.parent, true);
-            searchBill.setVisible(true);
+            JDSearchBill jdsb = new JDSearchBill(this.parent, true, dbUtil, this);
+            jdsb.setVisible(true);
         }
     }//GEN-LAST:event_lblSearchMouseClicked
 
@@ -299,12 +300,9 @@ public class PnlBill extends javax.swing.JPanel implements JDDeleteBill.Callback
         }
     }//GEN-LAST:event_lblDeleteMouseClicked
 
-    private void lblUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUpdateMouseClicked
-        if (!Common.isNullOrEmpty(bill)) {
-            JDModifyBill modifyBill = new JDModifyBill(this.parent, true);
-            modifyBill.setVisible(true);
-        }
-    }//GEN-LAST:event_lblUpdateMouseClicked
+    private void lblRefreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRefreshMouseClicked
+        loading(null);
+    }//GEN-LAST:event_lblRefreshMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -314,14 +312,24 @@ public class PnlBill extends javax.swing.JPanel implements JDDeleteBill.Callback
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblDelete;
+    private javax.swing.JLabel lblRefresh;
     private javax.swing.JLabel lblSearch;
-    private javax.swing.JLabel lblUpdate1;
     private javax.swing.JLabel lblView;
     private javax.swing.JTable tblBill;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void actionBillDelete() {
-        loading();
+        loading(null);
+    }
+
+    @Override
+    public void actionBillExit() {
+        loading(null);
+    }
+
+    @Override
+    public void actionBillSearch(Bill bill) {
+        loading(bill);
     }
 }

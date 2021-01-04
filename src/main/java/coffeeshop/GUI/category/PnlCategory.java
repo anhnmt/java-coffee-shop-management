@@ -71,7 +71,6 @@ public final class PnlCategory extends javax.swing.JPanel implements JDModifyCat
             });
 
             tblCategory.changeSelection(0, 0, false, false);
-//        tblCategory.setRowSelectionInterval(0, 0);
         }
 
         tblCategory.setModel(dtm);

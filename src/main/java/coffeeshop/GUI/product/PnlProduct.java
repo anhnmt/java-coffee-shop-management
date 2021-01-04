@@ -13,6 +13,7 @@ import java.util.List;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 import coffeeshop.DTO.User;
+import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
 
 /**
@@ -52,12 +53,12 @@ public final class PnlProduct extends javax.swing.JPanel implements JDModifyProd
         tblProduct.removeAll();
         products = productDao.getAll(newProduct, fromPrice, toPrice);
 
-        String columns[] = {"Id", "Tên", "Giá", "Tên danh mục", "Trạng thái"};
+        String columns[] = {"Id", "Tên danh mục", "Tên", "Giá", "Trạng thái"};
         DefaultTableModel dtm = new DefaultTableModel(columns, 0);
 
         if (!products.isEmpty()) {
             products.forEach(obj -> {
-                dtm.addRow(new Object[]{obj.getId(), obj.getName(), obj.getPrice(), obj.getCategory_name(), obj.getStatus() ? "Hoạt động" : "Không hoạt động"});
+                dtm.addRow(new Object[]{obj.getId(), obj.getCategory_name(), obj.getName(), obj.getPrice(), obj.getStatus() ? "Hoạt động" : "Không hoạt động"});
             });
 
             tblProduct.getSelectionModel().addListSelectionListener((ListSelectionEvent lse) -> {
@@ -70,7 +71,6 @@ public final class PnlProduct extends javax.swing.JPanel implements JDModifyProd
             });
 
             tblProduct.changeSelection(0, 0, false, false);
-//          tblProduct.setRowSelectionInterval(0, 0);
         }
 
         tblProduct.setModel(dtm);
@@ -296,8 +296,10 @@ public final class PnlProduct extends javax.swing.JPanel implements JDModifyProd
     }//GEN-LAST:event_lblAddMouseClicked
 
     private void lblUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUpdateMouseClicked
-        JDModifyProduct jdm = new JDModifyProduct(this.parent, true, dbUtil, this, product);
-        jdm.setVisible(true);
+        if (!Common.isNullOrEmpty(product)) {
+            JDModifyProduct jdm = new JDModifyProduct(this.parent, true, dbUtil, this, product);
+            jdm.setVisible(true);
+        }
     }//GEN-LAST:event_lblUpdateMouseClicked
 
     private void lblSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSearchMouseClicked
@@ -306,8 +308,10 @@ public final class PnlProduct extends javax.swing.JPanel implements JDModifyProd
     }//GEN-LAST:event_lblSearchMouseClicked
 
     private void lblDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDeleteMouseClicked
-        JDDeleteProduct jdd = new JDDeleteProduct(this.parent, true, dbUtil, this, product);
-        jdd.setVisible(true);
+        if (!Common.isNullOrEmpty(product)) {
+            JDDeleteProduct jdd = new JDDeleteProduct(this.parent, true, dbUtil, this, product);
+            jdd.setVisible(true);
+        }
     }//GEN-LAST:event_lblDeleteMouseClicked
 
     private void lblRefreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRefreshMouseClicked

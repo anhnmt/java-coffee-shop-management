@@ -58,15 +58,16 @@ BEGIN TRY
         )
         VALUES
         (@_name, @_email, @_password, @_role, @_status);
+
         SET @_outStt = 1;
         SET @_outMsg = N'Thêm người dùng thành công';
+        COMMIT TRAN;
     END;
 END TRY
 BEGIN CATCH
-    BEGIN
-        SET @_outStt = 0;
-        SET @_outMsg = N'Thêm không thành công: ' + ERROR_MESSAGE();
-    END;
+    SET @_outStt = 0;
+    SET @_outMsg = N'Thêm không thành công: ' + ERROR_MESSAGE();
+    ROLLBACK TRAN;
 END CATCH;
 
 GO
@@ -182,13 +183,16 @@ BEGIN TRY
         )
         VALUES
         (@_name, @_status);
+
         SET @_outStt = 1;
         SET @_outMsg = N'Thêm thành công';
+        COMMIT TRAN;
     END;
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
     SET @_outMsg = ERROR_MESSAGE();
+    ROLLBACK TRAN;
 END CATCH;
 
 GO
@@ -252,11 +256,13 @@ BEGIN TRY
 
         SET @_outStt = 1;
         SET @_outMsg = N'Cập nhật thành công';
+        COMMIT TRAN;
     END;
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
     SET @_outMsg = ERROR_MESSAGE();
+    ROLLBACK TRAN;
 END CATCH;
 
 GO
@@ -288,11 +294,13 @@ BEGIN TRY
 
         SET @_outStt = 1;
         SET @_outMsg = N'Xoá thành công';
+        COMMIT TRAN;
     END;
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
     SET @_outMsg = ERROR_MESSAGE();
+    ROLLBACK TRAN;
 END CATCH;
 
 GO
@@ -366,13 +374,16 @@ BEGIN TRY
         )
         VALUES
         (@_category_id, @_name, @_price, @_status);
+
         SET @_outStt = 1;
         SET @_outMsg = N'Thêm sản phẩm thành công';
+        COMMIT TRAN;
     END;
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
     SET @_outMsg = ERROR_MESSAGE();
+    ROLLBACK TRAN;
 END CATCH;
 
 GO
@@ -578,11 +589,13 @@ BEGIN TRY
 
         SET @_outStt = 1;
         SET @_outMsg = N'Sửa đổi danh mục thành công';
+        COMMIT TRAN;
     END;
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
     SET @_outMsg = ERROR_MESSAGE();
+    ROLLBACK TRAN;
 END CATCH;
 
 GO
@@ -614,11 +627,13 @@ BEGIN TRY
 
         SET @_outStt = 1;
         SET @_outMsg = N'Xoá thành công';
+        COMMIT TRAN;
     END;
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
     SET @_outMsg = ERROR_MESSAGE();
+    ROLLBACK TRAN;
 END CATCH;
 
 GO
@@ -680,11 +695,13 @@ BEGIN TRY
 
         SET @_outStt = 1;
         SET @_outMsg = N'Thêm khu vực thành công';
+        COMMIT TRAN;
     END;
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
     SET @_outMsg = ERROR_MESSAGE();
+    ROLLBACK TRAN;
 END CATCH;
 
 GO
@@ -721,11 +738,13 @@ BEGIN TRY
 
         SET @_outStt = 1;
         SET @_outMsg = N'Sửa khu vực thành công';
+        COMMIT TRAN;
     END;
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
     SET @_outMsg = ERROR_MESSAGE();
+    ROLLBACK TRAN;
 END CATCH;
 
 GO
@@ -766,11 +785,13 @@ BEGIN TRY
 
         SET @_outStt = 1;
         SET @_outMsg = N'Xoá thành công';
+        COMMIT TRAN;
     END;
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
     SET @_outMsg = ERROR_MESSAGE();
+    ROLLBACK TRAN;
 END CATCH;
 
 GO
@@ -842,11 +863,13 @@ BEGIN TRY
 
         SET @_outStt = 1;
         SET @_outMsg = N'Thêm bàn thành công';
+        COMMIT TRAN;
     END;
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
     SET @_outMsg = N'Thêm không thành công: ' + ERROR_MESSAGE();
+    ROLLBACK TRAN;
 END CATCH;
 
 GO
@@ -902,11 +925,13 @@ BEGIN TRY
 
         SET @_outStt = 1;
         SET @_outMsg = N'Cập nhật bàn thành công';
+        COMMIT TRAN;
     END;
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
     SET @_outMsg = N'Cập nhật không thành công: ' + ERROR_MESSAGE();
+    ROLLBACK TRAN;
 END CATCH;
 
 GO
@@ -982,11 +1007,13 @@ BEGIN TRY
 
         SET @_outStt = 1;
         SET @_outMsg = N'Thêm hoá đơn thành công';
+        COMMIT TRAN;
     END;
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
     SET @_outMsg = N'Thêm không thành công: ' + ERROR_MESSAGE();
+    ROLLBACK TRAN;
 END CATCH;
 
 GO
@@ -1004,6 +1031,7 @@ CREATE PROC sp_updateBill
     @_outMsg NVARCHAR(200) = '' OUTPUT
 )
 AS
+BEGIN TRAN;
 BEGIN TRY
     IF NOT EXISTS (SELECT id FROM Bills WHERE id = @_bill_id)
     BEGIN
@@ -1046,11 +1074,13 @@ BEGIN TRY
 
         SET @_outStt = 1;
         SET @_outMsg = N'Cập nhật hoá đơn thành công';
+        COMMIT TRAN;
     END;
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
     SET @_outMsg = N'Cập nhật không thành công: ' + ERROR_MESSAGE();
+    ROLLBACK TRAN;
 END CATCH;
 
 GO
@@ -1082,16 +1112,16 @@ DECLARE @sql NVARCHAR(MAX)
 		WHERE 1=1';
 
 IF (@_id IS NOT NULL)
-    SET @sql = CONCAT(@sql, N' AND id = ', @_id);
+    SET @sql = CONCAT(@sql, N' AND B.id = ', @_id);
 
 IF (@_user_id IS NOT NULL)
-    SET @sql = CONCAT(@sql, N' AND user_id = ', @_user_id);
+    SET @sql = CONCAT(@sql, N' AND B.user_id = ', @_user_id);
 
 IF (@_table_id IS NOT NULL)
-    SET @sql = CONCAT(@sql, N' AND table_id = ', @_table_id);
+    SET @sql = CONCAT(@sql, N' AND B.table_id = ', @_table_id);
 
 IF (@_status IS NOT NULL)
-    SET @sql = CONCAT(@sql, N' AND status = ', @_status);
+    SET @sql = CONCAT(@sql, N' AND B.status = ', @_status);
 
 EXEC (@sql);
 
@@ -1100,6 +1130,43 @@ GO
 --EXEC sp_getAllBill 1
 --EXEC sp_getAllBill 2;
 
+GO
+
+CREATE PROC sp_deleteBill
+(
+    @_bill_id INT,
+    @_outStt BIT = 1 OUTPUT,
+    @_outMsg NVARCHAR(200) = '' OUTPUT
+)
+AS
+BEGIN TRAN;
+BEGIN TRY
+    IF NOT EXISTS (SELECT id FROM Bills WHERE id = @_bill_id)
+    BEGIN
+        SET @_outStt = 0;
+        SET @_outMsg = N'Mã hoá đơn không tồn tại, vui lòng nhập lại';
+    END;
+    ELSE
+    BEGIN
+        IF EXISTS (SELECT bill_id FROM BillDetail WHERE bill_id = @_bill_id)
+        BEGIN
+            DELETE FROM BillDetail
+            WHERE bill_id = @_bill_id;
+        END;
+
+        DELETE FROM Bills
+        WHERE id = @_bill_id;
+
+        SET @_outStt = 1;
+        SET @_outMsg = N'Xoá hoá đơn thành công';
+        COMMIT TRAN;
+    END;
+END TRY
+BEGIN CATCH
+    SET @_outStt = 0;
+    SET @_outMsg = N'Xoá không thành công: ' + ERROR_MESSAGE();
+    ROLLBACK TRAN;
+END CATCH;
 GO
 
 CREATE PROC sp_getBillByTableId
@@ -1148,6 +1215,7 @@ CREATE PROC sp_insertBillDetail
     @_outMsg NVARCHAR(200) = '' OUTPUT
 )
 AS
+BEGIN TRAN;
 BEGIN TRY
     IF NOT EXISTS (SELECT id FROM Bills WHERE id = @_bill_id)
     BEGIN
@@ -1179,6 +1247,7 @@ BEGIN TRY
 
         SET @_outStt = 1;
         SET @_outMsg = N'Cập nhật chi tiết hoá đơn thành công';
+        COMMIT TRAN;
     END;
     ELSE
     BEGIN
@@ -1190,15 +1259,16 @@ BEGIN TRY
         )
         VALUES
         (@_bill_id, @_product_id, @_amount);
-        BEGIN
-            SET @_outStt = 1;
-            SET @_outMsg = N'Thêm chi tiết hoá đơn thành công';
-        END;
+
+        SET @_outStt = 1;
+        SET @_outMsg = N'Thêm chi tiết hoá đơn thành công';
+        COMMIT TRAN;
     END;
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
     SET @_outMsg = N'Thêm không thành công: ' + ERROR_MESSAGE();
+    ROLLBACK TRAN;
 END CATCH;
 
 GO
@@ -1216,6 +1286,7 @@ CREATE PROC sp_updateBillDetail
     @_outMsg NVARCHAR(200) = '' OUTPUT
 )
 AS
+BEGIN TRAN;
 BEGIN TRY
     IF NOT EXISTS (SELECT id FROM Bills WHERE id = @_bill_id)
     BEGIN
@@ -1252,11 +1323,13 @@ BEGIN TRY
 
         SET @_outStt = 1;
         SET @_outMsg = N'Cập nhật chi tiết hoá đơn thành công';
+        COMMIT TRAN;
     END;
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
     SET @_outMsg = N'Cập nhật không thành công: ' + ERROR_MESSAGE();
+    ROLLBACK TRAN;
 END CATCH;
 
 GO
@@ -1269,6 +1342,7 @@ CREATE PROC sp_deleteBillDetail
     @_outMsg NVARCHAR(200) = '' OUTPUT
 )
 AS
+BEGIN TRAN;
 BEGIN TRY
     IF NOT EXISTS (SELECT * FROM Bills WHERE id = @_bill_id)
     BEGIN
@@ -1288,11 +1362,13 @@ BEGIN TRY
 
         SET @_outStt = 1;
         SET @_outMsg = N'Xoá thành công';
+        COMMIT TRAN;
     END;
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
     SET @_outMsg = ERROR_MESSAGE();
+    ROLLBACK TRAN;
 END CATCH;
 
 GO

@@ -12,6 +12,7 @@ import coffeeshop.Util.DbUtil;
 import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
@@ -25,7 +26,7 @@ public final class PnlUser extends javax.swing.JPanel implements JDModifyUser.Ca
     Frame parent;
     List<User> list = new ArrayList<>();
     User user;
-    User rootUser;
+    User currentUser;
     UserDao userDao;
     DbUtil dbUtil;
 
@@ -34,12 +35,12 @@ public final class PnlUser extends javax.swing.JPanel implements JDModifyUser.Ca
      *
      * @param parent
      * @param dbUtil
-     * @param rootUser
+     * @param currentUser
      */
-    public PnlUser(Frame parent, DbUtil dbUtil, User rootUser) {
+    public PnlUser(Frame parent, DbUtil dbUtil, User currentUser) {
         initComponents();
         this.parent = parent;
-        this.rootUser = rootUser;
+        this.currentUser = currentUser;
         this.dbUtil = dbUtil;
         this.userDao = new UserDao(dbUtil);
         loading(null);
@@ -66,7 +67,6 @@ public final class PnlUser extends javax.swing.JPanel implements JDModifyUser.Ca
             });
 
             tblUser.changeSelection(0, 0, false, false);
-            tblUser.setRowSelectionInterval(0, 0);
         }
 
         tblUser.setModel(dtm);
@@ -89,6 +89,7 @@ public final class PnlUser extends javax.swing.JPanel implements JDModifyUser.Ca
         lblUpdate = new javax.swing.JLabel();
         lblSearch = new javax.swing.JLabel();
         lblDelete = new javax.swing.JLabel();
+        lblRefresh = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblUser = new javax.swing.JTable();
 
@@ -167,6 +168,20 @@ public final class PnlUser extends javax.swing.JPanel implements JDModifyUser.Ca
             }
         });
         jPanel2.add(lblDelete);
+
+        lblRefresh.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        lblRefresh.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_repeat_50px_1.png"))); // NOI18N
+        lblRefresh.setText("Làm mới");
+        lblRefresh.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblRefresh.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lblRefresh.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        lblRefresh.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblRefreshMouseClicked(evt);
+            }
+        });
+        jPanel2.add(lblRefresh);
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_START);
 
@@ -287,13 +302,17 @@ public final class PnlUser extends javax.swing.JPanel implements JDModifyUser.Ca
     }//GEN-LAST:event_lblSearchMouseClicked
 
     private void lblDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDeleteMouseClicked
-        if (rootUser.getId() == user.getId()) {
+        if (Objects.equals(currentUser.getId(), user.getId())) {
             JOptionPane.showMessageDialog(null, "Bạn không thể xoá tài khoản của chính bạn!");
         } else {
             JDDeleteUser jdd = new JDDeleteUser(this.parent, true, dbUtil, this, user);
             jdd.setVisible(true);
         }
     }//GEN-LAST:event_lblDeleteMouseClicked
+
+    private void lblRefreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRefreshMouseClicked
+        loading(null);
+    }//GEN-LAST:event_lblRefreshMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -304,6 +323,7 @@ public final class PnlUser extends javax.swing.JPanel implements JDModifyUser.Ca
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblAdd;
     private javax.swing.JLabel lblDelete;
+    private javax.swing.JLabel lblRefresh;
     private javax.swing.JLabel lblSearch;
     private javax.swing.JLabel lblUpdate;
     private javax.swing.JTable tblUser;
