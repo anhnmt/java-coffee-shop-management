@@ -5,7 +5,7 @@
  */
 package coffeeshop.GUI.user;
 
-import coffeeshop.DAO.UserDao;
+import coffeeshop.DAO.impl.UserDao;
 import coffeeshop.DTO.User;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;

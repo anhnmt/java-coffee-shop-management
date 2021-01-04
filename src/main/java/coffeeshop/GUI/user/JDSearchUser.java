@@ -84,6 +84,7 @@ public final class JDSearchUser extends javax.swing.JDialog {
         lblEmailError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Tìm kiếm người dùng | Quản lý quán cà phê - Version 1.0");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));

@@ -89,7 +89,7 @@ public final class Dashboard extends javax.swing.JFrame implements JDLogin.Callb
         pnlBody = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Cube UI");
+        setTitle("Quản lý quán cà phê - Version 1.0");
         setBackground(new java.awt.Color(255, 255, 0));
         setUndecorated(true);
         setSize(new java.awt.Dimension(1000, 600));
@@ -195,11 +195,11 @@ public final class Dashboard extends javax.swing.JFrame implements JDLogin.Callb
 
         lblName.setFont(new java.awt.Font("Leelawadee UI", 1, 20)); // NOI18N
         lblName.setForeground(new java.awt.Color(44, 62, 80));
-        lblName.setText("NGUYỄN TUẤN MINH");
+        lblName.setText("KHÔNG XÁC ĐỊNH");
 
         lblEmail.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblEmail.setForeground(new java.awt.Color(127, 140, 141));
-        lblEmail.setText("Học sinh");
+        lblEmail.setText("Nhân viên");
 
         btnDashboard.setFont(new java.awt.Font("Segoe UI Semibold", 1, 16)); // NOI18N
         btnDashboard.setForeground(new java.awt.Color(44, 62, 80));
@@ -273,12 +273,12 @@ public final class Dashboard extends javax.swing.JFrame implements JDLogin.Callb
         jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(127, 140, 141));
         jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel16.setText("You are login as Admin, ");
+        jLabel16.setText("Bạn đã đăng nhập, ");
 
         jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(52, 152, 219));
         jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel17.setText("Logout ?");
+        jLabel17.setText("Đăng xuất ?");
         jLabel17.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jLabel17.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -393,9 +393,7 @@ public final class Dashboard extends javax.swing.JFrame implements JDLogin.Callb
                             .addComponent(btnUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblArea, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMenuLayout.createSequentialGroup()
-                                .addGap(0, 0, 0)
-                                .addComponent(lblUser, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(lblUser, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(lblBill, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
@@ -523,7 +521,7 @@ public final class Dashboard extends javax.swing.JFrame implements JDLogin.Callb
         lblArea.setBackground(new Color(255, 255, 255));
         lblUser.setBackground(new Color(255, 255, 255));
         pnlBody.removeAll();
-        PnlBill pnl = new PnlBill(this, user);
+        PnlBill pnl = new PnlBill(this, dbUtil, user);
 //        pnl.setVisible(true);
         pnlBody.add(pnl);
         pnlBody.repaint();
@@ -539,7 +537,7 @@ public final class Dashboard extends javax.swing.JFrame implements JDLogin.Callb
         lblProduct.setBackground(new Color(255, 255, 255));
         lblUser.setBackground(new Color(255, 255, 255));
         pnlBody.removeAll();
-        PnlTrangChu pnl = new PnlTrangChu();
+        PnlHome pnl = new PnlHome();
 //        pnl.setVisible(true);
         pnlBody.add(pnl);
         pnlBody.repaint();

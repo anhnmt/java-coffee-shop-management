@@ -3,19 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package coffeeshop.GUI.table;
+package coffeeshop.GUI.billdetail;
 
-import coffeeshop.DAO.AreaDao;
-import coffeeshop.DAO.BillDetailDao;
-import coffeeshop.DTO.Area;
+import coffeeshop.DAO.impl.BillDetailDao;
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
-import coffeeshop.DTO.Table;
-import coffeeshop.DAO.TableDao;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
 import coffeeshop.DTO.BillDetail;
@@ -98,7 +92,7 @@ public final class JDModifyBillDetail extends javax.swing.JDialog {
         lblProductAmount = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("SỬA THÔNG TIN HOÁ ĐƠN");
+        setTitle("Cập nhật thông tin hoá đơn | Quản lý quán cà phê - Version 1.0");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));

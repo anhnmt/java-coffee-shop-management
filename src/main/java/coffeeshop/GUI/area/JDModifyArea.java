@@ -5,7 +5,7 @@
  */
 package coffeeshop.GUI.area;
 
-import coffeeshop.DAO.AreaDao;
+import coffeeshop.DAO.impl.AreaDao;
 import coffeeshop.DTO.Area;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
  *
  * @author Minh
  */
-public class JDModifyArea extends javax.swing.JDialog {
+public final class JDModifyArea extends javax.swing.JDialog {
 
     /**
      * Creates new form JDCategoryCreate
@@ -78,6 +78,7 @@ public class JDModifyArea extends javax.swing.JDialog {
         lblNameError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Cập nhật khu vực | Quản lý quán cà phê - Version 1.0");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 

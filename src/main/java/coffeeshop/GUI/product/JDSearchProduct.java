@@ -5,7 +5,7 @@
  */
 package coffeeshop.GUI.product;
 
-import coffeeshop.DAO.CategoryDao;
+import coffeeshop.DAO.impl.CategoryDao;
 import coffeeshop.DTO.Category;
 import coffeeshop.DTO.Product;
 import coffeeshop.Util.Common;
@@ -95,6 +95,7 @@ public final class JDSearchProduct extends javax.swing.JDialog {
         cboStatus = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Tìm kiểm sản phẩm | Quản lý quán cà phê - Version 1.0");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 

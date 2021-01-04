@@ -1,5 +1,6 @@
-package coffeeshop.DAO;
+package coffeeshop.DAO.impl;
 
+import coffeeshop.DAO.*;
 import coffeeshop.DTO.Table;
 import coffeeshop.Util.DbUtil;
 
@@ -9,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TableDao implements GenericDao<Table> {
+public class TableDao implements ITableDao {
 
     Connection conn = null;
     CallableStatement cs = null;
@@ -20,6 +21,7 @@ public class TableDao implements GenericDao<Table> {
         conn = dbUtil.getInstance().getConnection();
     }
 
+    @Override
     public List<Table> getAll() {
         List<Table> list = new ArrayList<>();
         String sql = "{CALL sp_getAllTable}";
@@ -40,6 +42,7 @@ public class TableDao implements GenericDao<Table> {
                 list.add(obj);
             }
         } catch (SQLException e) {
+            e.printStackTrace();
         } finally {
             rs = null;
             cs = null;
@@ -133,7 +136,8 @@ public class TableDao implements GenericDao<Table> {
         return null;
     }
 
-    public Table getTableByName(String name) {
+    @Override
+    public Table findByName(String name) {
         Table table = null;
         String sql = "{CALL sp_getAllTable(?)}";
 

@@ -5,7 +5,7 @@
  */
 package coffeeshop.GUI;
 
-import coffeeshop.DAO.UserDao;
+import coffeeshop.DAO.impl.UserDao;
 import coffeeshop.DTO.User;
 import coffeeshop.Util.DbUtil;
 import java.awt.Color;
@@ -96,6 +96,7 @@ public class JDLogin extends javax.swing.JDialog {
         lblBackground = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Đăng nhập | Quản lý quán cà phê - Version 1.0");
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {

@@ -6,7 +6,7 @@
 package coffeeshop.GUI.category;
 
 import coffeeshop.DTO.Category;
-import coffeeshop.DAO.CategoryDao;
+import coffeeshop.DAO.impl.CategoryDao;
 import coffeeshop.Util.DbUtil;
 import java.util.Map;
 import javax.swing.JOptionPane;
@@ -65,6 +65,7 @@ public class JDDeleteCategory extends javax.swing.JDialog {
         btnDelete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Xoá danh mục | Quản lý quán cà phê - Version 1.0");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 

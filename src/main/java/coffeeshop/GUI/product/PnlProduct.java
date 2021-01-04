@@ -5,7 +5,7 @@
  */
 package coffeeshop.GUI.product;
 
-import coffeeshop.DAO.ProductDao;
+import coffeeshop.DAO.impl.ProductDao;
 import coffeeshop.DTO.Product;
 import java.awt.Frame;
 import java.util.ArrayList;

@@ -6,7 +6,7 @@
 package coffeeshop.GUI.product;
 
 import coffeeshop.DTO.Product;
-import coffeeshop.DAO.ProductDao;
+import coffeeshop.DAO.impl.ProductDao;
 import coffeeshop.Util.DbUtil;
 import java.util.Map;
 import javax.swing.JOptionPane;
@@ -65,6 +65,7 @@ public class JDDeleteProduct extends javax.swing.JDialog {
         btnDelete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Xoá sản phẩm | Quản lý quán cà phê - Version 1.0");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 

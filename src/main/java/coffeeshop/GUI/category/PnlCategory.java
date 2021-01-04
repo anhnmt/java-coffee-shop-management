@@ -5,7 +5,7 @@
  */
 package coffeeshop.GUI.category;
 
-import coffeeshop.DAO.CategoryDao;
+import coffeeshop.DAO.impl.CategoryDao;
 import coffeeshop.DTO.Category;
 import java.awt.Frame;
 import java.util.ArrayList;

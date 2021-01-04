@@ -6,7 +6,7 @@
 package coffeeshop.GUI.user;
 
 import coffeeshop.DTO.User;
-import coffeeshop.DAO.UserDao;
+import coffeeshop.DAO.impl.UserDao;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
 import java.awt.Color;
@@ -107,6 +107,7 @@ public final class JDModifyUser extends javax.swing.JDialog {
         lblPasswordError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Cập nhật người dùng | Quản lý quán cà phê - Version 1.0");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));

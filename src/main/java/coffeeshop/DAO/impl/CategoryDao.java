@@ -1,5 +1,6 @@
-package coffeeshop.DAO;
+package coffeeshop.DAO.impl;
 
+import coffeeshop.DAO.*;
 import coffeeshop.DTO.Category;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
@@ -10,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CategoryDao implements GenericDao<Category> {
+public class CategoryDao implements ICategoryDao {
 
     Connection conn = null;
     CallableStatement cs = null;
@@ -20,6 +21,7 @@ public class CategoryDao implements GenericDao<Category> {
         conn = dbUtil.getInstance().getConnection();
     }
 
+    @Override
     public List<Category> getAll(Category category) {
         List<Category> list = new ArrayList<>();
 
@@ -50,6 +52,9 @@ public class CategoryDao implements GenericDao<Category> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            rs = null;
+            cs = null;
         }
 
         return list;
@@ -72,6 +77,8 @@ public class CategoryDao implements GenericDao<Category> {
             output.put("message", cs.getNString(4));
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            cs = null;
         }
 
         return output;
@@ -96,6 +103,9 @@ public class CategoryDao implements GenericDao<Category> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            rs = null;
+            cs = null;
         }
 
         return obj;
@@ -119,6 +129,8 @@ public class CategoryDao implements GenericDao<Category> {
             output.put("message", cs.getNString(5));
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            cs = null;
         }
 
         return output;
@@ -140,6 +152,8 @@ public class CategoryDao implements GenericDao<Category> {
             output.put("message", cs.getNString(3));
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            cs = null;
         }
 
         return output;

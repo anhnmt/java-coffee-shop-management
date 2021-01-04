@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package coffeeshop.GUI.table;
+package coffeeshop.GUI.billdetail;
 
-import coffeeshop.DAO.BillDetailDao;
+import coffeeshop.DAO.impl.BillDetailDao;
 import coffeeshop.Util.DbUtil;
 import java.util.Map;
 import javax.swing.JOptionPane;
@@ -68,6 +68,7 @@ public class JDDeleteBillDetail extends javax.swing.JDialog {
         btnDelete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Xoá thông tin hoá đơn | Quản lý quán cà phê - Version 1.0");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 

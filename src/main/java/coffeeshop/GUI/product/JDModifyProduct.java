@@ -7,8 +7,8 @@ package coffeeshop.GUI.product;
 
 import coffeeshop.DTO.Category;
 import coffeeshop.DTO.Product;
-import coffeeshop.DAO.CategoryDao;
-import coffeeshop.DAO.ProductDao;
+import coffeeshop.DAO.impl.CategoryDao;
+import coffeeshop.DAO.impl.ProductDao;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
 import java.awt.Color;
@@ -114,6 +114,7 @@ public final class JDModifyProduct extends javax.swing.JDialog {
         lblPriceError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Cập nhật sản phẩm | Quản lý quán cà phê - Version 1.0");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));

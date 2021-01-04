@@ -1,5 +1,6 @@
-package coffeeshop.DAO;
+package coffeeshop.DAO.impl;
 
+import coffeeshop.DAO.*;
 import coffeeshop.DTO.Bill;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
@@ -10,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BillDao implements GenericDao<Bill> {
+public class BillDao implements IBillDao {
 
     Connection conn = null;
     CallableStatement cs = null;
@@ -20,7 +21,8 @@ public class BillDao implements GenericDao<Bill> {
         conn = dbUtil.getInstance().getConnection();
     }
 
-    public List<Bill> getAll() {
+    @Override
+    public List<Bill> getAll(Bill bill) {
         List<Bill> list = new ArrayList<>();
         String sql = "{CALL sp_getAllBill}";
 
@@ -37,12 +39,17 @@ public class BillDao implements GenericDao<Bill> {
                         rs.getFloat("discount"),
                         rs.getNString("note"),
                         rs.getBoolean("status"),
-                        rs.getString("created_at")
+                        rs.getString("created_at"),
+                        rs.getNString("user_name"),
+                        rs.getNString("table_name")
                 );
                 list.add(obj);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            rs = null;
+            cs = null;
         }
 
         return list;
@@ -90,6 +97,8 @@ public class BillDao implements GenericDao<Bill> {
             output.put("message", cs.getNString(8));
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            cs = null;
         }
 
         return output;
@@ -114,11 +123,16 @@ public class BillDao implements GenericDao<Bill> {
                         rs.getFloat("discount"),
                         rs.getNString("note"),
                         rs.getBoolean("status"),
-                        rs.getString("created_at")
+                        rs.getString("created_at"),
+                        rs.getNString("user_name"),
+                        rs.getNString("table_name")
                 );
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            rs = null;
+            cs = null;
         }
 
         return obj;
@@ -146,6 +160,8 @@ public class BillDao implements GenericDao<Bill> {
             output.put("message", cs.getNString(9));
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            cs = null;
         }
 
         return output;
@@ -156,18 +172,19 @@ public class BillDao implements GenericDao<Bill> {
         return null;
     }
 
-    public Bill getBillByTableId(int table_id, Boolean status) {
+    @Override
+    public Bill getByTableId(Bill bill) {
         Bill obj = null;
         String sql = "{CALL sp_getBillByTableId(?, ?)}";
 
         try {
             cs = conn.prepareCall(sql);
-            cs.setInt(1, table_id);
+            cs.setInt(1, bill.getTable_id());
 
-            if (status == null) {
+            if (Common.isNullOrEmpty(bill.getStatus())) {
                 cs.setNull(2, Types.BOOLEAN);
             } else {
-                cs.setBoolean(2, status);
+                cs.setBoolean(2, bill.getStatus());
             }
 
             rs = cs.executeQuery();
@@ -180,11 +197,16 @@ public class BillDao implements GenericDao<Bill> {
                         rs.getFloat("discount"),
                         rs.getNString("note"),
                         rs.getBoolean("status"),
-                        rs.getString("created_at")
+                        rs.getString("created_at"),
+                        rs.getNString("user_name"),
+                        rs.getNString("table_name")
                 );
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            rs = null;
+            cs = null;
         }
 
         return obj;

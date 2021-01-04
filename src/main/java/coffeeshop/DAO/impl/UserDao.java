@@ -1,5 +1,6 @@
-package coffeeshop.DAO;
+package coffeeshop.DAO.impl;
 
+import coffeeshop.DAO.*;
 import coffeeshop.DTO.User;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
@@ -10,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class UserDao implements GenericDao<User> {
+public class UserDao implements IUserDao {
 
     Connection conn = null;
     CallableStatement cs = null;
@@ -20,6 +21,7 @@ public class UserDao implements GenericDao<User> {
         conn = dbUtil.getInstance().getConnection();
     }
 
+    @Override
     public List<User> getAll(User user) {
         List<User> list = new ArrayList<>();
         String sql = "{CALL sp_getAllUser(?, ?, ?, ?)}";
@@ -61,6 +63,9 @@ public class UserDao implements GenericDao<User> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            rs = null;
+            cs = null;
         }
 
         return list;
@@ -86,6 +91,8 @@ public class UserDao implements GenericDao<User> {
             output.put("message", cs.getNString(7));
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            cs = null;
         }
 
         return output;
@@ -113,6 +120,9 @@ public class UserDao implements GenericDao<User> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            rs = null;
+            cs = null;
         }
 
         return obj;
@@ -139,6 +149,8 @@ public class UserDao implements GenericDao<User> {
             output.put("message", cs.getNString(8));
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            cs = null;
         }
 
         return output;
@@ -160,6 +172,8 @@ public class UserDao implements GenericDao<User> {
             output.put("message", cs.getNString(3));
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            cs = null;
         }
 
         return output;
@@ -187,6 +201,9 @@ public class UserDao implements GenericDao<User> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            rs = null;
+            cs = null;
         }
 
         return obj;

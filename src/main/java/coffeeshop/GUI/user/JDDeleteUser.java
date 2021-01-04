@@ -6,7 +6,7 @@
 package coffeeshop.GUI.user;
 
 import coffeeshop.DTO.User;
-import coffeeshop.DAO.UserDao;
+import coffeeshop.DAO.impl.UserDao;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
 import java.util.Map;
@@ -67,6 +67,7 @@ public class JDDeleteUser extends javax.swing.JDialog {
         btnDelete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Xoá người dùng | Quản lý quán cà phê - Version 1.0");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 

@@ -8,9 +8,9 @@ package coffeeshop.GUI.area;
 import coffeeshop.DTO.User;
 import coffeeshop.DTO.Area;
 import coffeeshop.DTO.Table;
-import coffeeshop.DAO.AreaDao;
-import coffeeshop.DAO.BillDao;
-import coffeeshop.DAO.TableDao;
+import coffeeshop.DAO.impl.AreaDao;
+import coffeeshop.DAO.impl.BillDao;
+import coffeeshop.DAO.impl.TableDao;
 import coffeeshop.GUI.table.JDTable;
 import coffeeshop.Util.WrapLayout;
 import java.awt.Color;
@@ -29,6 +29,7 @@ import coffeeshop.GUI.table.JDDeleteTable;
 import coffeeshop.GUI.table.JDModifyTable;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
+import java.util.Objects;
 import javax.swing.JPanel;
 
 /**
@@ -79,7 +80,7 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
         }
     }
 
-    public void loading() {
+    private void loading() {
         tabbedPane.removeAll();
         areas = areaDao.getAll();
         tables = tableDao.getAll();
@@ -89,8 +90,8 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
             addTab(tabbedPane, objArea.getName(), panel);
             panel.setName(objArea.getName());
 
-            tables.stream().filter(objTable -> (objTable.getArea_id() == objArea.getId())).forEachOrdered(objTable -> {
-                JLabel jp = makeTable(panel, objTable);
+            tables.stream().filter(objTable -> (Objects.equals(objTable.getArea_id(), objArea.getId()))).forEachOrdered(objTable -> {
+                makeTable(panel, objTable);
             });
         });
 
@@ -144,8 +145,8 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
         jp.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_table_75px.png"))); // NOI18N
         jp.setText(objTable.getName());
-
-        bill = billDao.getBillByTableId(objTable.getId(), false);
+        
+        bill = billDao.getByTableId(new Bill(objTable.getId(), false));
 
         if (Common.isNullOrEmpty(bill)) {
             jp.setForeground(Color.green);
@@ -160,10 +161,14 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
         jp.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                table = tableDao.getTableByName(objTable.getName());
+                table = tableDao.findByName(objTable.getName());
 
-                JDTable jDTable = new JDTable(parent, true, dbUtil, (JDTable.CallbackTableExit) self, user, table);
-                jDTable.setVisible(true);
+                if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3) {
+                    jPopupMenu.show(jp, evt.getX(), evt.getY());
+                } else {
+                    JDTable jDTable = new JDTable(parent, true, dbUtil, (JDTable.CallbackTableExit) self, user, table);
+                    jDTable.setVisible(true);
+                }
             }
         });
         panel.add(jp);
@@ -189,7 +194,10 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTable1 = new javax.swing.JTable();
+        jPopupMenu = new javax.swing.JPopupMenu();
+        jMenuItemShow = new javax.swing.JMenuItem();
+        jMenuItemEdit = new javax.swing.JMenuItem();
+        jMenuItemDelete = new javax.swing.JMenuItem();
         jPanel3 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
@@ -199,17 +207,29 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
         lblRefresh = new javax.swing.JLabel();
         tabbedPane = new javax.swing.JTabbedPane();
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+        jMenuItemShow.setText("Xem hoá đơn");
+        jMenuItemShow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemShowActionPerformed(evt);
             }
-        ));
+        });
+        jPopupMenu.add(jMenuItemShow);
+
+        jMenuItemEdit.setText("Sửa thông tin bàn");
+        jMenuItemEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemEditActionPerformed(evt);
+            }
+        });
+        jPopupMenu.add(jMenuItemEdit);
+
+        jMenuItemDelete.setText("Xoá bàn");
+        jMenuItemDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemDeleteActionPerformed(evt);
+            }
+        });
+        jPopupMenu.add(jMenuItemDelete);
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -348,11 +368,29 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
         loading();
     }//GEN-LAST:event_lblRefreshMouseClicked
 
+    private void jMenuItemDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDeleteActionPerformed
+        JDDeleteTable jDDeleteTable = new JDDeleteTable(parent, true, dbUtil, this, table);
+        jDDeleteTable.setVisible(true);
+    }//GEN-LAST:event_jMenuItemDeleteActionPerformed
+
+    private void jMenuItemEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemEditActionPerformed
+        JDModifyTable jDModifyTable = new JDModifyTable(parent, true, dbUtil, this, table, area);
+        jDModifyTable.setVisible(true);
+    }//GEN-LAST:event_jMenuItemEditActionPerformed
+
+    private void jMenuItemShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemShowActionPerformed
+        JDTable jDTable = new JDTable(parent, true, dbUtil, this, user, table);
+        jDTable.setVisible(true);
+    }//GEN-LAST:event_jMenuItemShowActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem jMenuItemDelete;
+    private javax.swing.JMenuItem jMenuItemEdit;
+    private javax.swing.JMenuItem jMenuItemShow;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JPopupMenu jPopupMenu;
     private javax.swing.JLabel lblAdd;
     private javax.swing.JLabel lblDelete;
     private javax.swing.JLabel lblRefresh;

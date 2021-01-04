@@ -5,27 +5,80 @@
  */
 package coffeeshop.GUI.bill;
 
+import coffeeshop.DAO.impl.BillDao;
 import java.awt.Frame;
 import coffeeshop.DTO.User;
+import coffeeshop.DTO.Bill;
+import coffeeshop.Util.Common;
+import coffeeshop.Util.DbUtil;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import javax.swing.JComponent;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Minh
  */
-public class PnlBill extends javax.swing.JPanel {
+public class PnlBill extends javax.swing.JPanel implements JDDeleteBill.CallbackBillDelete {
 
     Frame parent;
+    DbUtil dbUtil;
+
+    Bill bill;
+    List<Bill> bills = new ArrayList<>();
+
+    BillDao billDao;
 
     /**
      * Creates new form PnlCategory
+     *
+     * @param parent
+     * @param dbUtil
+     * @param user
      */
-    public PnlBill(Frame parent, User user) {
+    public PnlBill(Frame parent, DbUtil dbUtil, User user) {
         initComponents();
         this.parent = parent;
+        this.dbUtil = dbUtil;
+        this.billDao = new BillDao(dbUtil);
+        loading();
+
         if (user.getRole() != 1) {
-            lblUpdate.setVisible(false);
+            lblView.setVisible(false);
             lblDelete.setVisible(false);
         }
+    }
+
+    private void loading() {
+        tblBill.removeAll();
+        bills = billDao.getAll(null);
+
+        String columns[] = {"Id", "Nhân viên", "Bàn", "Tổng tiền", "Giảm giá", "Trạng thái", "Thời gian"};
+        DefaultTableModel dtm = new DefaultTableModel(columns, 0);
+
+        if (!Common.isNullOrEmpty(bills)) {
+            bills.forEach(obj -> {
+                dtm.addRow(new Object[]{obj.getId(), obj.getUser_id(), obj.getTable_id(), obj.getTotal_price(), obj.getDiscount(), obj.getStatus() ? "Đã thanh toán" : "Chưa thanh toán", obj.getCreated_at()});
+            });
+
+            tblBill.getSelectionModel().addListSelectionListener((ListSelectionEvent lse) -> {
+                int position = tblBill.getSelectedRow();
+                if (position < 0) {
+                    position = 0;
+                }
+
+                bill = bills.get(position);
+            });
+
+            tblBill.changeSelection(0, 0, false, false);
+//          tblProduct.setRowSelectionInterval(0, 0);
+        }
+
+        tblBill.setModel(dtm);
+
     }
 
     /**
@@ -41,7 +94,8 @@ public class PnlBill extends javax.swing.JPanel {
         jPanel3 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        lblUpdate = new javax.swing.JLabel();
+        lblView = new javax.swing.JLabel();
+        lblUpdate1 = new javax.swing.JLabel();
         lblSearch = new javax.swing.JLabel();
         lblDelete = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -67,19 +121,33 @@ public class PnlBill extends javax.swing.JPanel {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 50, 20));
 
-        lblUpdate.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        lblUpdate.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_update_50px.png"))); // NOI18N
-        lblUpdate.setText("Sửa đổi");
-        lblUpdate.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        lblUpdate.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        lblUpdate.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        lblUpdate.addMouseListener(new java.awt.event.MouseAdapter() {
+        lblView.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        lblView.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblView.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_bill_50px.png"))); // NOI18N
+        lblView.setText("Xem");
+        lblView.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblView.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lblView.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        lblView.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblViewMouseClicked(evt);
+            }
+        });
+        jPanel2.add(lblView);
+
+        lblUpdate1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        lblUpdate1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblUpdate1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_update_50px.png"))); // NOI18N
+        lblUpdate1.setText("Sửa đổi");
+        lblUpdate1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblUpdate1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lblUpdate1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        lblUpdate1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblUpdateMouseClicked(evt);
             }
         });
-        jPanel2.add(lblUpdate);
+        jPanel2.add(lblUpdate1);
 
         lblSearch.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         lblSearch.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -212,20 +280,31 @@ public class PnlBill extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void lblUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUpdateMouseClicked
+    private void lblViewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblViewMouseClicked
         JDModifyBill jdm = new JDModifyBill(this.parent, true);
         jdm.setVisible(true);
-    }//GEN-LAST:event_lblUpdateMouseClicked
+    }//GEN-LAST:event_lblViewMouseClicked
 
     private void lblSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSearchMouseClicked
-        JDSearchBill jds = new JDSearchBill(this.parent, true);
-        jds.setVisible(true);
+        if (!Common.isNullOrEmpty(bill)) {
+            JDSearchBill searchBill = new JDSearchBill(this.parent, true);
+            searchBill.setVisible(true);
+        }
     }//GEN-LAST:event_lblSearchMouseClicked
 
     private void lblDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDeleteMouseClicked
-        JDDeleteBill jdd = new JDDeleteBill(this.parent, true);
-        jdd.setVisible(true);
+        if (!Common.isNullOrEmpty(bill)) {
+            JDDeleteBill deleteBill = new JDDeleteBill(this.parent, true, dbUtil, this, bill);
+            deleteBill.setVisible(true);
+        }
     }//GEN-LAST:event_lblDeleteMouseClicked
+
+    private void lblUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUpdateMouseClicked
+        if (!Common.isNullOrEmpty(bill)) {
+            JDModifyBill modifyBill = new JDModifyBill(this.parent, true);
+            modifyBill.setVisible(true);
+        }
+    }//GEN-LAST:event_lblUpdateMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -236,7 +315,13 @@ public class PnlBill extends javax.swing.JPanel {
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblDelete;
     private javax.swing.JLabel lblSearch;
-    private javax.swing.JLabel lblUpdate;
+    private javax.swing.JLabel lblUpdate1;
+    private javax.swing.JLabel lblView;
     private javax.swing.JTable tblBill;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void actionBillDelete() {
+        loading();
+    }
 }

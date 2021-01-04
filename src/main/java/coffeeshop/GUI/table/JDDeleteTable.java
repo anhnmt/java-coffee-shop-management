@@ -6,7 +6,7 @@
 package coffeeshop.GUI.table;
 
 import coffeeshop.DTO.Table;
-import coffeeshop.DAO.TableDao;
+import coffeeshop.DAO.impl.TableDao;
 import coffeeshop.Util.DbUtil;
 import java.util.Map;
 import javax.swing.JOptionPane;
@@ -65,7 +65,7 @@ public class JDDeleteTable extends javax.swing.JDialog {
         btnDelete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("XOÁ BÀN");
+        setTitle("Xoá bàn | Quản lý quán cà phê - Version 1.0");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 

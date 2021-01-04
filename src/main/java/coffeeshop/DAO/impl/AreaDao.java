@@ -1,5 +1,6 @@
-package coffeeshop.DAO;
+package coffeeshop.DAO.impl;
 
+import coffeeshop.DAO.*;
 import coffeeshop.DTO.Area;
 import coffeeshop.Util.DbUtil;
 
@@ -9,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AreaDao implements GenericDao<Area> {
+public class AreaDao implements IAreaDao {
 
     Connection conn = null;
     CallableStatement cs = null;
@@ -19,6 +20,7 @@ public class AreaDao implements GenericDao<Area> {
         conn = dbUtil.getInstance().getConnection();
     }
 
+    @Override
     public List<Area> getAll() {
         List<Area> list = new ArrayList<>();
         String sql = "{CALL sp_getAllArea}";
@@ -37,6 +39,9 @@ public class AreaDao implements GenericDao<Area> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            rs = null;
+            cs = null;
         }
 
         return list;
@@ -59,11 +64,19 @@ public class AreaDao implements GenericDao<Area> {
             output.put("message", cs.getNString(4));
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            cs = null;
         }
 
         return output;
     }
 
+    /**
+     *
+     * @param name
+     * @return
+     */
+    @Override
     public Area findByName(String name) {
         Area obj = null;
         String sql = "{CALL sp_findAreaByName(?)}";
@@ -71,18 +84,20 @@ public class AreaDao implements GenericDao<Area> {
         try {
             cs = conn.prepareCall(sql);
             cs.setNString(1, name);
+            rs = cs.executeQuery();
 
-            try (ResultSet rs = cs.executeQuery()) {
-                while (rs.next()) {
-                    obj = new Area(
-                            rs.getInt("id"),
-                            rs.getNString("name"),
-                            rs.getBoolean("status")
-                    );
-                }
+            while (rs.next()) {
+                obj = new Area(
+                        rs.getInt("id"),
+                        rs.getNString("name"),
+                        rs.getBoolean("status")
+                );
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            rs = null;
+            cs = null;
         }
 
         return obj;
@@ -106,6 +121,8 @@ public class AreaDao implements GenericDao<Area> {
             output.put("message", cs.getNString(5));
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            cs = null;
         }
 
         return output;
@@ -127,6 +144,8 @@ public class AreaDao implements GenericDao<Area> {
             output.put("message", cs.getNString(3));
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            cs = null;
         }
 
         return output;

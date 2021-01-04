@@ -389,11 +389,119 @@ EXEC sp_insertProduct 1, N'Cà phê đen', 29000;
 
 GO
 
+EXEC sp_insertProduct 1, N'Cà phê nâu', 35000;
+
+GO
+
+EXEC sp_insertProduct 1, N'Cà phê sữa tươi', 35000;
+
+GO
+
 EXEC sp_insertProduct 2, N'Latte', 45000;
 
 GO
 
 EXEC sp_insertProduct 2, N'Cappuchino', 45000;
+
+GO
+
+EXEC sp_insertProduct 2, N'Espresso', 30000;
+
+GO
+
+EXEC sp_insertProduct 3, N'Sinh tố bơ', 59000;
+
+GO
+
+EXEC sp_insertProduct 3, N'Sinh tố xoài', 5000;
+
+GO
+
+EXEC sp_insertProduct 4, N'Trà cam quế', 45000;
+
+GO
+
+EXEC sp_insertProduct 4, N'Trà đào chanh leo', 45000;
+
+GO
+
+EXEC sp_insertProduct 4, N'Trà quất mật ong', 45000;
+
+GO
+
+EXEC sp_insertProduct 4, N'Trà lip ton', 25000;
+
+GO
+
+EXEC sp_insertProduct 4, N'Trà mạn', 35000;
+
+GO
+
+EXEC sp_insertProduct 5, N'Cóc xanh (theo mùa)', 55000;
+
+GO
+
+EXEC sp_insertProduct 5, N'Canh tươi', 39000;
+
+GO
+
+EXEC sp_insertProduct 5, N'Dưa hấu', 49000;
+
+GO
+
+EXEC sp_insertProduct 5, N'Chanh leo', 49000;
+
+GO
+
+EXEC sp_insertProduct 5, N'Cam tươi', 65000;
+
+GO
+
+EXEC sp_insertProduct 5, N'Ổi', 45000;
+
+GO
+
+EXEC sp_insertProduct 5, N'Xoài xanh', 45000;
+
+GO
+
+EXEC sp_insertProduct 6, N'Sữa chua dầm đá', 35000;
+
+GO
+
+EXEC sp_insertProduct 6, N'Sữa chua ca cao', 40000;
+
+GO
+
+EXEC sp_insertProduct 6, N'Sữa chua cà phê', 40000;
+
+GO
+
+EXEC sp_insertProduct 6, N'Sữa chua trái cây', 55000;
+
+GO
+
+EXEC sp_insertProduct 7, N'Hạt hướng dương', 25000;
+
+GO
+
+EXEC sp_insertProduct 7, N'Lạc rang', 25000;
+
+GO
+
+EXEC sp_insertProduct 7, N'Ngô cay', 25000;
+
+GO
+
+EXEC sp_insertProduct 7, N'Bánh đậu xanh & Kẹo lạc', 25000;
+
+GO
+
+EXEC sp_insertProduct 7, N'Bánh sừng bò chấm sữa', 25000;
+
+GO
+
+EXEC sp_insertProduct 7, N'Thịt bò khô', 40000;
 
 GO
 
@@ -952,6 +1060,71 @@ GO
 --                   @_table_id = 1,
 --                   @_total_price = 490000;
 
+
+GO
+
+CREATE PROC sp_getAllBill
+(
+    @_id INT = NULL,
+    @_user_id INT = NULL,
+    @_table_id INT = NULL,
+    @_status BIT = NULL
+)
+AS
+DECLARE @sql NVARCHAR(MAX)
+    = N'
+		SELECT B.*, U.name user_name, T.name table_name
+		FROM Bills B
+		LEFT JOIN Users U
+        ON U.id = B.user_id
+		LEFT JOIN Tables T
+        ON T.id = B.table_id
+		WHERE 1=1';
+
+IF (@_id IS NOT NULL)
+    SET @sql = CONCAT(@sql, N' AND id = ', @_id);
+
+IF (@_user_id IS NOT NULL)
+    SET @sql = CONCAT(@sql, N' AND user_id = ', @_user_id);
+
+IF (@_table_id IS NOT NULL)
+    SET @sql = CONCAT(@sql, N' AND table_id = ', @_table_id);
+
+IF (@_status IS NOT NULL)
+    SET @sql = CONCAT(@sql, N' AND status = ', @_status);
+
+EXEC (@sql);
+
+GO
+
+--EXEC sp_getAllBill 1
+--EXEC sp_getAllBill 2;
+
+GO
+
+CREATE PROC sp_getBillByTableId
+(
+    @_table_id INT,
+    @_status BIT = 1
+)
+AS
+SELECT TOP 1
+       B.*,
+       U.name [user_name],
+       T.name table_name
+FROM Bills B
+    LEFT JOIN Users U
+        ON U.id = B.[user_id]
+    LEFT JOIN Tables T
+        ON T.id = B.table_id
+WHERE B.table_id = @_table_id
+      AND B.[status] = @_status
+ORDER BY B.created_at DESC;
+
+GO
+
+--EXEC sp_getBillByTableId 1;
+
 GO
 
 CREATE TABLE BillDetail
@@ -1121,45 +1294,6 @@ BEGIN CATCH
     SET @_outStt = 0;
     SET @_outMsg = ERROR_MESSAGE();
 END CATCH;
-
-GO
-
-CREATE PROC sp_getAllBill
-AS
-SELECT *
-FROM Bills;
-
-GO
-
-CREATE PROC sp_getBillById
-(@_id INT)
-AS
-SELECT *
-FROM Bills
-WHERE id = @_id;
-
-GO
-
---EXEC sp_getBillById 2;
-
-GO
-
-CREATE PROC sp_getBillByTableId
-(
-    @_table_id INT,
-    @_status BIT = 1
-)
-AS
-SELECT TOP 1
-       *
-FROM Bills
-WHERE table_id = @_table_id
-      AND [status] = @_status
-ORDER BY created_at DESC;
-
-GO
-
---EXEC sp_getBillByTableId 1;
 
 GO
 

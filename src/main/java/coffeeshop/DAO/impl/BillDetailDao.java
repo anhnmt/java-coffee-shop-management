@@ -1,5 +1,6 @@
-package coffeeshop.DAO;
+package coffeeshop.DAO.impl;
 
+import coffeeshop.DAO.*;
 import coffeeshop.DTO.BillDetail;
 import coffeeshop.Util.DbUtil;
 
@@ -9,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BillDetailDao implements GenericDao<BillDetail> {
+public class BillDetailDao implements IBillDetailDao {
 
     Connection conn = null;
     CallableStatement cs = null;
@@ -19,6 +20,7 @@ public class BillDetailDao implements GenericDao<BillDetail> {
         conn = dbUtil.getInstance().getConnection();
     }
 
+    @Override
     public List<BillDetail> getAll(int bill_id) {
         List<BillDetail> obj = new ArrayList<>();
         String sql = "{CALL sp_getBillDetailByBillId(?)}";
@@ -41,6 +43,9 @@ public class BillDetailDao implements GenericDao<BillDetail> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            rs = null;
+            cs = null;
         }
 
         return obj;
@@ -64,6 +69,8 @@ public class BillDetailDao implements GenericDao<BillDetail> {
             output.put("message", cs.getNString(5));
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            cs = null;
         }
 
         return output;
@@ -92,16 +99,14 @@ public class BillDetailDao implements GenericDao<BillDetail> {
             output.put("message", cs.getNString(5));
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            cs = null;
         }
 
         return output;
     }
 
     @Override
-    public Map<String, Object> delete(int bill_id) {
-        return null;
-    }
-
     public Map<String, Object> delete(BillDetail billDetail) {
 
         Map<String, Object> output = new HashMap<>();
@@ -119,6 +124,8 @@ public class BillDetailDao implements GenericDao<BillDetail> {
             output.put("message", cs.getNString(4));
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            cs = null;
         }
 
         return output;

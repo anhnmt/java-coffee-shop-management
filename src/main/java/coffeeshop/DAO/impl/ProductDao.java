@@ -1,5 +1,6 @@
-package coffeeshop.DAO;
+package coffeeshop.DAO.impl;
 
+import coffeeshop.DAO.*;
 import coffeeshop.DTO.Product;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
@@ -10,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ProductDao implements GenericDao<Product> {
+public class ProductDao implements IProductDao {
 
     Connection conn = null;
     CallableStatement cs = null;
@@ -20,6 +21,7 @@ public class ProductDao implements GenericDao<Product> {
         conn = dbUtil.getInstance().getConnection();
     }
 
+    @Override
     public List<Product> getAll(Product product, Float fromPrice, Float toPrice) {
         List<Product> list = new ArrayList<>();
         String sql = "{CALL sp_getAllProduct(?, ?, ?, ?, ?)}";
@@ -65,6 +67,9 @@ public class ProductDao implements GenericDao<Product> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            rs = null;
+            cs = null;
         }
 
         return list;
@@ -89,6 +94,8 @@ public class ProductDao implements GenericDao<Product> {
             output.put("message", cs.getNString(6));
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            cs = null;
         }
 
         return output;
@@ -116,6 +123,9 @@ public class ProductDao implements GenericDao<Product> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            rs = null;
+            cs = null;
         }
 
         return obj;
@@ -141,6 +151,8 @@ public class ProductDao implements GenericDao<Product> {
             output.put("message", cs.getNString(7));
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            cs = null;
         }
 
         return output;
@@ -162,6 +174,8 @@ public class ProductDao implements GenericDao<Product> {
             output.put("message", cs.getNString(3));
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            cs = null;
         }
 
         return output;

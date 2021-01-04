@@ -5,7 +5,7 @@
  */
 package coffeeshop.GUI.table;
 
-import coffeeshop.DAO.AreaDao;
+import coffeeshop.DAO.impl.AreaDao;
 import coffeeshop.DTO.Area;
 import java.awt.Color;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import coffeeshop.DTO.Table;
-import coffeeshop.DAO.TableDao;
+import coffeeshop.DAO.impl.TableDao;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
 
@@ -120,6 +120,7 @@ public final class JDModifyTable extends javax.swing.JDialog {
         lblNameError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Cập nhật bàn | Quản lý quán cà phê - Version 1.0");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
