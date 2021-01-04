@@ -11,46 +11,47 @@ import coffeeshop.GUI.area.PnlArea;
 import coffeeshop.GUI.user.PnlUser;
 import coffeeshop.GUI.category.PnlCategory;
 import coffeeshop.GUI.product.PnlProduct;
-import java.awt.BorderLayout;
+import coffeeshop.Util.Common;
+import coffeeshop.Util.DbUtil;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
-import java.awt.LayoutManager;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 
 /**
  *
  * @author Rahmans
  */
-public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLogin {
+public final class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLogin {
 
     static boolean maximized = true;
     int xMouse;
     int yMouse;
     User user;
     JDLogin jDLogin;
+    DbUtil dbUtil;
 
-    public Dashboard() {
+    public Dashboard(DbUtil dbUtil) {
         initComponents();
         loadUser(null);
+        this.dbUtil = dbUtil;
 
-        JDLogin jDLogin = new JDLogin(this, true, this);
-        this.jDLogin = jDLogin;
+        this.jDLogin = new JDLogin(this, true, dbUtil, this);
         jDLogin.setVisible(true);
     }
 
     public void loadUser(User user) {
-        if (user != null) {
+        if (!Common.isNullOrEmpty(user)) {
             this.user = user;
             lblName.setText(user.getName().toUpperCase());
             lblEmail.setText(user.getEmail());
             this.setVisible(true);
+
             if (user.getRole() != 1) {
                 lblUser.setVisible(false);
                 btnUser.setVisible(false);
             }
+
             btnDashboard.doClick();
         }
     }
@@ -88,7 +89,7 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
         pnlBody = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Cube UI");
+        setTitle("Quản lý quán cà phê - Version 1.0");
         setBackground(new java.awt.Color(255, 255, 0));
         setUndecorated(true);
         setSize(new java.awt.Dimension(1000, 600));
@@ -194,11 +195,11 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
 
         lblName.setFont(new java.awt.Font("Leelawadee UI", 1, 20)); // NOI18N
         lblName.setForeground(new java.awt.Color(44, 62, 80));
-        lblName.setText("NGUYỄN TUẤN MINH");
+        lblName.setText("KHÔNG XÁC ĐỊNH");
 
         lblEmail.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblEmail.setForeground(new java.awt.Color(127, 140, 141));
-        lblEmail.setText("Học sinh");
+        lblEmail.setText("Nhân viên");
 
         btnDashboard.setFont(new java.awt.Font("Segoe UI Semibold", 1, 16)); // NOI18N
         btnDashboard.setForeground(new java.awt.Color(44, 62, 80));
@@ -272,12 +273,12 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
         jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(127, 140, 141));
         jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel16.setText("You are login as Admin, ");
+        jLabel16.setText("Bạn đã đăng nhập, ");
 
         jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(52, 152, 219));
         jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel17.setText("Logout ?");
+        jLabel17.setText("Đăng xuất ?");
         jLabel17.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jLabel17.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -392,9 +393,7 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
                             .addComponent(btnUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblArea, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMenuLayout.createSequentialGroup()
-                                .addGap(0, 0, 0)
-                                .addComponent(lblUser, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(lblUser, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(lblBill, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
@@ -489,7 +488,7 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
         lblBill.setBackground(new Color(255, 255, 255));
         lblUser.setBackground(new Color(255, 255, 255));
         pnlBody.removeAll();
-        PnlCategory pnl = new PnlCategory(this, user.getRole());
+        PnlCategory pnl = new PnlCategory(this, dbUtil, user);
 //        pnl.setVisible(true);
         pnlBody.add(pnl);
         pnlBody.repaint();
@@ -505,7 +504,8 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
         lblBill.setBackground(new Color(255, 255, 255));
         lblUser.setBackground(new Color(255, 255, 255));
         pnlBody.removeAll();
-        PnlProduct pnl = new PnlProduct(this, user.getRole());
+
+        PnlProduct pnl = new PnlProduct(this, dbUtil, user);
 //        pnl.setVisible(true);
         pnlBody.add(pnl);
         pnlBody.repaint();
@@ -521,7 +521,7 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
         lblArea.setBackground(new Color(255, 255, 255));
         lblUser.setBackground(new Color(255, 255, 255));
         pnlBody.removeAll();
-        PnlBill pnl = new PnlBill(this, user.getRole());
+        PnlBill pnl = new PnlBill(this, dbUtil, user);
 //        pnl.setVisible(true);
         pnlBody.add(pnl);
         pnlBody.repaint();
@@ -537,7 +537,7 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
         lblProduct.setBackground(new Color(255, 255, 255));
         lblUser.setBackground(new Color(255, 255, 255));
         pnlBody.removeAll();
-        PnlTrangChu pnl = new PnlTrangChu();
+        PnlHome pnl = new PnlHome();
 //        pnl.setVisible(true);
         pnlBody.add(pnl);
         pnlBody.repaint();
@@ -553,7 +553,7 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
         lblProduct.setBackground(new Color(255, 255, 255));
         lblUser.setBackground(new Color(255, 255, 255));
         pnlBody.removeAll();
-        PnlArea pnl = new PnlArea(this, user.getRole());
+        PnlArea pnl = new PnlArea(this, dbUtil, user);
 //        pnl.setVisible(true);
         pnlBody.add(pnl);
         pnlBody.repaint();
@@ -575,46 +575,12 @@ public class Dashboard extends javax.swing.JFrame implements JDLogin.CallbackLog
         lblCategory.setBackground(new Color(255, 255, 255));
         lblProduct.setBackground(new Color(255, 255, 255));
         pnlBody.removeAll();
-        PnlUser pnl = new PnlUser(this, user.getId());
+
+        PnlUser pnl = new PnlUser(this, dbUtil, user);
         pnlBody.add(pnl);
         pnlBody.repaint();
         pnlBody.revalidate();
     }//GEN-LAST:event_btnUserActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Windows".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Dashboard().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnArea;

@@ -6,7 +6,8 @@
 package coffeeshop.GUI.area;
 
 import coffeeshop.DTO.Area;
-import coffeeshop.DAO.AreaDao;
+import coffeeshop.DAO.impl.AreaDao;
+import coffeeshop.Util.DbUtil;
 import java.util.Map;
 import javax.swing.JOptionPane;
 
@@ -18,21 +19,31 @@ public class JDDeleteArea extends javax.swing.JDialog {
 
     CallbackAreaDelete callback;
     Area area;
+    AreaDao areaDao;
+    DbUtil dbUtil;
 
     interface CallbackAreaDelete {
 
-        public void actionDelete();
+        public void actionAreaDelete();
     }
 
     /**
      * Creates new form JDCategoryCreate
+     *
+     * @param parent
+     * @param modal
+     * @param dbUtil
+     * @param area
+     * @param callback
      */
-    public JDDeleteArea(java.awt.Frame parent, boolean modal, CallbackAreaDelete callback, Area area) {
+    public JDDeleteArea(java.awt.Frame parent, boolean modal, DbUtil dbUtil, CallbackAreaDelete callback, Area area) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
         this.callback = callback;
         this.area = area;
+        this.dbUtil = dbUtil;
+        this.areaDao = new AreaDao(dbUtil);
         lblConfirm.setText("Bạn có chắc chắn muốn xoá danh mục tên: " + area.getName());
 
     }
@@ -54,6 +65,8 @@ public class JDDeleteArea extends javax.swing.JDialog {
         btnDelete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Xoá khu vực | Quản lý quán cà phê - Version 1.0");
+        setAlwaysOnTop(true);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -109,10 +122,10 @@ public class JDDeleteArea extends javax.swing.JDialog {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(lblConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -134,11 +147,11 @@ public class JDDeleteArea extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        AreaDao areaDao = new AreaDao();
         Map<String, Object> result = areaDao.delete(area.getId());
+
         if ((boolean) result.get("status") == true) {
             JOptionPane.showMessageDialog(null, "Xoá khu vực thành công!");
-            callback.actionDelete();
+            callback.actionAreaDelete();
             dispose();
         } else {
             JOptionPane.showMessageDialog(null, "Xoá khu vực thất bại, lỗi: " + result.get("message") + "!");
@@ -149,55 +162,6 @@ public class JDDeleteArea extends javax.swing.JDialog {
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JDDeleteArea.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JDDeleteArea.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JDDeleteArea.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JDDeleteArea.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                JDDeleteArea dialog = new JDDeleteArea(new javax.swing.JFrame(), true, null, null);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;

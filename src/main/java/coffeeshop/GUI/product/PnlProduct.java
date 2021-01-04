@@ -5,67 +5,72 @@
  */
 package coffeeshop.GUI.product;
 
-import coffeeshop.DAO.ProductDao;
+import coffeeshop.DAO.impl.ProductDao;
 import coffeeshop.DTO.Product;
 import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import coffeeshop.DTO.User;
+import coffeeshop.Util.Common;
+import coffeeshop.Util.DbUtil;
 
 /**
  *
  * @author Minh
  */
-public class PnlProduct extends javax.swing.JPanel implements JDModify.CallbackModify, JDDelete.CallbackDelete, JDSearch.CallbackSearch {
+public final class PnlProduct extends javax.swing.JPanel implements JDModifyProduct.CallbackProductModify, JDDeleteProduct.CallbackProductDelete, JDSearchProduct.CallbackProductSearch {
 
     Frame parent;
-    List<Product> products = new ArrayList<Product>();
+    DbUtil dbUtil;
+    List<Product> products = new ArrayList<>();
     Product product;
-    ProductDao productDao = new ProductDao();
+    ProductDao productDao;
 
     /**
      * Creates new form PnlCategory
+     *
+     * @param parent
+     * @param dbUtil
+     * @param user
      */
-    public PnlProduct(Frame parent, int role) {
+    public PnlProduct(Frame parent, DbUtil dbUtil, User user) {
         initComponents();
         this.parent = parent;
-        loading(null, null, null, null, null);
+        this.dbUtil = dbUtil;
+        this.productDao = new ProductDao(dbUtil);
+        loading(null, null, null);
 
-        if (role != 1) {
+        if (user.getRole() != 1) {
             lblAdd.setVisible(false);
             lblUpdate.setVisible(false);
             lblDelete.setVisible(false);
         }
     }
 
-    public void loading(String name, Integer category_id, Float fromPrice, Float toPrice, Boolean status) {
+    public void loading(Product newProduct, Float fromPrice, Float toPrice) {
         tblProduct.removeAll();
-        products = productDao.getAll(name, category_id, fromPrice, toPrice, status);
+        products = productDao.getAll(newProduct, fromPrice, toPrice);
 
-        String columns[] = {"Id", "Tên", "Giá", "Tên danh mục", "Trạng thái"};
+        String columns[] = {"Id", "Tên danh mục", "Tên", "Giá", "Trạng thái"};
         DefaultTableModel dtm = new DefaultTableModel(columns, 0);
 
         if (!products.isEmpty()) {
-            for (Product product : products) {
-                dtm.addRow(new Object[]{product.getId(), product.getName(), product.getPrice(), product.getCategory_name(), product.isStatus() ? "Hoạt động" : "Không hoạt động"});
-            }
+            products.forEach(obj -> {
+                dtm.addRow(new Object[]{obj.getId(), obj.getCategory_name(), obj.getName(), obj.getPrice(), obj.getStatus() ? "Hoạt động" : "Không hoạt động"});
+            });
 
-            tblProduct.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-                @Override
-                public void valueChanged(ListSelectionEvent lse) {
-                    int position = tblProduct.getSelectedRow();
-                    if (position < 0) {
-                        position = 0;
-                    }
-
-                    product = products.get(position);
+            tblProduct.getSelectionModel().addListSelectionListener((ListSelectionEvent lse) -> {
+                int position = tblProduct.getSelectedRow();
+                if (position < 0) {
+                    position = 0;
                 }
+
+                product = products.get(position);
             });
 
             tblProduct.changeSelection(0, 0, false, false);
-//          tblProduct.setRowSelectionInterval(0, 0);
         }
 
         tblProduct.setModel(dtm);
@@ -286,27 +291,31 @@ public class PnlProduct extends javax.swing.JPanel implements JDModify.CallbackM
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddMouseClicked
-        JDModify jdm = new JDModify(this.parent, true, this, null);
+        JDModifyProduct jdm = new JDModifyProduct(this.parent, true, dbUtil, this, null);
         jdm.setVisible(true);
     }//GEN-LAST:event_lblAddMouseClicked
 
     private void lblUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUpdateMouseClicked
-        JDModify jdm = new JDModify(this.parent, true, this, product);
-        jdm.setVisible(true);
+        if (!Common.isNullOrEmpty(product)) {
+            JDModifyProduct jdm = new JDModifyProduct(this.parent, true, dbUtil, this, product);
+            jdm.setVisible(true);
+        }
     }//GEN-LAST:event_lblUpdateMouseClicked
 
     private void lblSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSearchMouseClicked
-        JDSearch jds = new JDSearch(this.parent, true, this);
+        JDSearchProduct jds = new JDSearchProduct(this.parent, true, dbUtil, this);
         jds.setVisible(true);
     }//GEN-LAST:event_lblSearchMouseClicked
 
     private void lblDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDeleteMouseClicked
-        JDDelete jdd = new JDDelete(this.parent, true, this, product);
-        jdd.setVisible(true);
+        if (!Common.isNullOrEmpty(product)) {
+            JDDeleteProduct jdd = new JDDeleteProduct(this.parent, true, dbUtil, this, product);
+            jdd.setVisible(true);
+        }
     }//GEN-LAST:event_lblDeleteMouseClicked
 
     private void lblRefreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRefreshMouseClicked
-        loading(null, null, null, null, null);
+        loading(null, null, null);
     }//GEN-LAST:event_lblRefreshMouseClicked
 
 
@@ -325,17 +334,17 @@ public class PnlProduct extends javax.swing.JPanel implements JDModify.CallbackM
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void actionModify() {
-        loading(null, null, null, null, null);
+    public void actionProductModify() {
+        loading(null, null, null);
     }
 
     @Override
-    public void actionDelete() {
-        loading(null, null, null, null, null);
+    public void actionProductDelete() {
+        loading(null, null, null);
     }
 
     @Override
-    public void actionSearch(String name, Integer category_id, Float fromPrice, Float toPrice, Boolean status) {
-        loading(name, category_id, fromPrice, toPrice, status);
+    public void actionProductSearch(Product product, Float fromPrice, Float toPrice) {
+        loading(product, fromPrice, toPrice);
     }
 }
