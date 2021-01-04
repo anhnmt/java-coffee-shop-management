@@ -149,9 +149,9 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
         bill = billDao.getByTableId(new Bill(objTable.getId(), false));
 
         if (Common.isNullOrEmpty(bill)) {
-            jp.setForeground(Color.green);
+            jp.setForeground(new Color(40,167,69));
         } else {
-            jp.setForeground(Color.red);
+            jp.setForeground(new Color(220,53,69));
         }
 
         jp.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);

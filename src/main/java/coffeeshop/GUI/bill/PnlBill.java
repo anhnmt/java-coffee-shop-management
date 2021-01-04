@@ -53,6 +53,7 @@ public class PnlBill extends javax.swing.JPanel implements JDSearchBill.Callback
     }
 
     private void loading(Bill newBill) {
+        bill = null;
         tblBill.removeAll();
         bills = billDao.getAll(newBill);
 
@@ -66,11 +67,10 @@ public class PnlBill extends javax.swing.JPanel implements JDSearchBill.Callback
 
             tblBill.getSelectionModel().addListSelectionListener((ListSelectionEvent lse) -> {
                 int position = tblBill.getSelectedRow();
-                if (position < 0) {
-                    position = 0;
+                if (position >= 0) {
+                    bill = bills.get(position);
                 }
 
-                bill = bills.get(position);
             });
 
             tblBill.changeSelection(0, 0, false, false);

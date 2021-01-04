@@ -534,6 +534,7 @@ EXEC sp_insertProduct 7, N'Thịt bò khô', 40000;
 
 GO
 
+
 CREATE PROC sp_getAllProduct
 (
     @_name NVARCHAR(100) = NULL,
