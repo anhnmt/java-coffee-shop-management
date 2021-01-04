@@ -5,61 +5,71 @@
  */
 package coffeeshop.GUI.user;
 
-import coffeeshop.DAO.UserDao;
+import coffeeshop.DAO.impl.UserDao;
 import coffeeshop.DTO.User;
+import coffeeshop.Util.Common;
+import coffeeshop.Util.DbUtil;
 import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Minh
  */
-public class PnlUser extends javax.swing.JPanel implements JDModify.CallbackModify, JDDelete.CallbackDelete {
+public final class PnlUser extends javax.swing.JPanel implements JDModifyUser.CallbackUserModify, JDDeleteUser.CallbackUserDelete, JDSearchUser.CallbackUserSearch {
 
     Frame parent;
-    List<User> list = new ArrayList<User>();
+    List<User> list = new ArrayList<>();
     User user;
-    int id;
+    User currentUser;
+    UserDao userDao;
+    DbUtil dbUtil;
 
     /**
      * Creates new form PnlCategory
+     *
+     * @param parent
+     * @param dbUtil
+     * @param currentUser
      */
-    public PnlUser(Frame parent, int id) {
+    public PnlUser(Frame parent, DbUtil dbUtil, User currentUser) {
         initComponents();
         this.parent = parent;
-        loading();
-        this.id = id;
+        this.currentUser = currentUser;
+        this.dbUtil = dbUtil;
+        this.userDao = new UserDao(dbUtil);
+        loading(null);
     }
 
-    public void loading() {
-        UserDao userDao = new UserDao();
-        list = userDao.getAll();
+    public void loading(User newUser) {
+        list = userDao.getAll(newUser);
+
         String columns[] = {"Id", "Tên", "Email", "Quyền", "Trạng thái"};
         DefaultTableModel dtm = new DefaultTableModel(columns, 0);
-        for (User user : list) {
-            dtm.addRow(new Object[]{user.getId(), user.getName(), user.getEmail(), user.getRole() == 1 ? "Super Admin" : "Nhân viên", user.isStatus() == true ? "Hoạt động" : "Không hoạt động"});
-        }
-        if (list.size() > 0) {
-            tblUser.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-                @Override
-                public void valueChanged(ListSelectionEvent lse) {
-                    int position = tblUser.getSelectedRow();
-                    if (position < 0) {
-                        position = 0;
-                    }
 
-                    user = list.get(position);
-                }
+        if (!Common.isNullOrEmpty(list)) {
+            list.forEach(obj -> {
+                dtm.addRow(new Object[]{obj.getId(), obj.getName(), obj.getEmail(), obj.getRole() == 1 ? "Super Admin" : "Nhân viên", obj.getStatus() == true ? "Hoạt động" : "Không hoạt động"});
             });
+
+            tblUser.getSelectionModel().addListSelectionListener((ListSelectionEvent lse) -> {
+                int position = tblUser.getSelectedRow();
+                if (position < 0) {
+                    position = 0;
+                }
+
+                user = list.get(position);
+            });
+
+            tblUser.changeSelection(0, 0, false, false);
         }
+
         tblUser.setModel(dtm);
-        tblUser.changeSelection(0, 0, false, false);
-        tblUser.setRowSelectionInterval(0, 0);
     }
 
     /**
@@ -79,6 +89,7 @@ public class PnlUser extends javax.swing.JPanel implements JDModify.CallbackModi
         lblUpdate = new javax.swing.JLabel();
         lblSearch = new javax.swing.JLabel();
         lblDelete = new javax.swing.JLabel();
+        lblRefresh = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblUser = new javax.swing.JTable();
 
@@ -157,6 +168,20 @@ public class PnlUser extends javax.swing.JPanel implements JDModify.CallbackModi
             }
         });
         jPanel2.add(lblDelete);
+
+        lblRefresh.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        lblRefresh.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_repeat_50px_1.png"))); // NOI18N
+        lblRefresh.setText("Làm mới");
+        lblRefresh.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblRefresh.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lblRefresh.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        lblRefresh.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblRefreshMouseClicked(evt);
+            }
+        });
+        jPanel2.add(lblRefresh);
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_START);
 
@@ -262,28 +287,32 @@ public class PnlUser extends javax.swing.JPanel implements JDModify.CallbackModi
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddMouseClicked
-        JDModify jdm = new JDModify(this.parent, true, this, null);
+        JDModifyUser jdm = new JDModifyUser(this.parent, true, dbUtil, this, null);
         jdm.setVisible(true);
     }//GEN-LAST:event_lblAddMouseClicked
 
     private void lblUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUpdateMouseClicked
-        JDModify jdm = new JDModify(this.parent, true, this, user);
+        JDModifyUser jdm = new JDModifyUser(this.parent, true, dbUtil, this, user);
         jdm.setVisible(true);
     }//GEN-LAST:event_lblUpdateMouseClicked
 
     private void lblSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSearchMouseClicked
-        JDSearch jds = new JDSearch(this.parent, true);
+        JDSearchUser jds = new JDSearchUser(this.parent, true, this);
         jds.setVisible(true);
     }//GEN-LAST:event_lblSearchMouseClicked
 
     private void lblDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDeleteMouseClicked
-        if (user.getId() == id) {
+        if (Objects.equals(currentUser.getId(), user.getId())) {
             JOptionPane.showMessageDialog(null, "Bạn không thể xoá tài khoản của chính bạn!");
         } else {
-            JDDelete jdd = new JDDelete(this.parent, true, this, user);
+            JDDeleteUser jdd = new JDDeleteUser(this.parent, true, dbUtil, this, user);
             jdd.setVisible(true);
         }
     }//GEN-LAST:event_lblDeleteMouseClicked
+
+    private void lblRefreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRefreshMouseClicked
+        loading(null);
+    }//GEN-LAST:event_lblRefreshMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -294,18 +323,24 @@ public class PnlUser extends javax.swing.JPanel implements JDModify.CallbackModi
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblAdd;
     private javax.swing.JLabel lblDelete;
+    private javax.swing.JLabel lblRefresh;
     private javax.swing.JLabel lblSearch;
     private javax.swing.JLabel lblUpdate;
     private javax.swing.JTable tblUser;
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void actionModify() {
-        loading();
+    public void actionUserModify() {
+        loading(null);
     }
 
     @Override
-    public void actionDelete() {
-        loading();
+    public void actionUserDelete() {
+        loading(null);
+    }
+
+    @Override
+    public void actionUserSearch(User user) {
+        loading(user);
     }
 }

@@ -1,5 +1,6 @@
 package coffeeshop.DTO;
 
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,8 +8,14 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Area {
-    private int id;
+public class Area implements Serializable {
+
+    private Integer id;
     private String name;
-    private boolean status;
+    private Boolean status;
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }

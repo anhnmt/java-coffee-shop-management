@@ -7,6 +7,8 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
+    <Property name="title" type="java.lang.String" value="Xo&#xe1; khu v&#x1ef1;c | Qu&#x1ea3;n l&#xfd; qu&#xe1;n c&#xe0; ph&#xea; - Version 1.0"/>
+    <Property name="alwaysOnTop" type="boolean" value="true"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -67,10 +69,10 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel1" min="-2" pref="60" max="-2" attributes="0"/>
+                  <Component id="jLabel1" min="-2" pref="40" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="lblConfirm" min="-2" pref="50" max="-2" attributes="0"/>
-                  <EmptySpace pref="68" max="32767" attributes="0"/>
+                  <EmptySpace pref="88" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnCancel" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                       <Component id="btnDelete" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>

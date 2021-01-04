@@ -1,5 +1,6 @@
 package coffeeshop.DTO;
 
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,10 +8,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Table {
-    private int id;
-    private int area_id;
+public class Table implements Serializable {
+
+    private Integer id;
+    private Integer area_id;
     private String name;
     private String note;
-    private boolean status;
+    private Boolean status;
 }

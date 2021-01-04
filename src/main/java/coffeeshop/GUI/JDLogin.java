@@ -5,12 +5,12 @@
  */
 package coffeeshop.GUI;
 
-import coffeeshop.DAO.UserDao;
+import coffeeshop.DAO.impl.UserDao;
 import coffeeshop.DTO.User;
+import coffeeshop.Util.DbUtil;
 import java.awt.Color;
+import java.awt.Frame;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -22,7 +22,10 @@ import javax.swing.JOptionPane;
 public class JDLogin extends javax.swing.JDialog {
 
     CallbackLogin callback;
-    java.awt.Frame parent;
+
+    Frame parent;
+
+    UserDao ud;
 
     interface CallbackLogin {
 
@@ -34,18 +37,21 @@ public class JDLogin extends javax.swing.JDialog {
      *
      * @param parent
      * @param modal
+     * @param dbUtil
      * @param callback
      */
-    public JDLogin(java.awt.Frame parent, boolean modal, CallbackLogin callback) {
+    public JDLogin(java.awt.Frame parent, boolean modal, DbUtil dbUtil, CallbackLogin callback) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
         this.callback = callback;
         this.parent = parent;
+        ud = new UserDao(dbUtil);
+
         parent.setVisible(false);
         txtEmail.setText("admin@gmail.com");
         txtPassword.setText("123456");
-        
+
         // Custom code
         lblBackground.setBounds(0, 0, 960, 610);
         lblBackground.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("/coffeeshop/assets/img/background.png")).getImage().getScaledInstance(lblBackground.getWidth(), lblBackground.getHeight(), 1)));
@@ -59,7 +65,7 @@ public class JDLogin extends javax.swing.JDialog {
         txtPassword.setBorder(BorderFactory.createCompoundBorder(
                 txtPassword.getBorder(),
                 BorderFactory.createEmptyBorder(5, 8, 5, 8)));
-        
+
     }
 
     /**
@@ -90,6 +96,7 @@ public class JDLogin extends javax.swing.JDialog {
         lblBackground = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Đăng nhập | Quản lý quán cà phê - Version 1.0");
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
@@ -359,7 +366,6 @@ public class JDLogin extends javax.swing.JDialog {
         }
 
         if (validate == true) {
-            UserDao ud = new UserDao();
             User obj = ud.auth(email, password);
             System.out.println(obj);
 
@@ -369,7 +375,7 @@ public class JDLogin extends javax.swing.JDialog {
                 parent.setVisible(true);
                 txtPassword.setText("");
                 txtEmail.setText("");
-                
+
             } else {
                 txtPassword.setBorder(BorderFactory.createCompoundBorder(
                         BorderFactory.createLineBorder(new Color(240, 71, 71)),
@@ -394,48 +400,6 @@ public class JDLogin extends javax.swing.JDialog {
         // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_formWindowClosed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JDLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JDLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JDLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JDLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                JDLogin dialog = new JDLogin(new javax.swing.JFrame(), true, null);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel boxLogin;

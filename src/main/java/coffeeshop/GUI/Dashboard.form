@@ -3,7 +3,7 @@
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
-    <Property name="title" type="java.lang.String" value="Cube UI"/>
+    <Property name="title" type="java.lang.String" value="Qu&#x1ea3;n l&#xfd; qu&#xe1;n c&#xe0; ph&#xea; - Version 1.0"/>
     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
       <Color blue="0" green="ff" red="ff" type="rgb"/>
     </Property>
@@ -285,7 +285,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="50" green="3e" red="2c" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="NGUY&#x1ec4;N TU&#x1ea4;N MINH"/>
+            <Property name="text" type="java.lang.String" value="KH&#xd4;NG X&#xc1;C &#x110;&#x1eca;NH"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblEmail">
@@ -296,7 +296,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="8d" green="8c" red="7f" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="H&#x1ecd;c sinh"/>
+            <Property name="text" type="java.lang.String" value="Nh&#xe2;n vi&#xea;n"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="btnDashboard">
@@ -451,7 +451,7 @@
               <Color blue="8d" green="8c" red="7f" type="rgb"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="text" type="java.lang.String" value="You are login as Admin, "/>
+            <Property name="text" type="java.lang.String" value="B&#x1ea1;n &#x111;&#xe3; &#x111;&#x103;ng nh&#x1ead;p, "/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel17">
@@ -463,7 +463,7 @@
               <Color blue="db" green="98" red="34" type="rgb"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="text" type="java.lang.String" value="Logout ?"/>
+            <Property name="text" type="java.lang.String" value="&#x110;&#x103;ng xu&#x1ea5;t ?"/>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
               <Color id="Hand Cursor"/>
             </Property>
