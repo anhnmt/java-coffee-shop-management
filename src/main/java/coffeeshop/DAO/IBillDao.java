@@ -6,6 +6,8 @@ import java.util.Map;
 
 public interface IBillDao {
 
+    public int count();
+
     public List<Bill> getAll(Bill bill);
 
     public Map<String, Object> create(Bill bill);

@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.log4j.Log4j;
 
+@Log4j
 public class AreaDao implements IAreaDao {
 
     Connection conn = null;
@@ -18,6 +20,28 @@ public class AreaDao implements IAreaDao {
 
     public AreaDao(DbUtil dbUtil) {
         conn = dbUtil.getInstance().getConnection();
+    }
+
+    @Override
+    public int count() {
+        int count = 0;
+        String sql = "{CALL sp_countAreas}";
+
+        try {
+            cs = conn.prepareCall(sql);
+            rs = cs.executeQuery();
+
+            while (rs.next()) {
+                count = rs.getInt("count");
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+        } finally {
+            rs = null;
+            cs = null;
+        }
+
+        return count;
     }
 
     @Override
@@ -38,7 +62,7 @@ public class AreaDao implements IAreaDao {
                 list.add(obj);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } finally {
             rs = null;
             cs = null;
@@ -63,7 +87,7 @@ public class AreaDao implements IAreaDao {
             output.put("status", cs.getBoolean(3));
             output.put("message", cs.getNString(4));
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } finally {
             cs = null;
         }
@@ -94,7 +118,7 @@ public class AreaDao implements IAreaDao {
                 );
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } finally {
             rs = null;
             cs = null;
@@ -120,7 +144,7 @@ public class AreaDao implements IAreaDao {
             output.put("status", cs.getBoolean(4));
             output.put("message", cs.getNString(5));
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } finally {
             cs = null;
         }
@@ -143,7 +167,7 @@ public class AreaDao implements IAreaDao {
             output.put("status", cs.getBoolean(2));
             output.put("message", cs.getNString(3));
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } finally {
             cs = null;
         }

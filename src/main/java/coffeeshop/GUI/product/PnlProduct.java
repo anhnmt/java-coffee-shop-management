@@ -40,13 +40,14 @@ public final class PnlProduct extends javax.swing.JPanel implements JDModifyProd
         this.parent = parent;
         this.dbUtil = dbUtil;
         this.productDao = new ProductDao(dbUtil);
-        loading(null, null, null);
 
         if (user.getRole() != 1) {
             lblAdd.setVisible(false);
             lblUpdate.setVisible(false);
             lblDelete.setVisible(false);
         }
+
+        loading(null, null, null);
     }
 
     public void loading(Product newProduct, Float fromPrice, Float toPrice) {
@@ -63,11 +64,10 @@ public final class PnlProduct extends javax.swing.JPanel implements JDModifyProd
 
             tblProduct.getSelectionModel().addListSelectionListener((ListSelectionEvent lse) -> {
                 int position = tblProduct.getSelectedRow();
-                if (position < 0) {
-                    position = 0;
+                if (position >= 0) {
+                    product = products.get(position);
                 }
 
-                product = products.get(position);
             });
 
             tblProduct.changeSelection(0, 0, false, false);
@@ -119,7 +119,7 @@ public final class PnlProduct extends javax.swing.JPanel implements JDModifyProd
 
         lblAdd.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         lblAdd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_add_50px_2.png"))); // NOI18N
+        lblAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_add_50px_2.png"))); // NOI18N
         lblAdd.setText("Thêm mới");
         lblAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblAdd.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -133,7 +133,7 @@ public final class PnlProduct extends javax.swing.JPanel implements JDModifyProd
 
         lblUpdate.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         lblUpdate.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_update_50px.png"))); // NOI18N
+        lblUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_update_50px.png"))); // NOI18N
         lblUpdate.setText("Sửa đổi");
         lblUpdate.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblUpdate.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -147,7 +147,7 @@ public final class PnlProduct extends javax.swing.JPanel implements JDModifyProd
 
         lblSearch.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         lblSearch.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_search_50px_1.png"))); // NOI18N
+        lblSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_search_50px_1.png"))); // NOI18N
         lblSearch.setText("Tìm kiếm");
         lblSearch.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblSearch.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -161,7 +161,7 @@ public final class PnlProduct extends javax.swing.JPanel implements JDModifyProd
 
         lblDelete.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         lblDelete.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_delete_50px.png"))); // NOI18N
+        lblDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_delete_50px.png"))); // NOI18N
         lblDelete.setText("Xoá");
         lblDelete.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblDelete.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -175,7 +175,7 @@ public final class PnlProduct extends javax.swing.JPanel implements JDModifyProd
 
         lblRefresh.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         lblRefresh.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_repeat_50px_1.png"))); // NOI18N
+        lblRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_repeat_50px_1.png"))); // NOI18N
         lblRefresh.setText("Làm mới");
         lblRefresh.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblRefresh.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -189,6 +189,7 @@ public final class PnlProduct extends javax.swing.JPanel implements JDModifyProd
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_START);
 
+        tblProduct.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         tblProduct.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},

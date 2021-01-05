@@ -47,6 +47,10 @@ public final class JDModifyArea extends javax.swing.JDialog {
             this.area = area;
             loadData();
         }
+
+        txtName.setBorder(BorderFactory.createCompoundBorder(
+                txtName.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
     }
 
     public void loadData() {
@@ -78,12 +82,12 @@ public final class JDModifyArea extends javax.swing.JDialog {
         lblNameError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Cập nhật khu vực | Quản lý quán cà phê - Version 1.0");
+        setTitle("CẬP NHẬT KHU VỰC");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         lblTitle.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
-        lblTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_location_50px.png"))); // NOI18N
+        lblTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_location_50px.png"))); // NOI18N
         lblTitle.setText("THÊM MỚI KHU VỰC");
 
         lblName.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N

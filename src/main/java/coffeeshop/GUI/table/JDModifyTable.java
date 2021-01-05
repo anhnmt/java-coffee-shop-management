@@ -18,11 +18,15 @@ import coffeeshop.DTO.Table;
 import coffeeshop.DAO.impl.TableDao;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
+import java.awt.HeadlessException;
+import java.util.Objects;
+import lombok.extern.log4j.Log4j;
 
 /**
  *
  * @author Minh
  */
+@Log4j
 public final class JDModifyTable extends javax.swing.JDialog {
 
     CallbackTableModify callback;
@@ -61,11 +65,10 @@ public final class JDModifyTable extends javax.swing.JDialog {
 
         this.areaDao = new AreaDao(dbUtil);
         this.tableDao = new TableDao(dbUtil);
-        loadArea();
 
         if (!Common.isNullOrEmpty(area)) {
             areas.forEach(obj -> {
-                if (obj.getId() == area.getId()) {
+                if (Objects.equals(obj.getId(), area.getId())) {
                     cboArea.setSelectedItem(obj);
                 }
             });
@@ -79,13 +82,18 @@ public final class JDModifyTable extends javax.swing.JDialog {
             rdoNonActive.setSelected(table.getStatus() == false);
 
             areas.forEach(obj -> {
-                if (obj.getId() == table.getArea_id()) {
+                if (Objects.equals(obj.getId(), table.getArea_id())) {
                     cboArea.setSelectedItem(obj);
                 }
             });
         }
 
+        // Custom Style
+        txtName.setBorder(BorderFactory.createCompoundBorder(
+                txtName.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
         lblNameError.setVisible(false);
+        loadArea();
     }
 
     public void loadArea() {
@@ -120,13 +128,13 @@ public final class JDModifyTable extends javax.swing.JDialog {
         lblNameError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Cập nhật bàn | Quản lý quán cà phê - Version 1.0");
+        setTitle("CẬP NHẬT BÀN");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         lblTitle.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
-        lblTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_product_50px_2.png"))); // NOI18N
+        lblTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_product_50px_2.png"))); // NOI18N
         lblTitle.setText("THÊM MỚI BÀN");
 
         lblName.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
@@ -273,6 +281,7 @@ public final class JDModifyTable extends javax.swing.JDialog {
                 } else {
                     objTable.setId(table.getId());
                     Map<String, Object> result = tableDao.update(objTable);
+
                     if ((boolean) result.get("status") == true) {
                         JOptionPane.showMessageDialog(null, "Sửa bàn thành công!");
                         callback.actionTableModify();
@@ -282,8 +291,8 @@ public final class JDModifyTable extends javax.swing.JDialog {
                     }
                 }
 
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            } catch (HeadlessException ex) {
+                log.error(ex.getMessage());
             }
         }
 

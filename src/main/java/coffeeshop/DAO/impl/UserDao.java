@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.log4j.Log4j;
 
+@Log4j
 public class UserDao implements IUserDao {
 
     Connection conn = null;
@@ -22,9 +24,32 @@ public class UserDao implements IUserDao {
     }
 
     @Override
+    public int count() {
+        int count = 0;
+        String sql = "{CALL sp_countUsers}";
+
+        try {
+            cs = conn.prepareCall(sql);
+            rs = cs.executeQuery();
+
+            while (rs.next()) {
+                count = rs.getInt("count");
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+        } finally {
+            rs = null;
+            cs = null;
+        }
+
+        return count;
+    }
+
+    @Override
     public List<User> getAll(User user) {
         List<User> list = new ArrayList<>();
         String sql = "{CALL sp_getAllUser(?, ?, ?, ?)}";
+        System.out.println("DAO: " + user);
 
         try {
             cs = conn.prepareCall(sql);
@@ -62,7 +87,7 @@ public class UserDao implements IUserDao {
                 list.add(obj);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } finally {
             rs = null;
             cs = null;
@@ -90,7 +115,7 @@ public class UserDao implements IUserDao {
             output.put("status", cs.getBoolean(6));
             output.put("message", cs.getNString(7));
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } finally {
             cs = null;
         }
@@ -119,7 +144,7 @@ public class UserDao implements IUserDao {
                 );
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } finally {
             rs = null;
             cs = null;
@@ -148,7 +173,7 @@ public class UserDao implements IUserDao {
             output.put("status", cs.getBoolean(7));
             output.put("message", cs.getNString(8));
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } finally {
             cs = null;
         }
@@ -171,7 +196,7 @@ public class UserDao implements IUserDao {
             output.put("status", cs.getBoolean(2));
             output.put("message", cs.getNString(3));
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } finally {
             cs = null;
         }
@@ -200,7 +225,7 @@ public class UserDao implements IUserDao {
                 );
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } finally {
             rs = null;
             cs = null;

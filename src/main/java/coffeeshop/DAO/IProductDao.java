@@ -6,6 +6,8 @@ import java.util.Map;
 
 public interface IProductDao {
 
+    public int count();
+
     public List<Product> getAll(Product product, Float fromPrice, Float toPrice);
 
     public Map<String, Object> create(Product product);

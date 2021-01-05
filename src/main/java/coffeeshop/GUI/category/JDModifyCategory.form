@@ -7,7 +7,7 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
-    <Property name="title" type="java.lang.String" value="C&#x1ead;p nh&#x1ead;t danh m&#x1ee5;c | Qu&#x1ea3;n l&#xfd; qu&#xe1;n c&#xe0; ph&#xea; - Version 1.0"/>
+    <Property name="title" type="java.lang.String" value="C&#x1eac;P NH&#x1eac;T DANH M&#x1ee4;C"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -107,7 +107,7 @@
               <Font name="Segoe UI Semibold" size="36" style="0"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/coffeeshop/assets/img/icons8_categorize_50px.png"/>
+              <Image iconType="3" name="/assets/img/icons8_categorize_50px.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="TH&#xca;M M&#x1eda;I DANH M&#x1ee4;C"/>
           </Properties>

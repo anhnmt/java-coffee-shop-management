@@ -3,7 +3,7 @@
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
-    <Property name="title" type="java.lang.String" value="Qu&#x1ea3;n l&#xfd; qu&#xe1;n c&#xe0; ph&#xea; - Version 1.0"/>
+    <Property name="title" type="java.lang.String" value="QU&#x1ea2;N L&#xdd; QU&#xc1;N C&#xc0; PH&#xca; - VERSION 1.0"/>
     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
       <Color blue="0" green="ff" red="ff" type="rgb"/>
     </Property>
@@ -96,7 +96,7 @@
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/coffeeshop/assets/img/Exit.png"/>
+              <Image iconType="3" name="/assets/img/Exit.png"/>
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
@@ -107,7 +107,7 @@
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="opaque" type="boolean" value="true"/>
             <Property name="rolloverIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/coffeeshop/assets/img/Exit (2).png"/>
+              <Image iconType="3" name="/assets/img/Exit (2).png"/>
             </Property>
           </Properties>
           <Events>
@@ -125,7 +125,7 @@
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/coffeeshop/assets/img/Maximize.png"/>
+              <Image iconType="3" name="/assets/img/Maximize.png"/>
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
@@ -136,7 +136,7 @@
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="opaque" type="boolean" value="true"/>
             <Property name="rolloverIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/coffeeshop/assets/img/Maximize (2).png"/>
+              <Image iconType="3" name="/assets/img/Maximize (2).png"/>
             </Property>
           </Properties>
           <Events>
@@ -151,7 +151,7 @@
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/coffeeshop/assets/img/Minimize.png"/>
+              <Image iconType="3" name="/assets/img/Minimize.png"/>
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
@@ -162,7 +162,7 @@
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="opaque" type="boolean" value="true"/>
             <Property name="rolloverIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/coffeeshop/assets/img/Minimize (2).png"/>
+              <Image iconType="3" name="/assets/img/Minimize (2).png"/>
             </Property>
           </Properties>
           <Events>

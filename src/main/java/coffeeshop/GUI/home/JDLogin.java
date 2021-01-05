@@ -3,14 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package coffeeshop.GUI;
+package coffeeshop.GUI.home;
 
 import coffeeshop.DAO.impl.UserDao;
 import coffeeshop.DTO.User;
+import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.event.KeyEvent;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -25,7 +29,9 @@ public class JDLogin extends javax.swing.JDialog {
 
     Frame parent;
 
-    UserDao ud;
+    UserDao userDao;
+
+    DbUtil dbUtil;
 
     interface CallbackLogin {
 
@@ -44,9 +50,10 @@ public class JDLogin extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
-        this.callback = callback;
         this.parent = parent;
-        ud = new UserDao(dbUtil);
+        this.dbUtil = dbUtil;
+        this.callback = callback;
+        this.userDao = new UserDao(dbUtil);
 
         parent.setVisible(false);
         txtEmail.setText("admin@gmail.com");
@@ -54,7 +61,7 @@ public class JDLogin extends javax.swing.JDialog {
 
         // Custom code
         lblBackground.setBounds(0, 0, 960, 610);
-        lblBackground.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("/coffeeshop/assets/img/background.png")).getImage().getScaledInstance(lblBackground.getWidth(), lblBackground.getHeight(), 1)));
+        lblBackground.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("/assets/img/background.png")).getImage().getScaledInstance(lblBackground.getWidth(), lblBackground.getHeight(), 1)));
 
         lblEmailError.setVisible(false);
         lblPasswordError.setVisible(false);
@@ -96,7 +103,7 @@ public class JDLogin extends javax.swing.JDialog {
         lblBackground = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Đăng nhập | Quản lý quán cà phê - Version 1.0");
+        setTitle("ĐĂNG NHẬP TÀI KHOẢN");
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
@@ -366,16 +373,15 @@ public class JDLogin extends javax.swing.JDialog {
         }
 
         if (validate == true) {
-            User obj = ud.auth(email, password);
+            User obj = userDao.auth(email, password);
             System.out.println(obj);
 
-            if (obj != null) {
+            if (!Common.isNullOrEmpty(obj)) {
                 callback.actionLogin(obj);
                 this.setVisible(false);
                 parent.setVisible(true);
                 txtPassword.setText("");
                 txtEmail.setText("");
-
             } else {
                 txtPassword.setBorder(BorderFactory.createCompoundBorder(
                         BorderFactory.createLineBorder(new Color(240, 71, 71)),
@@ -397,7 +403,11 @@ public class JDLogin extends javax.swing.JDialog {
     }//GEN-LAST:event_lblForgotPasswordMouseClicked
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        // TODO add your handling code here:
+        try {
+            dbUtil.getInstance().getConnection().close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
+        }
         System.exit(0);
     }//GEN-LAST:event_formWindowClosed
 
