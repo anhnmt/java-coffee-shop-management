@@ -24,6 +24,28 @@ public class UserDao implements IUserDao {
     }
 
     @Override
+    public int count() {
+        int count = 0;
+        String sql = "{CALL sp_countUsers}";
+
+        try {
+            cs = conn.prepareCall(sql);
+            rs = cs.executeQuery();
+
+            while (rs.next()) {
+                count = rs.getInt("count");
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+        } finally {
+            rs = null;
+            cs = null;
+        }
+
+        return count;
+    }
+
+    @Override
     public List<User> getAll(User user) {
         List<User> list = new ArrayList<>();
         String sql = "{CALL sp_getAllUser(?, ?, ?, ?)}";

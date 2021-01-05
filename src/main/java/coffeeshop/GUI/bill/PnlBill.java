@@ -177,6 +177,7 @@ public class PnlBill extends javax.swing.JPanel implements JDSearchBill.Callback
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_START);
 
+        tblBill.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         tblBill.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         tblBill.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -236,6 +237,7 @@ public class PnlBill extends javax.swing.JPanel implements JDSearchBill.Callback
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblBill.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         jScrollPane1.setViewportView(tblBill);
 
         jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);

@@ -24,6 +24,28 @@ public class CategoryDao implements ICategoryDao {
     }
 
     @Override
+    public int count() {
+        int count = 0;
+        String sql = "{CALL sp_countCategories}";
+
+        try {
+            cs = conn.prepareCall(sql);
+            rs = cs.executeQuery();
+
+            while (rs.next()) {
+                count = rs.getInt("count");
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+        } finally {
+            rs = null;
+            cs = null;
+        }
+
+        return count;
+    }
+
+    @Override
     public List<Category> getAll(Category category) {
         List<Category> list = new ArrayList<>();
 

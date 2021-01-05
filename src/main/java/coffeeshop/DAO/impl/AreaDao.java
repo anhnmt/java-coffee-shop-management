@@ -23,6 +23,28 @@ public class AreaDao implements IAreaDao {
     }
 
     @Override
+    public int count() {
+        int count = 0;
+        String sql = "{CALL sp_countAreas}";
+
+        try {
+            cs = conn.prepareCall(sql);
+            rs = cs.executeQuery();
+
+            while (rs.next()) {
+                count = rs.getInt("count");
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+        } finally {
+            rs = null;
+            cs = null;
+        }
+
+        return count;
+    }
+
+    @Override
     public List<Area> getAll() {
         List<Area> list = new ArrayList<>();
         String sql = "{CALL sp_getAllArea}";

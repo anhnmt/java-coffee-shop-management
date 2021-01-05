@@ -1473,3 +1473,39 @@ WHERE bill_id = @_bill_id;
 GO
 
 --EXEC sp_getBillDetailByBillId 2;
+
+GO
+
+CREATE PROC sp_countCategories
+AS
+SELECT COUNT(*) [count] FROM Categories;
+
+GO
+
+CREATE PROC sp_countProducts
+AS
+SELECT COUNT(*) [count] FROM Products;
+
+GO
+
+CREATE PROC sp_countUsers
+AS
+SELECT COUNT(*) [count] FROM Users;
+
+GO
+
+CREATE PROC sp_countAreas
+AS
+SELECT COUNT(*) [count] FROM Areas;
+
+GO
+
+CREATE PROC sp_countTables
+AS
+SELECT COUNT(*) [count] FROM Tables;
+
+GO
+
+CREATE PROC sp_countBills
+AS
+SELECT COUNT(*) [count] FROM Bills;

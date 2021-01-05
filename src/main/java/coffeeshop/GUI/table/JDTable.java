@@ -553,6 +553,7 @@ public final class JDTable extends javax.swing.JDialog implements JDModifyBillDe
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblBillDetail.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         tblBillDetail.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblBillDetailMouseClicked(evt);
@@ -575,6 +576,7 @@ public final class JDTable extends javax.swing.JDialog implements JDModifyBillDe
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblProduct.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         scrollPaneProduct.setViewportView(tblProduct);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);

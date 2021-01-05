@@ -546,7 +546,7 @@ public final class Dashboard extends javax.swing.JFrame implements JDLogin.Callb
         lblProduct.setBackground(new Color(255, 255, 255));
         lblUser.setBackground(new Color(255, 255, 255));
         pnlBody.removeAll();
-        PnlHome pnl = new PnlHome();
+        PnlHome pnl = new PnlHome(this, dbUtil);
 //        pnl.setVisible(true);
         pnlBody.add(pnl);
         pnlBody.repaint();

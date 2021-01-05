@@ -24,6 +24,28 @@ public class ProductDao implements IProductDao {
     }
 
     @Override
+    public int count() {
+        int count = 0;
+        String sql = "{CALL sp_countProducts}";
+
+        try {
+            cs = conn.prepareCall(sql);
+            rs = cs.executeQuery();
+
+            while (rs.next()) {
+                count = rs.getInt("count");
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+        } finally {
+            rs = null;
+            cs = null;
+        }
+
+        return count;
+    }
+
+    @Override
     public List<Product> getAll(Product product, Float fromPrice, Float toPrice) {
         List<Product> list = new ArrayList<>();
         String sql = "{CALL sp_getAllProduct(?, ?, ?, ?, ?)}";

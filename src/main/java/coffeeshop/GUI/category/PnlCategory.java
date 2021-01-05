@@ -250,6 +250,7 @@ public final class PnlCategory extends javax.swing.JPanel implements JDModifyCat
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblCategory.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         jScrollPane1.setViewportView(tblCategory);
 
         jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);

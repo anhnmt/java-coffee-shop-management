@@ -24,6 +24,28 @@ public class BillDao implements IBillDao {
     }
 
     @Override
+    public int count() {
+        int count = 0;
+        String sql = "{CALL sp_countBills}";
+
+        try {
+            cs = conn.prepareCall(sql);
+            rs = cs.executeQuery();
+
+            while (rs.next()) {
+                count = rs.getInt("count");
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+        } finally {
+            rs = null;
+            cs = null;
+        }
+        
+        return count;
+    }
+
+    @Override
     public List<Bill> getAll(Bill bill) {
         List<Bill> list = new ArrayList<>();
         String sql = "{CALL sp_getAllBill(?, ?, ?, ?)}";
