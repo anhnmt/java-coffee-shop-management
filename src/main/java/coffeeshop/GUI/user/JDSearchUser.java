@@ -6,6 +6,7 @@
 package coffeeshop.GUI.user;
 
 import coffeeshop.DTO.User;
+import coffeeshop.Util.Common;
 import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -36,22 +37,25 @@ public final class JDSearchUser extends javax.swing.JDialog {
         initComponents();
         setLocationRelativeTo(null);
         this.callback = callback;
-        loadingRoles();
 
         lblEmailError.setVisible(false);
+        loadingRoles();
+        loadingStatus();
     }
 
-    public void loadingData() {
-        txtName.setText(user.getName());
-        txtEmail.setText(user.getEmail());
-        rdoActive.setSelected(user.getStatus());
-        rdoNonActive.setSelected(user.getStatus() == false);
-        cboPermission.setSelectedItem(user.getRole() == 1 ? "Super Admin" : "Nhân viên");
+    public void loadingStatus() {
+        DefaultComboBoxModel dcbm = new DefaultComboBoxModel();
+        String permissions[] = {"Không chọn", "Hoạt động", "Không hoạt động"};
+        for (String permission : permissions) {
+            dcbm.addElement(permission);
+        }
+
+        cboStatus.setModel(dcbm);
     }
 
     public void loadingRoles() {
         DefaultComboBoxModel dcbm = new DefaultComboBoxModel();
-        String permissions[] = {"Super Admin", "Nhân viên"};
+        String permissions[] = {"Không chọn", "Super Admin", "Nhân viên"};
         for (String permission : permissions) {
             dcbm.addElement(permission);
         }
@@ -68,20 +72,18 @@ public final class JDSearchUser extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         lblTitle = new javax.swing.JLabel();
         lblName = new javax.swing.JLabel();
         txtName = new javax.swing.JTextField();
-        lblStatus = new javax.swing.JLabel();
-        rdoActive = new javax.swing.JRadioButton();
-        rdoNonActive = new javax.swing.JRadioButton();
-        btnModify = new javax.swing.JButton();
+        btnSearch = new javax.swing.JButton();
         lblEmail = new javax.swing.JLabel();
         txtEmail = new javax.swing.JTextField();
         lblPermission = new javax.swing.JLabel();
         cboPermission = new javax.swing.JComboBox();
         lblEmailError = new javax.swing.JLabel();
+        lblStatus = new javax.swing.JLabel();
+        cboStatus = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("TÌM KIẾM NGƯỜI DÙNG");
@@ -91,64 +93,51 @@ public final class JDSearchUser extends javax.swing.JDialog {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblTitle.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
-        lblTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_product_50px_2.png"))); // NOI18N
+        lblTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_product_50px_2.png"))); // NOI18N
         lblTitle.setText("TÌM KIẾM NGƯỜI DÙNG");
         jPanel1.add(lblTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 11, 547, 60));
 
         lblName.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         lblName.setText("Tên người dùng");
         jPanel1.add(lblName, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 89, 547, 30));
-        jPanel1.add(txtName, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 125, 547, 40));
+        jPanel1.add(txtName, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 547, 40));
 
-        lblStatus.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        lblStatus.setText("Trạng thái");
-        jPanel1.add(lblStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 380, 547, 30));
-
-        rdoActive.setBackground(new java.awt.Color(255, 255, 255));
-        buttonGroup1.add(rdoActive);
-        rdoActive.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        rdoActive.setSelected(true);
-        rdoActive.setText("Hoạt động");
-        jPanel1.add(rdoActive, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 410, 259, -1));
-
-        rdoNonActive.setBackground(new java.awt.Color(255, 255, 255));
-        buttonGroup1.add(rdoNonActive);
-        rdoNonActive.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        rdoNonActive.setText("Không hoạt động");
-        rdoNonActive.addActionListener(new java.awt.event.ActionListener() {
+        btnSearch.setBackground(new java.awt.Color(0, 204, 106));
+        btnSearch.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnSearch.setForeground(new java.awt.Color(255, 255, 255));
+        btnSearch.setText("Tìm kiếm");
+        btnSearch.setBorderPainted(false);
+        btnSearch.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rdoNonActiveActionPerformed(evt);
+                btnSearchActionPerformed(evt);
             }
         });
-        jPanel1.add(rdoNonActive, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 410, 286, -1));
-
-        btnModify.setBackground(new java.awt.Color(0, 204, 106));
-        btnModify.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnModify.setForeground(new java.awt.Color(255, 255, 255));
-        btnModify.setText("Tìm kiếm");
-        btnModify.setBorderPainted(false);
-        btnModify.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnModify.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnModifyActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnModify, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 460, 120, 35));
+        jPanel1.add(btnSearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 450, 120, 35));
 
         lblEmail.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         lblEmail.setText("Email");
-        jPanel1.add(lblEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 547, 30));
-        jPanel1.add(txtEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, 547, 40));
+        jPanel1.add(lblEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, 547, 30));
+        jPanel1.add(txtEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, 547, 40));
 
         lblPermission.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         lblPermission.setText("Quyền");
-        jPanel1.add(lblPermission, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, 547, 30));
+        jPanel1.add(lblPermission, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 260, 547, 30));
 
-        jPanel1.add(cboPermission, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 320, 547, 40));
+        cboPermission.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        jPanel1.add(cboPermission, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, 547, 40));
 
+        lblEmailError.setFont(new java.awt.Font("Segoe UI Semibold", 0, 11)); // NOI18N
         lblEmailError.setForeground(new java.awt.Color(240, 71, 71));
-        lblEmailError.setText("Không được để trổng");
-        jPanel1.add(lblEmailError, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, 547, -1));
+        lblEmailError.setText("Không được để trống");
+        jPanel1.add(lblEmailError, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, 547, -1));
+
+        lblStatus.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        lblStatus.setText("Trạng thái");
+        jPanel1.add(lblStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, 547, 30));
+
+        cboStatus.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        jPanel1.add(cboStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 370, 547, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -158,73 +147,60 @@ public final class JDSearchUser extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 646, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 514, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void rdoNonActiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoNonActiveActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rdoNonActiveActionPerformed
-
-    private void btnModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyActionPerformed
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         String name = (String) txtName.getText().trim();
         String email = (String) txtEmail.getText().trim();
-        int role = cboPermission.getSelectedItem() == "Super Admin" ? 1 : 0;
-        boolean status = (boolean) rdoActive.isSelected();
         boolean validate = true;
         String email_regex = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+        lblEmailError.setVisible(false);
 
-        if (name.equals("")) {
-            txtName.setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createLineBorder(new Color(240, 71, 71)),
-                    BorderFactory.createEmptyBorder(5, 8, 5, 8)));
-            lblName.setForeground(new Color(240, 71, 71));
-            validate = false;
-        }
-
-        if (txtEmail.getText().trim().equals("")) {
-            txtEmail.setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createLineBorder(new Color(240, 71, 71)),
-                    BorderFactory.createEmptyBorder(5, 8, 5, 8)));
-            lblEmail.setText("Không được để trống");
-            lblEmail.setForeground(new Color(240, 71, 71));
-            lblEmailError.setVisible(true);
-            validate = false;
-        } else if (!email.matches(email_regex)) {
-            txtEmail.setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createLineBorder(new Color(240, 71, 71)),
-                    BorderFactory.createEmptyBorder(5, 8, 5, 8)));
-            lblEmail.setText("Email bạn nhập không đúng định dạng!");
-            lblEmail.setForeground(new Color(240, 71, 71));
-            lblEmailError.setVisible(true);
-            validate = false;
-        }
-
-        if (validate == true) {
-            lblEmailError.setVisible(false);
-            try {
-                user = new User();
-                user.setName(name);
-                user.setStatus(status);
-                user.setRole(role);
-                user.setEmail(email);
-                callback.actionUserSearch(user);
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
+        if (!Common.isNullOrEmpty(email)) {
+            if (!email.matches(email_regex)) {
+                txtEmail.setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(new Color(240, 71, 71)),
+                        BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+                lblEmail.setForeground(new Color(240, 71, 71));
+                lblEmailError.setText("Email bạn nhập không đúng định dạng!");
+                lblEmailError.setVisible(true);
+                validate = false;
             }
         }
 
-    }//GEN-LAST:event_btnModifyActionPerformed
+        if (validate == true) {
+            user = new User();
+
+            if (!Common.isNullOrEmpty(name)) {
+                user.setName(name);
+            }
+
+            if (!Common.isNullOrEmpty(email)) {
+                user.setEmail(email);
+            }
+
+            if (!"Không chọn".equals(cboPermission.getSelectedItem().toString())) {
+                user.setRole("Super Admin".equals(cboPermission.getSelectedItem().toString()) ? 1 : 0);
+            }
+
+            if (!"Không chọn".equals(cboStatus.getSelectedItem().toString())) {
+                user.setStatus("Hoạt động".equals(cboStatus.getSelectedItem().toString()));
+            }
+
+            System.out.println(user);
+            callback.actionUserSearch(user);
+            dispose();
+        }
+    }//GEN-LAST:event_btnSearchActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnModify;
-    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JButton btnSearch;
     private javax.swing.JComboBox cboPermission;
+    private javax.swing.JComboBox cboStatus;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblEmailError;
@@ -232,8 +208,6 @@ public final class JDSearchUser extends javax.swing.JDialog {
     private javax.swing.JLabel lblPermission;
     private javax.swing.JLabel lblStatus;
     private javax.swing.JLabel lblTitle;
-    private javax.swing.JRadioButton rdoActive;
-    private javax.swing.JRadioButton rdoNonActive;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtName;
     // End of variables declaration//GEN-END:variables

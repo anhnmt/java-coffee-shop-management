@@ -96,10 +96,11 @@ public final class JDTable extends javax.swing.JDialog implements JDModifyBillDe
         this.billDao = new BillDao(dbUtil);
         this.billDetailDao = new BillDetailDao(dbUtil);
 
-        loadingProduct();
-        loadingBill();
-
         // Custom Style
+        btnAddProduct.setVisible(false);
+        btnBook.setVisible(true);
+        btnCheckout.setVisible(false);
+        txtProductAmount.setEditable(false);
         txtProductName.setBorder(BorderFactory.createCompoundBorder(
                 txtProductName.getBorder(),
                 BorderFactory.createEmptyBorder(5, 8, 5, 8)));
@@ -124,6 +125,9 @@ public final class JDTable extends javax.swing.JDialog implements JDModifyBillDe
         txtTotalPrice.setBorder(BorderFactory.createCompoundBorder(
                 txtTotalPrice.getBorder(),
                 BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+
+        loadingProduct();
+        loadingBill();
 
     }
 
@@ -164,8 +168,6 @@ public final class JDTable extends javax.swing.JDialog implements JDModifyBillDe
     public void loadingBill() {
         try {
             bill = null;
-            billDetail = null;
-            billDetails = null;
 
             tblBillDetail.removeAll();
             tblBillDetail.setModel(new DefaultTableModel());
@@ -204,6 +206,8 @@ public final class JDTable extends javax.swing.JDialog implements JDModifyBillDe
 
     public void loadingBillDetail() {
         try {
+            billDetail = null;
+            billDetails = null;
             btnCheckout.setVisible(false);
             billDetails = billDetailDao.getAll(bill.getId());
 
@@ -485,9 +489,8 @@ public final class JDTable extends javax.swing.JDialog implements JDModifyBillDe
                         .addGap(65, 65, 65)))
                 .addGroup(pnlBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(lblTotalPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(pnlBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(lblTableName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblAreaName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(lblTableName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblAreaName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtTableId, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -679,6 +682,16 @@ public final class JDTable extends javax.swing.JDialog implements JDModifyBillDe
                                 BorderFactory.createEmptyBorder(5, 8, 5, 8)));
                         lblProductAmount.setForeground(new Color(240, 71, 71));
                         lblProductAmountError.setText("Số lượng phải lớn hơn 0");
+                        lblProductAmountError.setVisible(true);
+                        validate = false;
+                    }
+
+                    if (amount > 50) {
+                        txtProductAmount.setBorder(BorderFactory.createCompoundBorder(
+                                BorderFactory.createLineBorder(new Color(240, 71, 71)),
+                                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+                        lblProductAmount.setForeground(new Color(240, 71, 71));
+                        lblProductAmountError.setText("Số lượng phải nhỏ hơn 50");
                         lblProductAmountError.setVisible(true);
                         validate = false;
                     }

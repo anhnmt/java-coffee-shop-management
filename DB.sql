@@ -198,7 +198,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
-    SET @_outMsg = ERROR_MESSAGE();
+    SET @_outMsg = N'Thêm không thành công' + ERROR_MESSAGE();
     IF @@TRANCOUNT > 0
         ROLLBACK TRAN;
 END CATCH;
@@ -271,7 +271,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
-    SET @_outMsg = ERROR_MESSAGE();
+    SET @_outMsg = N'Cập nhật thất bại: ' + ERROR_MESSAGE();
     IF @@TRANCOUNT > 0
         ROLLBACK TRAN;
 END CATCH;
@@ -312,7 +312,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
-    SET @_outMsg = ERROR_MESSAGE();
+    SET @_outMsg = N'Xoá không thành công: ' + ERROR_MESSAGE();
     IF @@TRANCOUNT > 0
         ROLLBACK TRAN;
 END CATCH;
@@ -399,7 +399,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
-    SET @_outMsg = ERROR_MESSAGE();
+    SET @_outMsg = N'Thêm thất bại: ' + ERROR_MESSAGE();
     IF @@TRANCOUNT > 0
         ROLLBACK TRAN sp_insertProduct;
 END CATCH;
@@ -615,7 +615,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
-    SET @_outMsg = ERROR_MESSAGE();
+    SET @_outMsg = N'Cập nhật thất bại: ' + ERROR_MESSAGE();
     IF @@TRANCOUNT > 0
         ROLLBACK TRAN;
 END CATCH;
@@ -656,7 +656,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
-    SET @_outMsg = ERROR_MESSAGE();
+    SET @_outMsg = N'Xoá không thành công: ' + ERROR_MESSAGE();
     IF @@TRANCOUNT > 0
         ROLLBACK TRAN;
 END CATCH;
@@ -727,7 +727,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
-    SET @_outMsg = ERROR_MESSAGE();
+    SET @_outMsg = N'Thêm thất bại: ' + ERROR_MESSAGE();
     IF @@TRANCOUNT > 0
         ROLLBACK TRAN;
 END CATCH;
@@ -773,7 +773,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
-    SET @_outMsg = ERROR_MESSAGE();
+    SET @_outMsg = N'Cập nhật thất bại: ' + ERROR_MESSAGE();
     IF @@TRANCOUNT > 0
         ROLLBACK TRAN;
 END CATCH;
@@ -823,7 +823,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
-    SET @_outMsg = ERROR_MESSAGE();
+    SET @_outMsg = N'Xoá không thành công: ' + ERROR_MESSAGE();
     IF @@TRANCOUNT > 0
         ROLLBACK TRAN;
 END CATCH;
@@ -965,6 +965,47 @@ END TRY
 BEGIN CATCH
     SET @_outStt = 0;
     SET @_outMsg = N'Cập nhật không thành công: ' + ERROR_MESSAGE();
+    IF @@TRANCOUNT > 0
+        ROLLBACK TRAN;
+END CATCH;
+
+GO
+
+CREATE PROC sp_deleteTable
+(
+    @_id INT,
+    @_outStt BIT = 1 OUTPUT,
+    @_outMsg NVARCHAR(200) = '' OUTPUT
+)
+AS
+BEGIN TRY
+    IF EXISTS
+    (
+        SELECT B.*
+        FROM [Tables] T
+            JOIN Bills B
+                ON T.id = B.table_id
+        WHERE T.id = @_id
+    )
+    BEGIN
+        SET @_outStt = 0;
+        SET @_outMsg = N'Bàn đang có hoá đơn, không thể xoá';
+    END;
+    ELSE
+    BEGIN
+        BEGIN TRAN;
+        DELETE [Tables]
+        WHERE id = @_id;
+
+        SET @_outStt = 1;
+        SET @_outMsg = N'Xoá thành công';
+        IF @@TRANCOUNT > 0
+            COMMIT TRAN;
+    END;
+END TRY
+BEGIN CATCH
+    SET @_outStt = 0;
+    SET @_outMsg = N'Xoá không thành công: ' + ERROR_MESSAGE();
     IF @@TRANCOUNT > 0
         ROLLBACK TRAN;
 END CATCH;
@@ -1182,7 +1223,6 @@ BEGIN TRY
     END;
     ELSE
     BEGIN
-
         BEGIN TRAN;
         IF EXISTS (SELECT bill_id FROM BillDetail WHERE bill_id = @_bill_id)
         BEGIN
@@ -1412,7 +1452,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
-    SET @_outMsg = ERROR_MESSAGE();
+    SET @_outMsg = N'Xoá không thành công: ' + ERROR_MESSAGE();
     IF @@TRANCOUNT > 0
         ROLLBACK TRAN;
 END CATCH;

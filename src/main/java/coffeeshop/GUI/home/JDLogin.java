@@ -61,7 +61,7 @@ public class JDLogin extends javax.swing.JDialog {
 
         // Custom code
         lblBackground.setBounds(0, 0, 960, 610);
-        lblBackground.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("/coffeeshop/assets/img/background.png")).getImage().getScaledInstance(lblBackground.getWidth(), lblBackground.getHeight(), 1)));
+        lblBackground.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("/assets/img/background.png")).getImage().getScaledInstance(lblBackground.getWidth(), lblBackground.getHeight(), 1)));
 
         lblEmailError.setVisible(false);
         lblPasswordError.setVisible(false);

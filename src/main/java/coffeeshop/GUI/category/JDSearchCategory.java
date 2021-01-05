@@ -74,7 +74,7 @@ public final class JDSearchCategory extends javax.swing.JDialog {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_google_web_search_50px.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_google_web_search_50px.png"))); // NOI18N
         jLabel1.setText("TÌM KIẾM DANH MỤC");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
@@ -155,7 +155,6 @@ public final class JDSearchCategory extends javax.swing.JDialog {
             category.setStatus("Hoạt động".equals(cboStatus.getSelectedItem().toString()));
         }
 
-        System.out.println("search : " + category);
         callback.actionCategorySearch(category);
         dispose();
     }//GEN-LAST:event_btnSearchActionPerformed

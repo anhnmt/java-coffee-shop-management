@@ -75,16 +75,20 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
         this.areaDao = new AreaDao(dbUtil);
         this.tableDao = new TableDao(dbUtil);
         this.billDao = new BillDao(dbUtil);
-        loading();
 
         if (user.getRole() != 1) {
             lblAdd.setVisible(false);
             lblUpdate.setVisible(false);
             lblDelete.setVisible(false);
         }
+
+        loading();
     }
 
     private void loading() {
+        area = null;
+        table = null;
+        bill = null;
         tabbedPane.removeAll();
         areas = areaDao.getAll();
         tables = tableDao.getAll();
@@ -111,8 +115,7 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
         tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
         JLabel lbl = new JLabel(title);
-        ImageIcon icon = createImageIcon("/coffeeshop/assets/img/icons8_place_marker_50px.png");
-        lbl.setIcon(icon);
+        lbl.setIcon(createImageIcon("/assets/img/icons8_place_marker_50px.png"));
 
 // Add some spacing between text and icon, and position text to the RHS.
 //        lbl.setIconTextGap(5);
@@ -124,16 +127,18 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
     }
 
     public JComponent makeTextPanel() {
-        javax.swing.JPanel panel = new javax.swing.JPanel(false);
+        JPanel panel = new JPanel(false);
         panel.setLayout(new WrapLayout(WrapLayout.LEFT, 35, 5));
-        JLabel jl1 = new JLabel();
-        jl1.setIcon(new ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_add_new_75px.png"))); // NOI18N
-        jl1.setText("Thêm bàn mới");
-        jl1.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        jl1.setHorizontalTextPosition(SwingConstants.CENTER);
-        jl1.setVerticalTextPosition(SwingConstants.BOTTOM);
+        panel.setBackground(new Color(255, 255, 255));
 
-        jl1.addMouseListener(new MouseAdapter() {
+        JLabel label = new JLabel();
+        label.setIcon(createImageIcon("/assets/img/icons8_add_new_75px.png")); // NOI18N
+        label.setText("Thêm bàn mới");
+        label.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        label.setHorizontalTextPosition(SwingConstants.CENTER);
+        label.setVerticalTextPosition(SwingConstants.BOTTOM);
+
+        panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent evt) {
                 if (!Common.isNullOrEmpty(area)) {
@@ -143,35 +148,39 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
             }
         });
 
-        panel.add(jl1);
+        panel.add(label);
         return panel;
     }
 
-    public JLabel makeTable(JComponent panel, Table objTable) {
-        JLabel jp = new JLabel();
-        jp.setHorizontalAlignment(SwingConstants.CENTER);
-        jp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_table_75px.png"))); // NOI18N
-        jp.setText(objTable.getName());
+    public void makeTable(JComponent rootPanel, Table objTable) {
+        JPanel panel = new JPanel(false);
+        panel.setLayout(new WrapLayout(WrapLayout.LEFT, 5, 5));
+        panel.setBackground(new Color(255, 255, 255));
+
+        JLabel label = new JLabel();
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setIcon(createImageIcon("/assets/img/icons8_table_75px.png")); // NOI18N
+        label.setText(objTable.getName());
 
         bill = billDao.getByTableId(new Bill(objTable.getId(), false));
 
         if (Common.isNullOrEmpty(bill)) {
-            jp.setForeground(new Color(40, 167, 69));
+            label.setForeground(new Color(40, 167, 69));
         } else {
-            jp.setForeground(new Color(220, 53, 69));
+            label.setForeground(new Color(220, 53, 69));
         }
 
-        jp.setHorizontalTextPosition(SwingConstants.CENTER);
-        jp.setVerticalTextPosition(SwingConstants.BOTTOM);
-        jp.setVisible(true);
+        label.setHorizontalTextPosition(SwingConstants.CENTER);
+        label.setVerticalTextPosition(SwingConstants.BOTTOM);
+//        label.setVisible(true);
         // Bắt sự kiện click vào bàn
-        jp.addMouseListener(new MouseAdapter() {
+        panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent evt) {
                 table = tableDao.findByName(objTable.getName());
 
                 if (evt.getButton() == MouseEvent.BUTTON3) {
-                    jPopupMenu.show(jp, evt.getX(), evt.getY());
+                    jPopupMenu.show(panel, evt.getX(), evt.getY());
                 } else {
                     if (!Common.isNullOrEmpty(table)) {
                         JDTable jDTable = new JDTable(parent, true, dbUtil, (JDTable.CallbackTableExit) self, user, table);
@@ -180,10 +189,11 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
                 }
             }
         });
-        panel.add(jp);
-        panel.repaint();
-        panel.revalidate();
-        return jp;
+
+        panel.add(label);
+        rootPanel.add(panel);
+        rootPanel.repaint();
+        rootPanel.revalidate();
     }
 
     protected ImageIcon createImageIcon(String path) {
@@ -250,7 +260,7 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
 
         lblAdd.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         lblAdd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_add_50px_2.png"))); // NOI18N
+        lblAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_add_50px_2.png"))); // NOI18N
         lblAdd.setText("Thêm mới");
         lblAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblAdd.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -264,7 +274,7 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
 
         lblUpdate.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         lblUpdate.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_update_50px.png"))); // NOI18N
+        lblUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_update_50px.png"))); // NOI18N
         lblUpdate.setText("Sửa đổi");
         lblUpdate.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblUpdate.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -278,7 +288,7 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
 
         lblDelete.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         lblDelete.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_delete_50px.png"))); // NOI18N
+        lblDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_delete_50px.png"))); // NOI18N
         lblDelete.setText("Xoá");
         lblDelete.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblDelete.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -292,7 +302,7 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
 
         lblRefresh.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         lblRefresh.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_repeat_50px_1.png"))); // NOI18N
+        lblRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_repeat_50px_1.png"))); // NOI18N
         lblRefresh.setText("Làm mới");
         lblRefresh.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblRefresh.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);

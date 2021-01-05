@@ -27,6 +27,7 @@ public class UserDao implements IUserDao {
     public List<User> getAll(User user) {
         List<User> list = new ArrayList<>();
         String sql = "{CALL sp_getAllUser(?, ?, ?, ?)}";
+        System.out.println("DAO: " + user);
 
         try {
             cs = conn.prepareCall(sql);

@@ -98,7 +98,7 @@ public final class JDModifyBillDetail extends javax.swing.JDialog {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         lblTitle.setFont(new java.awt.Font("Segoe UI Semibold", 0, 24)); // NOI18N
-        lblTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_product_50px_2.png"))); // NOI18N
+        lblTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_product_50px_2.png"))); // NOI18N
         lblTitle.setText("SỬA THÔNG TIN HOÁ ĐƠN");
 
         lblProductName.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N

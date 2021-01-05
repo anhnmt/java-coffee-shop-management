@@ -47,6 +47,7 @@ public final class PnlUser extends javax.swing.JPanel implements JDModifyUser.Ca
     }
 
     public void loading(User newUser) {
+        user = null;
         list = userDao.getAll(newUser);
 
         String columns[] = {"Id", "Tên", "Email", "Quyền", "Trạng thái"};
@@ -114,7 +115,7 @@ public final class PnlUser extends javax.swing.JPanel implements JDModifyUser.Ca
 
         lblAdd.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         lblAdd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_add_50px_2.png"))); // NOI18N
+        lblAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_add_50px_2.png"))); // NOI18N
         lblAdd.setText("Thêm mới");
         lblAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblAdd.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -128,7 +129,7 @@ public final class PnlUser extends javax.swing.JPanel implements JDModifyUser.Ca
 
         lblUpdate.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         lblUpdate.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_update_50px.png"))); // NOI18N
+        lblUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_update_50px.png"))); // NOI18N
         lblUpdate.setText("Sửa đổi");
         lblUpdate.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblUpdate.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -142,7 +143,7 @@ public final class PnlUser extends javax.swing.JPanel implements JDModifyUser.Ca
 
         lblSearch.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         lblSearch.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_search_50px_1.png"))); // NOI18N
+        lblSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_search_50px_1.png"))); // NOI18N
         lblSearch.setText("Tìm kiếm");
         lblSearch.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblSearch.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -156,7 +157,7 @@ public final class PnlUser extends javax.swing.JPanel implements JDModifyUser.Ca
 
         lblDelete.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         lblDelete.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_delete_50px.png"))); // NOI18N
+        lblDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_delete_50px.png"))); // NOI18N
         lblDelete.setText("Xoá");
         lblDelete.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblDelete.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -170,7 +171,7 @@ public final class PnlUser extends javax.swing.JPanel implements JDModifyUser.Ca
 
         lblRefresh.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         lblRefresh.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_repeat_50px_1.png"))); // NOI18N
+        lblRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_repeat_50px_1.png"))); // NOI18N
         lblRefresh.setText("Làm mới");
         lblRefresh.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblRefresh.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -317,7 +318,6 @@ public final class PnlUser extends javax.swing.JPanel implements JDModifyUser.Ca
     private void lblRefreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRefreshMouseClicked
         loading(null);
     }//GEN-LAST:event_lblRefreshMouseClicked
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;

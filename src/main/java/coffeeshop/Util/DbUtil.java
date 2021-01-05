@@ -14,7 +14,7 @@ public class DbUtil {
 
     public DbUtil() {
         try {
-            ResourceBundle bundle = ResourceBundle.getBundle("coffeeshop.config.config");
+            ResourceBundle bundle = ResourceBundle.getBundle("config");
             Class.forName(bundle.getString("DRIVER_NAME"));
 
             conn = DriverManager.getConnection(bundle.getString("URL"), bundle.getString("USER"), bundle.getString("PASSWORD"));

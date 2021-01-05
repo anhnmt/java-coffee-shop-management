@@ -111,12 +111,12 @@ public final class Dashboard extends javax.swing.JFrame implements JDLogin.Callb
         });
 
         btnExit.setBackground(new java.awt.Color(255, 255, 255));
-        btnExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/Exit.png"))); // NOI18N
+        btnExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/Exit.png"))); // NOI18N
         btnExit.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         btnExit.setContentAreaFilled(false);
         btnExit.setFocusable(false);
         btnExit.setOpaque(true);
-        btnExit.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/Exit (2).png"))); // NOI18N
+        btnExit.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/Exit (2).png"))); // NOI18N
         btnExit.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnExitMouseEntered(evt);
@@ -132,12 +132,12 @@ public final class Dashboard extends javax.swing.JFrame implements JDLogin.Callb
         });
 
         btnMaximize.setBackground(new java.awt.Color(255, 255, 255));
-        btnMaximize.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/Maximize.png"))); // NOI18N
+        btnMaximize.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/Maximize.png"))); // NOI18N
         btnMaximize.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         btnMaximize.setContentAreaFilled(false);
         btnMaximize.setFocusable(false);
         btnMaximize.setOpaque(true);
-        btnMaximize.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/Maximize (2).png"))); // NOI18N
+        btnMaximize.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/Maximize (2).png"))); // NOI18N
         btnMaximize.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnMaximizeMouseEntered(evt);
@@ -153,12 +153,12 @@ public final class Dashboard extends javax.swing.JFrame implements JDLogin.Callb
         });
 
         btnMinimize.setBackground(new java.awt.Color(255, 255, 255));
-        btnMinimize.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/Minimize.png"))); // NOI18N
+        btnMinimize.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/Minimize.png"))); // NOI18N
         btnMinimize.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         btnMinimize.setContentAreaFilled(false);
         btnMinimize.setFocusable(false);
         btnMinimize.setOpaque(true);
-        btnMinimize.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/Minimize (2).png"))); // NOI18N
+        btnMinimize.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/Minimize (2).png"))); // NOI18N
         btnMinimize.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnMinimizeMouseEntered(evt);

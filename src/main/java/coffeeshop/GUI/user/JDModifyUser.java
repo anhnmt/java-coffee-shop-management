@@ -45,7 +45,6 @@ public final class JDModifyUser extends javax.swing.JDialog {
         setLocationRelativeTo(null);
         this.callback = callback;
         this.userDao = new UserDao(dbUtil);
-        loadingRoles();
 
         if (!Common.isNullOrEmpty(user)) {
             lblTitle.setText("Sửa đổi người dùng");
@@ -57,6 +56,7 @@ public final class JDModifyUser extends javax.swing.JDialog {
         lblNameError.setVisible(false);
         lblEmailError.setVisible(false);
         lblPasswordError.setVisible(false);
+        loadingRoles();
     }
 
     public void loadingData() {
@@ -114,7 +114,7 @@ public final class JDModifyUser extends javax.swing.JDialog {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblTitle.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
-        lblTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_product_50px_2.png"))); // NOI18N
+        lblTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_product_50px_2.png"))); // NOI18N
         lblTitle.setText("THÊM MỚI NGƯỜI DÙNG");
         jPanel1.add(lblTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 11, 547, 60));
 

@@ -131,7 +131,25 @@ public class TableDao implements ITableDao {
 
     @Override
     public Map<String, Object> delete(int id) {
-        return null;
+        Map<String, Object> output = new HashMap<>();
+        String sql = "{CALL sp_deleteTable(?, ?, ?)}";
+
+        try {
+            cs = conn.prepareCall(sql);
+            cs.setInt(1, id);
+            cs.registerOutParameter(2, Types.BIT);
+            cs.registerOutParameter(3, Types.NVARCHAR);
+            cs.execute();
+
+            output.put("status", cs.getBoolean(2));
+            output.put("message", cs.getNString(3));
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+        } finally {
+            cs = null;
+        }
+
+        return output;
     }
 
     @Override

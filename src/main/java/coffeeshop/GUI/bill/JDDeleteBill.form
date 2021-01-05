@@ -88,7 +88,7 @@
               <Font name="Segoe UI Semibold" size="24" style="0"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/coffeeshop/assets/img/icons8_trash_can_50px_1.png"/>
+              <Image iconType="3" name="/assets/img/icons8_trash_can_50px_1.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="XO&#xc1; HO&#xc1; &#x110;&#x1a0;N"/>
           </Properties>
