@@ -8,6 +8,7 @@ package coffeeshop.GUI.category;
 import coffeeshop.DTO.Category;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 
 /**
@@ -39,6 +40,11 @@ public final class JDSearchCategory extends javax.swing.JDialog {
         setLocationRelativeTo(null);
         this.dbUtil = dbUtil;
         this.callback = callback;
+
+        // Custom Style
+        txtName.setBorder(BorderFactory.createCompoundBorder(
+                txtName.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
         loadStatus();
     }
 

@@ -53,6 +53,16 @@ public final class JDModifyUser extends javax.swing.JDialog {
             loadingData();
         }
 
+        // Custom Style
+        txtEmail.setBorder(BorderFactory.createCompoundBorder(
+                txtEmail.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+        txtName.setBorder(BorderFactory.createCompoundBorder(
+                txtName.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+        txtPassword.setBorder(BorderFactory.createCompoundBorder(
+                txtPassword.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
         lblNameError.setVisible(false);
         lblEmailError.setVisible(false);
         lblPasswordError.setVisible(false);

@@ -65,11 +65,10 @@ public final class JDModifyTable extends javax.swing.JDialog {
 
         this.areaDao = new AreaDao(dbUtil);
         this.tableDao = new TableDao(dbUtil);
-        loadArea();
 
         if (!Common.isNullOrEmpty(area)) {
             areas.forEach(obj -> {
-                if (obj.getId() == area.getId()) {
+                if (Objects.equals(obj.getId(), area.getId())) {
                     cboArea.setSelectedItem(obj);
                 }
             });
@@ -89,7 +88,12 @@ public final class JDModifyTable extends javax.swing.JDialog {
             });
         }
 
+        // Custom Style
+        txtName.setBorder(BorderFactory.createCompoundBorder(
+                txtName.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
         lblNameError.setVisible(false);
+        loadArea();
     }
 
     public void loadArea() {

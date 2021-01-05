@@ -12,6 +12,7 @@ import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 
 /**
@@ -47,6 +48,16 @@ public final class JDSearchProduct extends javax.swing.JDialog {
         this.callback = callback;
         this.categoryDao = new CategoryDao(dbUtil);
 
+        //Custom Style
+        txtName.setBorder(BorderFactory.createCompoundBorder(
+                txtName.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+        txtToPrice.setBorder(BorderFactory.createCompoundBorder(
+                txtToPrice.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+        txtFromPrice.setBorder(BorderFactory.createCompoundBorder(
+                txtFromPrice.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
         loadCategory();
         loadSatus();
     }

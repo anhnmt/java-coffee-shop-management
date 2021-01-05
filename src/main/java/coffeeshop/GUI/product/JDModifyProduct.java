@@ -63,6 +63,13 @@ public final class JDModifyProduct extends javax.swing.JDialog {
             loadingData();
         }
 
+        // Custom Style
+        txtName.setBorder(BorderFactory.createCompoundBorder(
+                txtName.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+        txtPrice.setBorder(BorderFactory.createCompoundBorder(
+                txtPrice.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
         lblNameError.setVisible(false);
         lblPriceError.setVisible(false);
         loadCategory();

@@ -5,6 +5,8 @@
  */
 package coffeeshop.GUI.bill;
 
+import javax.swing.BorderFactory;
+
 /**
  *
  * @author Minh
@@ -21,6 +23,10 @@ public class JDModifyBill extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
+
+        txtName.setBorder(BorderFactory.createCompoundBorder(
+                txtName.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
     }
 
     /**

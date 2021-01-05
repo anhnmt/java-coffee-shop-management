@@ -55,6 +55,11 @@ public final class JDModifyCategory extends javax.swing.JDialog {
             this.category = category;
             loadData();
         }
+
+        // Custom Style
+        txtName.setBorder(BorderFactory.createCompoundBorder(
+                txtName.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
     }
 
     public void loadData() {

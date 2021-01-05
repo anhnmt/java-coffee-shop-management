@@ -58,6 +58,7 @@ public final class JDModifyBillDetail extends javax.swing.JDialog {
             txtProductAmount.setText(String.valueOf(billDetail.getAmount()));
         }
 
+        // Custom Style
         txtProductName.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(240, 240, 240)),
                 BorderFactory.createEmptyBorder(5, 8, 5, 8)));

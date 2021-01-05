@@ -8,6 +8,7 @@ package coffeeshop.GUI.bill;
 import coffeeshop.DTO.Bill;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 
 /**
@@ -39,6 +40,17 @@ public final class JDSearchBill extends javax.swing.JDialog {
         setLocationRelativeTo(null);
         this.dbUtil = dbUtil;
         this.callback = callback;
+
+        // Custom Style
+        txtUserId.setBorder(BorderFactory.createCompoundBorder(
+                txtUserId.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+        txtTableId.setBorder(BorderFactory.createCompoundBorder(
+                txtTableId.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+        txtBillId.setBorder(BorderFactory.createCompoundBorder(
+                txtBillId.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
         loadStatus();
     }
 

@@ -47,6 +47,10 @@ public final class JDModifyArea extends javax.swing.JDialog {
             this.area = area;
             loadData();
         }
+
+        txtName.setBorder(BorderFactory.createCompoundBorder(
+                txtName.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
     }
 
     public void loadData() {

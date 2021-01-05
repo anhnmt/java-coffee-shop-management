@@ -38,6 +38,13 @@ public final class JDSearchUser extends javax.swing.JDialog {
         setLocationRelativeTo(null);
         this.callback = callback;
 
+        // Custom Style
+        txtName.setBorder(BorderFactory.createCompoundBorder(
+                txtName.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+        txtEmail.setBorder(BorderFactory.createCompoundBorder(
+                txtEmail.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
         lblEmailError.setVisible(false);
         loadingRoles();
         loadingStatus();
