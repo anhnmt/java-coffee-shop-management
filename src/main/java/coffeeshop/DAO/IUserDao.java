@@ -6,6 +6,8 @@ import java.util.Map;
 
 public interface IUserDao {
 
+    public int count();
+
     public List<User> getAll(User user);
 
     public Map<String, Object> create(User user);

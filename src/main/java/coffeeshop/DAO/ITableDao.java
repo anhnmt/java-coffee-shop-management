@@ -6,6 +6,8 @@ import java.util.Map;
 
 public interface ITableDao {
 
+    public int count();
+
     public List<Table> getAll();
 
     public Table findByName(String name);

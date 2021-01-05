@@ -8,6 +8,7 @@ package coffeeshop.GUI.bill;
 import coffeeshop.DTO.Bill;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 
 /**
@@ -39,6 +40,17 @@ public final class JDSearchBill extends javax.swing.JDialog {
         setLocationRelativeTo(null);
         this.dbUtil = dbUtil;
         this.callback = callback;
+
+        // Custom Style
+        txtUserId.setBorder(BorderFactory.createCompoundBorder(
+                txtUserId.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+        txtTableId.setBorder(BorderFactory.createCompoundBorder(
+                txtTableId.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+        txtBillId.setBorder(BorderFactory.createCompoundBorder(
+                txtBillId.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
         loadStatus();
     }
 
@@ -73,12 +85,12 @@ public final class JDSearchBill extends javax.swing.JDialog {
         txtTableId = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Tìm kiếm hoá đơn | Quản lý quán cà phê - Version 1.0");
+        setTitle("TÌM KIẾM HOÁ ĐƠN");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_google_web_search_50px.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_google_web_search_50px.png"))); // NOI18N
         jLabel1.setText("TÌM KIẾM HOÁ ĐƠN");
 
         lblBillId.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N

@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.log4j.Log4j;
 
+@Log4j
 public class ProductDao implements IProductDao {
 
     Connection conn = null;
@@ -19,6 +21,28 @@ public class ProductDao implements IProductDao {
 
     public ProductDao(DbUtil dbUtil) {
         conn = dbUtil.getInstance().getConnection();
+    }
+
+    @Override
+    public int count() {
+        int count = 0;
+        String sql = "{CALL sp_countProducts}";
+
+        try {
+            cs = conn.prepareCall(sql);
+            rs = cs.executeQuery();
+
+            while (rs.next()) {
+                count = rs.getInt("count");
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+        } finally {
+            rs = null;
+            cs = null;
+        }
+
+        return count;
     }
 
     @Override
@@ -66,7 +90,7 @@ public class ProductDao implements IProductDao {
                 list.add(obj);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } finally {
             rs = null;
             cs = null;
@@ -93,7 +117,7 @@ public class ProductDao implements IProductDao {
             output.put("status", cs.getBoolean(5));
             output.put("message", cs.getNString(6));
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } finally {
             cs = null;
         }
@@ -122,7 +146,7 @@ public class ProductDao implements IProductDao {
                 );
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } finally {
             rs = null;
             cs = null;
@@ -150,7 +174,7 @@ public class ProductDao implements IProductDao {
             output.put("status", cs.getBoolean(6));
             output.put("message", cs.getNString(7));
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } finally {
             cs = null;
         }
@@ -173,7 +197,7 @@ public class ProductDao implements IProductDao {
             output.put("status", cs.getBoolean(2));
             output.put("message", cs.getNString(3));
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } finally {
             cs = null;
         }

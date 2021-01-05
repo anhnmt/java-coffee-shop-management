@@ -13,7 +13,6 @@ import coffeeshop.DTO.Bill;
 import coffeeshop.DTO.BillDetail;
 import java.awt.Frame;
 import java.util.List;
-import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -109,7 +108,7 @@ public final class JDBill extends javax.swing.JDialog {
         txtBillTotalPrice = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Cập nhật thông tin hoá đơn | Quản lý quán cà phê - Version 1.0");
+        setTitle("THÔNG TIN CHI TIẾT HOÁ ĐƠN");
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -120,7 +119,7 @@ public final class JDBill extends javax.swing.JDialog {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         lblTitle.setFont(new java.awt.Font("Segoe UI Semibold", 0, 24)); // NOI18N
-        lblTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_product_50px_2.png"))); // NOI18N
+        lblTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_product_50px_2.png"))); // NOI18N
         lblTitle.setText("THÔNG TIN CHI TIẾT HOÁ ĐƠN");
 
         lblBillId.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
@@ -140,6 +139,7 @@ public final class JDBill extends javax.swing.JDialog {
             }
         });
 
+        tblBillDetail.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         tblBillDetail.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},

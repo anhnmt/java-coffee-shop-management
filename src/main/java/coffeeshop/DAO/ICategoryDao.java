@@ -6,6 +6,8 @@ import java.util.Map;
 
 public interface ICategoryDao {
 
+    public int count();
+
     public List<Category> getAll(Category category);
 
     public Map<String, Object> create(Category category);

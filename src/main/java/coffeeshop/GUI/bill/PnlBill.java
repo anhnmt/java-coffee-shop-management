@@ -13,8 +13,6 @@ import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import javax.swing.JComponent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 
@@ -44,12 +42,13 @@ public class PnlBill extends javax.swing.JPanel implements JDSearchBill.Callback
         this.parent = parent;
         this.dbUtil = dbUtil;
         this.billDao = new BillDao(dbUtil);
-        loading(null);
 
         if (user.getRole() != 1) {
             lblView.setVisible(false);
             lblDelete.setVisible(false);
         }
+
+        loading(null);
     }
 
     private void loading(Bill newBill) {
@@ -122,7 +121,7 @@ public class PnlBill extends javax.swing.JPanel implements JDSearchBill.Callback
 
         lblView.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         lblView.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblView.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_bill_50px.png"))); // NOI18N
+        lblView.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_bill_50px.png"))); // NOI18N
         lblView.setText("Xem");
         lblView.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblView.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -136,7 +135,7 @@ public class PnlBill extends javax.swing.JPanel implements JDSearchBill.Callback
 
         lblSearch.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         lblSearch.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_search_50px_1.png"))); // NOI18N
+        lblSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_search_50px_1.png"))); // NOI18N
         lblSearch.setText("Tìm kiếm");
         lblSearch.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblSearch.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -150,7 +149,7 @@ public class PnlBill extends javax.swing.JPanel implements JDSearchBill.Callback
 
         lblDelete.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         lblDelete.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_delete_50px.png"))); // NOI18N
+        lblDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_delete_50px.png"))); // NOI18N
         lblDelete.setText("Xoá");
         lblDelete.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblDelete.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -164,7 +163,7 @@ public class PnlBill extends javax.swing.JPanel implements JDSearchBill.Callback
 
         lblRefresh.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         lblRefresh.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_repeat_50px_1.png"))); // NOI18N
+        lblRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_repeat_50px_1.png"))); // NOI18N
         lblRefresh.setText("Làm mới");
         lblRefresh.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblRefresh.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -178,6 +177,8 @@ public class PnlBill extends javax.swing.JPanel implements JDSearchBill.Callback
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_START);
 
+        tblBill.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        tblBill.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         tblBill.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -236,6 +237,7 @@ public class PnlBill extends javax.swing.JPanel implements JDSearchBill.Callback
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblBill.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         jScrollPane1.setViewportView(tblBill);
 
         jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -287,10 +289,8 @@ public class PnlBill extends javax.swing.JPanel implements JDSearchBill.Callback
     }//GEN-LAST:event_lblViewMouseClicked
 
     private void lblSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSearchMouseClicked
-        if (!Common.isNullOrEmpty(bill)) {
-            JDSearchBill jdsb = new JDSearchBill(this.parent, true, dbUtil, this);
-            jdsb.setVisible(true);
-        }
+        JDSearchBill jdsb = new JDSearchBill(this.parent, true, dbUtil, this);
+        jdsb.setVisible(true);
     }//GEN-LAST:event_lblSearchMouseClicked
 
     private void lblDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDeleteMouseClicked
