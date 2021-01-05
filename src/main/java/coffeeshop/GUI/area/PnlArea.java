@@ -29,8 +29,12 @@ import coffeeshop.GUI.table.JDDeleteTable;
 import coffeeshop.GUI.table.JDModifyTable;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
+import java.awt.Cursor;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Objects;
 import javax.swing.JPanel;
+import javax.swing.ScrollPaneConstants;
 
 /**
  *
@@ -101,10 +105,10 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
 
     public void addTab(JTabbedPane tabbedPane, String title, Component tab) {
         JScrollPane jScrollPane = new JScrollPane();
-        jScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane.setViewportView(tab);
         tabbedPane.add(jScrollPane);
-        tabbedPane.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
+        tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
         JLabel lbl = new JLabel(title);
         ImageIcon icon = createImageIcon("/coffeeshop/assets/img/icons8_place_marker_50px.png");
@@ -123,16 +127,19 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
         javax.swing.JPanel panel = new javax.swing.JPanel(false);
         panel.setLayout(new WrapLayout(WrapLayout.LEFT, 35, 5));
         JLabel jl1 = new JLabel();
-        jl1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_add_new_75px.png"))); // NOI18N
+        jl1.setIcon(new ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_add_new_75px.png"))); // NOI18N
         jl1.setText("Thêm bàn mới");
-        jl1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jl1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jl1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jl1.addMouseListener(new java.awt.event.MouseAdapter() {
+        jl1.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        jl1.setHorizontalTextPosition(SwingConstants.CENTER);
+        jl1.setVerticalTextPosition(SwingConstants.BOTTOM);
+
+        jl1.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                JDModifyTable jdma = new JDModifyTable(parent, true, dbUtil, (JDModifyTable.CallbackTableModify) self, null, area);
-                jdma.setVisible(true);
+            public void mouseClicked(MouseEvent evt) {
+                if (!Common.isNullOrEmpty(area)) {
+                    JDModifyTable jdma = new JDModifyTable(parent, true, dbUtil, (JDModifyTable.CallbackTableModify) self, null, area);
+                    jdma.setVisible(true);
+                }
             }
         });
 
@@ -142,32 +149,34 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
 
     public JLabel makeTable(JComponent panel, Table objTable) {
         JLabel jp = new JLabel();
-        jp.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jp.setHorizontalAlignment(SwingConstants.CENTER);
         jp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_table_75px.png"))); // NOI18N
         jp.setText(objTable.getName());
-        
+
         bill = billDao.getByTableId(new Bill(objTable.getId(), false));
 
         if (Common.isNullOrEmpty(bill)) {
-            jp.setForeground(new Color(40,167,69));
+            jp.setForeground(new Color(40, 167, 69));
         } else {
-            jp.setForeground(new Color(220,53,69));
+            jp.setForeground(new Color(220, 53, 69));
         }
 
-        jp.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jp.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jp.setHorizontalTextPosition(SwingConstants.CENTER);
+        jp.setVerticalTextPosition(SwingConstants.BOTTOM);
         jp.setVisible(true);
         // Bắt sự kiện click vào bàn
-        jp.addMouseListener(new java.awt.event.MouseAdapter() {
+        jp.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            public void mouseClicked(MouseEvent evt) {
                 table = tableDao.findByName(objTable.getName());
 
-                if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3) {
+                if (evt.getButton() == MouseEvent.BUTTON3) {
                     jPopupMenu.show(jp, evt.getX(), evt.getY());
                 } else {
-                    JDTable jDTable = new JDTable(parent, true, dbUtil, (JDTable.CallbackTableExit) self, user, table);
-                    jDTable.setVisible(true);
+                    if (!Common.isNullOrEmpty(table)) {
+                        JDTable jDTable = new JDTable(parent, true, dbUtil, (JDTable.CallbackTableExit) self, user, table);
+                        jDTable.setVisible(true);
+                    }
                 }
             }
         });
@@ -178,7 +187,7 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
     }
 
     protected ImageIcon createImageIcon(String path) {
-        ImageIcon imageIcon = new javax.swing.ImageIcon(
+        ImageIcon imageIcon = new ImageIcon(
                 getClass().getResource(path)
         );
 
@@ -347,21 +356,24 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
     }//GEN-LAST:event_lblAddMouseClicked
 
     private void lblUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUpdateMouseClicked
-        JDModifyArea jdma = new JDModifyArea(parent, true, dbUtil, this, area);
-        jdma.setVisible(true);
+        if (!Common.isNullOrEmpty(area)) {
+            JDModifyArea jdma = new JDModifyArea(parent, true, dbUtil, this, area);
+            jdma.setVisible(true);
+        }
     }//GEN-LAST:event_lblUpdateMouseClicked
 
     private void tabbedPaneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabbedPaneMouseClicked
         if (tabbedPane.getComponents().length > 0) {
             String name = tabbedPane.getSelectedComponent().getName();
             area = areaDao.findByName(name);
-            System.out.println(area);
         }
     }//GEN-LAST:event_tabbedPaneMouseClicked
 
     private void lblDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDeleteMouseClicked
-        JDDeleteArea jdda = new JDDeleteArea(parent, true, dbUtil, this, area);
-        jdda.setVisible(true);
+        if (!Common.isNullOrEmpty(area)) {
+            JDDeleteArea jdda = new JDDeleteArea(parent, true, dbUtil, this, area);
+            jdda.setVisible(true);
+        }
     }//GEN-LAST:event_lblDeleteMouseClicked
 
     private void lblRefreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRefreshMouseClicked
@@ -369,18 +381,24 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
     }//GEN-LAST:event_lblRefreshMouseClicked
 
     private void jMenuItemDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDeleteActionPerformed
-        JDDeleteTable jDDeleteTable = new JDDeleteTable(parent, true, dbUtil, this, table);
-        jDDeleteTable.setVisible(true);
+        if (!Common.isNullOrEmpty(table)) {
+            JDDeleteTable jDDeleteTable = new JDDeleteTable(parent, true, dbUtil, this, table);
+            jDDeleteTable.setVisible(true);
+        }
     }//GEN-LAST:event_jMenuItemDeleteActionPerformed
 
     private void jMenuItemEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemEditActionPerformed
-        JDModifyTable jDModifyTable = new JDModifyTable(parent, true, dbUtil, this, table, area);
-        jDModifyTable.setVisible(true);
+        if (!Common.isNullOrEmpty(table)) {
+            JDModifyTable jDModifyTable = new JDModifyTable(parent, true, dbUtil, this, table, area);
+            jDModifyTable.setVisible(true);
+        }
     }//GEN-LAST:event_jMenuItemEditActionPerformed
 
     private void jMenuItemShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemShowActionPerformed
-        JDTable jDTable = new JDTable(parent, true, dbUtil, this, user, table);
-        jDTable.setVisible(true);
+        if (!Common.isNullOrEmpty(table)) {
+            JDTable jDTable = new JDTable(parent, true, dbUtil, this, user, table);
+            jDTable.setVisible(true);
+        }
     }//GEN-LAST:event_jMenuItemShowActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

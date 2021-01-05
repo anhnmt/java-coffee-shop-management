@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.log4j.Log4j;
 
+@Log4j
 public class BillDetailDao implements IBillDetailDao {
 
     Connection conn = null;
@@ -42,7 +44,7 @@ public class BillDetailDao implements IBillDetailDao {
                 obj.add(billDetail);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } finally {
             rs = null;
             cs = null;
@@ -68,7 +70,7 @@ public class BillDetailDao implements IBillDetailDao {
             output.put("status", cs.getBoolean(4));
             output.put("message", cs.getNString(5));
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } finally {
             cs = null;
         }
@@ -98,7 +100,7 @@ public class BillDetailDao implements IBillDetailDao {
             output.put("status", cs.getBoolean(4));
             output.put("message", cs.getNString(5));
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } finally {
             cs = null;
         }
@@ -123,7 +125,7 @@ public class BillDetailDao implements IBillDetailDao {
             output.put("status", cs.getBoolean(3));
             output.put("message", cs.getNString(4));
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } finally {
             cs = null;
         }

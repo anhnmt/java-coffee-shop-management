@@ -65,7 +65,7 @@ public class JDDeleteArea extends javax.swing.JDialog {
         btnDelete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Xoá khu vực | Quản lý quán cà phê - Version 1.0");
+        setTitle("XOÁ KHU VỰC");
         setAlwaysOnTop(true);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));

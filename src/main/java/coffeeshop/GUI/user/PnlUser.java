@@ -59,11 +59,10 @@ public final class PnlUser extends javax.swing.JPanel implements JDModifyUser.Ca
 
             tblUser.getSelectionModel().addListSelectionListener((ListSelectionEvent lse) -> {
                 int position = tblUser.getSelectedRow();
-                if (position < 0) {
-                    position = 0;
+                if (position >= 0) {
+                    user = list.get(position);
                 }
 
-                user = list.get(position);
             });
 
             tblUser.changeSelection(0, 0, false, false);
@@ -185,6 +184,7 @@ public final class PnlUser extends javax.swing.JPanel implements JDModifyUser.Ca
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_START);
 
+        tblUser.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         tblUser.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -292,8 +292,10 @@ public final class PnlUser extends javax.swing.JPanel implements JDModifyUser.Ca
     }//GEN-LAST:event_lblAddMouseClicked
 
     private void lblUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUpdateMouseClicked
-        JDModifyUser jdm = new JDModifyUser(this.parent, true, dbUtil, this, user);
-        jdm.setVisible(true);
+        if (!Common.isNullOrEmpty(user)) {
+            JDModifyUser jdm = new JDModifyUser(this.parent, true, dbUtil, this, user);
+            jdm.setVisible(true);
+        }
     }//GEN-LAST:event_lblUpdateMouseClicked
 
     private void lblSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSearchMouseClicked
@@ -302,11 +304,13 @@ public final class PnlUser extends javax.swing.JPanel implements JDModifyUser.Ca
     }//GEN-LAST:event_lblSearchMouseClicked
 
     private void lblDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDeleteMouseClicked
-        if (Objects.equals(currentUser.getId(), user.getId())) {
-            JOptionPane.showMessageDialog(null, "Bạn không thể xoá tài khoản của chính bạn!");
-        } else {
-            JDDeleteUser jdd = new JDDeleteUser(this.parent, true, dbUtil, this, user);
-            jdd.setVisible(true);
+        if (!Common.isNullOrEmpty(user)) {
+            if (Objects.equals(currentUser.getId(), user.getId())) {
+                JOptionPane.showMessageDialog(null, "Bạn không thể xoá tài khoản của chính bạn!");
+            } else {
+                JDDeleteUser jdd = new JDDeleteUser(this.parent, true, dbUtil, this, user);
+                jdd.setVisible(true);
+            }
         }
     }//GEN-LAST:event_lblDeleteMouseClicked
 

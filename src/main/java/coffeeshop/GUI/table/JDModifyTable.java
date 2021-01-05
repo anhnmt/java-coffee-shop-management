@@ -18,11 +18,15 @@ import coffeeshop.DTO.Table;
 import coffeeshop.DAO.impl.TableDao;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
+import java.awt.HeadlessException;
+import java.util.Objects;
+import lombok.extern.log4j.Log4j;
 
 /**
  *
  * @author Minh
  */
+@Log4j
 public final class JDModifyTable extends javax.swing.JDialog {
 
     CallbackTableModify callback;
@@ -79,7 +83,7 @@ public final class JDModifyTable extends javax.swing.JDialog {
             rdoNonActive.setSelected(table.getStatus() == false);
 
             areas.forEach(obj -> {
-                if (obj.getId() == table.getArea_id()) {
+                if (Objects.equals(obj.getId(), table.getArea_id())) {
                     cboArea.setSelectedItem(obj);
                 }
             });
@@ -120,7 +124,7 @@ public final class JDModifyTable extends javax.swing.JDialog {
         lblNameError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Cập nhật bàn | Quản lý quán cà phê - Version 1.0");
+        setTitle("CẬP NHẬT BÀN");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -273,6 +277,7 @@ public final class JDModifyTable extends javax.swing.JDialog {
                 } else {
                     objTable.setId(table.getId());
                     Map<String, Object> result = tableDao.update(objTable);
+
                     if ((boolean) result.get("status") == true) {
                         JOptionPane.showMessageDialog(null, "Sửa bàn thành công!");
                         callback.actionTableModify();
@@ -282,8 +287,8 @@ public final class JDModifyTable extends javax.swing.JDialog {
                     }
                 }
 
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            } catch (HeadlessException ex) {
+                log.error(ex.getMessage());
             }
         }
 

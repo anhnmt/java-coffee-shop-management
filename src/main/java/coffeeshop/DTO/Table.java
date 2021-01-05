@@ -13,6 +13,5 @@ public class Table implements Serializable {
     private Integer id;
     private Integer area_id;
     private String name;
-    private String note;
     private Boolean status;
 }

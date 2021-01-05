@@ -65,7 +65,7 @@ public class JDDeleteProduct extends javax.swing.JDialog {
         btnDelete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Xoá sản phẩm | Quản lý quán cà phê - Version 1.0");
+        setTitle("XOÁ SẢN PHẨM");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 

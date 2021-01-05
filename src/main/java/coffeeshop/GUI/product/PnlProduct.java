@@ -63,11 +63,10 @@ public final class PnlProduct extends javax.swing.JPanel implements JDModifyProd
 
             tblProduct.getSelectionModel().addListSelectionListener((ListSelectionEvent lse) -> {
                 int position = tblProduct.getSelectedRow();
-                if (position < 0) {
-                    position = 0;
+                if (position >= 0) {
+                    product = products.get(position);
                 }
 
-                product = products.get(position);
             });
 
             tblProduct.changeSelection(0, 0, false, false);
@@ -189,6 +188,7 @@ public final class PnlProduct extends javax.swing.JPanel implements JDModifyProd
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_START);
 
+        tblProduct.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         tblProduct.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},

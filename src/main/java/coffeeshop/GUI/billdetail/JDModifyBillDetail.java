@@ -92,7 +92,7 @@ public final class JDModifyBillDetail extends javax.swing.JDialog {
         lblProductAmount = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Cập nhật thông tin hoá đơn | Quản lý quán cà phê - Version 1.0");
+        setTitle("CẬP NHẬT THÔNG TIN HOÁ ĐƠN");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));

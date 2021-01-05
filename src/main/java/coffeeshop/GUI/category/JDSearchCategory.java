@@ -69,7 +69,7 @@ public final class JDSearchCategory extends javax.swing.JDialog {
         cboStatus = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Tìm kiếm danh mục | Quản lý quán cà phê - Version 1.0");
+        setTitle("TÌM KIẾM DANH MỤC");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 

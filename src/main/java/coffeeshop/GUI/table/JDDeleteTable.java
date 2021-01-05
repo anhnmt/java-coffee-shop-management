@@ -65,7 +65,7 @@ public class JDDeleteTable extends javax.swing.JDialog {
         btnDelete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Xoá bàn | Quản lý quán cà phê - Version 1.0");
+        setTitle("XOÁ BÀN");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 

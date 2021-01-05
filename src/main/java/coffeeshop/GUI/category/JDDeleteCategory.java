@@ -65,7 +65,7 @@ public class JDDeleteCategory extends javax.swing.JDialog {
         btnDelete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Xoá danh mục | Quản lý quán cà phê - Version 1.0");
+        setTitle("XOÁ DANH MỤC");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 

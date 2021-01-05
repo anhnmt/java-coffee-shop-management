@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.log4j.Log4j;
 
+@Log4j
 public class BillDao implements IBillDao {
 
     Connection conn = null;
@@ -56,7 +58,6 @@ public class BillDao implements IBillDao {
                         rs.getInt("table_id"),
                         rs.getFloat("total_price"),
                         rs.getFloat("discount"),
-                        rs.getNString("note"),
                         rs.getBoolean("status"),
                         rs.getString("created_at"),
                         rs.getNString("user_name"),
@@ -65,7 +66,7 @@ public class BillDao implements IBillDao {
                 list.add(obj);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } finally {
             rs = null;
             cs = null;
@@ -77,7 +78,7 @@ public class BillDao implements IBillDao {
     @Override
     public Map<String, Object> create(Bill bill) {
         Map<String, Object> output = new HashMap<>();
-        String sql = "{CALL sp_insertBill(?, ?, ?, ?, ?, ?, ?, ?)}";
+        String sql = "{CALL sp_insertBill(?, ?, ?, ?, ?, ?, ?)}";
 
         try {
             cs = conn.prepareCall(sql);
@@ -85,8 +86,7 @@ public class BillDao implements IBillDao {
             cs.setNull(2, Types.INTEGER);
             cs.setNull(3, Types.FLOAT);
             cs.setNull(4, Types.FLOAT);
-            cs.setNull(5, Types.NVARCHAR);
-            cs.setNull(6, Types.BOOLEAN);
+            cs.setNull(5, Types.BOOLEAN);
 
             if (!Common.isNullOrEmpty(bill)) {
                 if (!Common.isNullOrEmpty(bill.getUser_id())) {
@@ -101,21 +101,18 @@ public class BillDao implements IBillDao {
                 if (!Common.isNullOrEmpty(bill.getDiscount())) {
                     cs.setFloat(4, bill.getDiscount());
                 }
-                if (!Common.isNullOrEmpty(bill.getNote())) {
-                    cs.setNString(5, bill.getNote());
-                }
                 if (!Common.isNullOrEmpty(bill.getStatus())) {
-                    cs.setBoolean(6, bill.getStatus());
+                    cs.setBoolean(5, bill.getStatus());
                 }
             }
-            cs.registerOutParameter(7, Types.BIT);
-            cs.registerOutParameter(8, Types.NVARCHAR);
+            cs.registerOutParameter(6, Types.BIT);
+            cs.registerOutParameter(7, Types.NVARCHAR);
             cs.execute();
 
-            output.put("status", cs.getBoolean(7));
-            output.put("message", cs.getNString(8));
+            output.put("status", cs.getBoolean(6));
+            output.put("message", cs.getNString(7));
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } finally {
             cs = null;
         }
@@ -140,7 +137,6 @@ public class BillDao implements IBillDao {
                         rs.getInt("table_id"),
                         rs.getFloat("total_price"),
                         rs.getFloat("discount"),
-                        rs.getNString("note"),
                         rs.getBoolean("status"),
                         rs.getString("created_at"),
                         rs.getNString("user_name"),
@@ -148,7 +144,7 @@ public class BillDao implements IBillDao {
                 );
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } finally {
             rs = null;
             cs = null;
@@ -160,7 +156,7 @@ public class BillDao implements IBillDao {
     @Override
     public Map<String, Object> update(Bill bill) {
         Map<String, Object> output = new HashMap<>();
-        String sql = "{CALL sp_updateBill(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+        String sql = "{CALL sp_updateBill(?, ?, ?, ?, ?, ?, ?, ?)}";
 
         try {
             cs = conn.prepareCall(sql);
@@ -169,16 +165,15 @@ public class BillDao implements IBillDao {
             cs.setInt(3, bill.getTable_id());
             cs.setFloat(4, bill.getTotal_price());
             cs.setFloat(5, bill.getDiscount());
-            cs.setNString(6, bill.getNote());
-            cs.setBoolean(7, bill.getStatus());
-            cs.registerOutParameter(8, Types.BIT);
-            cs.registerOutParameter(9, Types.NVARCHAR);
+            cs.setBoolean(6, bill.getStatus());
+            cs.registerOutParameter(7, Types.BIT);
+            cs.registerOutParameter(8, Types.NVARCHAR);
             cs.execute();
 
-            output.put("status", cs.getBoolean(8));
-            output.put("message", cs.getNString(9));
+            output.put("status", cs.getBoolean(7));
+            output.put("message", cs.getNString(8));
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } finally {
             cs = null;
         }
@@ -201,7 +196,7 @@ public class BillDao implements IBillDao {
             output.put("status", cs.getBoolean(2));
             output.put("message", cs.getNString(3));
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } finally {
             cs = null;
         }
@@ -232,7 +227,6 @@ public class BillDao implements IBillDao {
                         rs.getInt("table_id"),
                         rs.getFloat("total_price"),
                         rs.getFloat("discount"),
-                        rs.getNString("note"),
                         rs.getBoolean("status"),
                         rs.getString("created_at"),
                         rs.getNString("user_name"),
@@ -240,7 +234,7 @@ public class BillDao implements IBillDao {
                 );
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } finally {
             rs = null;
             cs = null;

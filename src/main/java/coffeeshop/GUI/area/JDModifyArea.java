@@ -78,7 +78,7 @@ public final class JDModifyArea extends javax.swing.JDialog {
         lblNameError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Cập nhật khu vực | Quản lý quán cà phê - Version 1.0");
+        setTitle("CẬP NHẬT KHU VỰC");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 

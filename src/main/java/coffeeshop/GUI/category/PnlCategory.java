@@ -13,6 +13,7 @@ import java.util.List;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 import coffeeshop.DTO.User;
+import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
 
 /**
@@ -63,11 +64,10 @@ public final class PnlCategory extends javax.swing.JPanel implements JDModifyCat
 
             tblCategory.getSelectionModel().addListSelectionListener((ListSelectionEvent lse) -> {
                 int position = tblCategory.getSelectedRow();
-                if (position < 0) {
-                    position = 0;
+                if (position >= 0) {
+                    category = categories.get(position);
                 }
 
-                category = categories.get(position);
             });
 
             tblCategory.changeSelection(0, 0, false, false);
@@ -190,6 +190,7 @@ public final class PnlCategory extends javax.swing.JPanel implements JDModifyCat
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_START);
 
+        tblCategory.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         tblCategory.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -297,8 +298,10 @@ public final class PnlCategory extends javax.swing.JPanel implements JDModifyCat
     }//GEN-LAST:event_lblAddMouseClicked
 
     private void lblUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUpdateMouseClicked
-        JDModifyCategory jdm = new JDModifyCategory(this.parent, true, dbUtil, this, category);
-        jdm.setVisible(true);
+        if (!Common.isNullOrEmpty(category)) {
+            JDModifyCategory jdm = new JDModifyCategory(this.parent, true, dbUtil, this, category);
+            jdm.setVisible(true);
+        }
     }//GEN-LAST:event_lblUpdateMouseClicked
 
     private void lblSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSearchMouseClicked
@@ -307,8 +310,10 @@ public final class PnlCategory extends javax.swing.JPanel implements JDModifyCat
     }//GEN-LAST:event_lblSearchMouseClicked
 
     private void lblDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDeleteMouseClicked
-        JDDeleteCategory jdd = new JDDeleteCategory(this.parent, true, dbUtil, this, category);
-        jdd.setVisible(true);
+        if (!Common.isNullOrEmpty(category)) {
+            JDDeleteCategory jdd = new JDDeleteCategory(this.parent, true, dbUtil, this, category);
+            jdd.setVisible(true);
+        }
     }//GEN-LAST:event_lblDeleteMouseClicked
 
     private void lblRefreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRefreshMouseClicked

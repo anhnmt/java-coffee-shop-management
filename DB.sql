@@ -137,7 +137,7 @@ EXEC (@sql);
 
 GO
 
-EXEC sp_getAllUser;
+--EXEC sp_getAllUser;
 
 GO
 
@@ -150,7 +150,7 @@ WHERE id = @_id;
 
 GO
 
-EXEC sp_getUserById 1;
+--EXEC sp_getUserById 1;
 
 GO
 
@@ -337,7 +337,7 @@ EXEC (@sql);
 
 GO
 
-EXEC sp_getAllCategory;
+--EXEC sp_getAllCategory;
 
 GO
 
@@ -672,7 +672,7 @@ WHERE id = @_id;
 
 GO
 
-EXEC sp_getProductById 1;
+--EXEC sp_getProductById 1;
 
 GO
 
@@ -837,7 +837,6 @@ CREATE TABLE [Tables]
         FOREIGN KEY REFERENCES Areas (id),
     [name] NVARCHAR(100)
         UNIQUE NOT NULL,
-    note NVARCHAR(150),
     [status] BIT
         DEFAULT (1)
 );
@@ -858,7 +857,7 @@ EXEC (@sql);
 
 GO
 
-EXEC sp_getAllTable N'Bàn 1';
+--EXEC sp_getAllTable N'Bàn 1';
 
 GO
 
@@ -866,7 +865,6 @@ CREATE PROC sp_insertTable
 (
     @_area_id INT,
     @_name NVARCHAR(100),
-    @_note NVARCHAR(150) = '',
     @_status BIT = 1,
     @_outStt BIT = 1 OUTPUT,
     @_outMsg NVARCHAR(200) = '' OUTPUT
@@ -890,11 +888,10 @@ BEGIN TRY
         (
             area_id,
             [name],
-            note,
             [status]
         )
         VALUES
-        (@_area_id, @_name, @_note, @_status);
+        (@_area_id, @_name, @_status);
 
         SET @_outStt = 1;
         SET @_outMsg = N'Thêm bàn thành công';
@@ -929,7 +926,6 @@ CREATE PROC sp_updateTable
     @_id INT,
     @_area_id INT,
     @_name NVARCHAR(100),
-    @_note NVARCHAR(150) = '',
     @_status BIT = 1,
     @_outStt BIT = 1 OUTPUT,
     @_outMsg NVARCHAR(200) = '' OUTPUT
@@ -957,7 +953,6 @@ BEGIN TRY
         UPDATE Tables
         SET area_id = @_area_id,
             [name] = @_name,
-            note = @_note,
             [status] = @_status
         WHERE id = @_id;
 
@@ -986,7 +981,6 @@ CREATE TABLE Bills
     total_price FLOAT,
     discount FLOAT
         DEFAULT (0),
-    note NVARCHAR(150),
     status BIT
         DEFAULT (1),
     created_at DATETIME
@@ -1001,7 +995,6 @@ CREATE PROC sp_insertBill
     @_table_id INT,
     @_total_price FLOAT = 0,
     @_discount FLOAT = 0,
-    @_note NVARCHAR(150) = '',
     @_status BIT = 1,
     @_outStt BIT = 1 OUTPUT,
     @_outMsg NVARCHAR(200) = '' OUTPUT
@@ -1036,15 +1029,14 @@ BEGIN TRY
         BEGIN TRAN;
         INSERT INTO Bills
         (
-            user_id,
+            [user_id],
             table_id,
             total_price,
             discount,
-            note,
-            status
+            [status]
         )
         VALUES
-        (@_user_id, @_table_id, @_total_price, @_discount, @_note, @_status);
+        (@_user_id, @_table_id, @_total_price, @_discount, @_status);
 
         SET @_outStt = 1;
         SET @_outMsg = N'Thêm hoá đơn thành công';
@@ -1068,7 +1060,6 @@ CREATE PROC sp_updateBill
     @_table_id INT,
     @_total_price FLOAT = 0,
     @_discount FLOAT = 0,
-    @_note NVARCHAR(150) = '',
     @_status BIT = 1,
     @_outStt BIT = 1 OUTPUT,
     @_outMsg NVARCHAR(200) = '' OUTPUT
@@ -1111,7 +1102,6 @@ BEGIN TRY
             table_id = @_table_id,
             total_price = @_total_price,
             discount = @_discount,
-            note = @_note,
             [status] = @_status
         WHERE id = @_bill_id;
 

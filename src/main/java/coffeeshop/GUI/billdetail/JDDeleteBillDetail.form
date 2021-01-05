@@ -7,7 +7,7 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
-    <Property name="title" type="java.lang.String" value="Xo&#xe1; th&#xf4;ng tin ho&#xe1; &#x111;&#x1a1;n | Qu&#x1ea3;n l&#xfd; qu&#xe1;n c&#xe0; ph&#xea; - Version 1.0"/>
+    <Property name="title" type="java.lang.String" value="XO&#xc1; TH&#xd4;NG TIN HO&#xc1; &#x110;&#x1a0;N"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>

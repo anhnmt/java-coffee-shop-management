@@ -86,7 +86,7 @@ public final class JDModifyCategory extends javax.swing.JDialog {
         lblNameError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Cập nhật danh mục | Quản lý quán cà phê - Version 1.0");
+        setTitle("CẬP NHẬT DANH MỤC");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 

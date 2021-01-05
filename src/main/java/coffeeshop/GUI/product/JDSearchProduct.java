@@ -95,7 +95,7 @@ public final class JDSearchProduct extends javax.swing.JDialog {
         cboStatus = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Tìm kiểm sản phẩm | Quản lý quán cà phê - Version 1.0");
+        setTitle("TÌM KIỂM SẢN PHẨM");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 

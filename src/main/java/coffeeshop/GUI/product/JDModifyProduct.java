@@ -114,7 +114,7 @@ public final class JDModifyProduct extends javax.swing.JDialog {
         lblPriceError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Cập nhật sản phẩm | Quản lý quán cà phê - Version 1.0");
+        setTitle("CẬP NHẬT SẢN PHẨM");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));

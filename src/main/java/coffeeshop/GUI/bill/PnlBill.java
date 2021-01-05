@@ -13,8 +13,6 @@ import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import javax.swing.JComponent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 
@@ -178,6 +176,7 @@ public class PnlBill extends javax.swing.JPanel implements JDSearchBill.Callback
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_START);
 
+        tblBill.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         tblBill.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -287,10 +286,8 @@ public class PnlBill extends javax.swing.JPanel implements JDSearchBill.Callback
     }//GEN-LAST:event_lblViewMouseClicked
 
     private void lblSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSearchMouseClicked
-        if (!Common.isNullOrEmpty(bill)) {
-            JDSearchBill jdsb = new JDSearchBill(this.parent, true, dbUtil, this);
-            jdsb.setVisible(true);
-        }
+        JDSearchBill jdsb = new JDSearchBill(this.parent, true, dbUtil, this);
+        jdsb.setVisible(true);
     }//GEN-LAST:event_lblSearchMouseClicked
 
     private void lblDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDeleteMouseClicked

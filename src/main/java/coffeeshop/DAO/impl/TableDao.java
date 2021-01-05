@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.log4j.Log4j;
 
+@Log4j
 public class TableDao implements ITableDao {
 
     Connection conn = null;
@@ -35,14 +37,13 @@ public class TableDao implements ITableDao {
                         rs.getInt("id"),
                         rs.getInt("area_id"),
                         rs.getNString("name"),
-                        rs.getNString("note"),
                         rs.getBoolean("status")
                 );
 
                 list.add(obj);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } finally {
             rs = null;
             cs = null;
@@ -54,22 +55,21 @@ public class TableDao implements ITableDao {
     @Override
     public Map<String, Object> create(Table table) {
         Map<String, Object> output = new HashMap<>();
-        String sql = "{CALL sp_insertTable(?, ?, ?, ?, ?, ?)}";
+        String sql = "{CALL sp_insertTable(?, ?, ?, ?, ?)}";
 
         try {
             cs = conn.prepareCall(sql);
             cs.setInt(1, table.getArea_id());
             cs.setNString(2, table.getName());
-            cs.setNString(3, table.getNote());
-            cs.setBoolean(4, table.getStatus());
-            cs.registerOutParameter(5, Types.BIT);
-            cs.registerOutParameter(6, Types.NVARCHAR);
+            cs.setBoolean(3, table.getStatus());
+            cs.registerOutParameter(4, Types.BIT);
+            cs.registerOutParameter(5, Types.NVARCHAR);
             cs.execute();
 
-            output.put("status", cs.getBoolean(5));
-            output.put("message", cs.getNString(6));
+            output.put("status", cs.getBoolean(4));
+            output.put("message", cs.getNString(5));
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } finally {
             cs = null;
         }
@@ -91,12 +91,11 @@ public class TableDao implements ITableDao {
                         rs.getInt("id"),
                         rs.getInt("area_id"),
                         rs.getNString("name"),
-                        rs.getNString("note"),
                         rs.getBoolean("status")
                 );
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } finally {
             ps = null;
         }
@@ -107,23 +106,22 @@ public class TableDao implements ITableDao {
     @Override
     public Map<String, Object> update(Table table) {
         Map<String, Object> output = new HashMap<>();
-        String sql = "{CALL sp_updateTable(?, ?, ?, ?, ?, ?, ?)}";
+        String sql = "{CALL sp_updateTable(?, ?, ?, ?, ?, ?)}";
 
         try {
             cs = conn.prepareCall(sql);
             cs.setInt(1, table.getId());
             cs.setInt(2, table.getArea_id());
             cs.setNString(3, table.getName());
-            cs.setNString(4, table.getNote());
-            cs.setBoolean(5, table.getStatus());
-            cs.registerOutParameter(6, Types.BIT);
-            cs.registerOutParameter(7, Types.NVARCHAR);
+            cs.setBoolean(4, table.getStatus());
+            cs.registerOutParameter(5, Types.BIT);
+            cs.registerOutParameter(6, Types.NVARCHAR);
             cs.execute();
 
-            output.put("status", cs.getBoolean(6));
-            output.put("message", cs.getNString(7));
+            output.put("status", cs.getBoolean(5));
+            output.put("message", cs.getNString(6));
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } finally {
             cs = null;
         }
@@ -151,12 +149,11 @@ public class TableDao implements ITableDao {
                         rs.getInt("id"),
                         rs.getInt("area_id"),
                         rs.getNString("name"),
-                        rs.getNString("note"),
                         rs.getBoolean("status")
                 );
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } finally {
             rs = null;
             cs = null;

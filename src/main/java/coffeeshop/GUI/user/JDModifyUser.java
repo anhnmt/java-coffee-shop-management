@@ -107,7 +107,7 @@ public final class JDModifyUser extends javax.swing.JDialog {
         lblPasswordError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Cập nhật người dùng | Quản lý quán cà phê - Version 1.0");
+        setTitle("CẬP NHẬT NGƯỜI DÙNG");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));

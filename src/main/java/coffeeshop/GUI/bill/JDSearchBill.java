@@ -73,7 +73,7 @@ public final class JDSearchBill extends javax.swing.JDialog {
         txtTableId = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Tìm kiếm hoá đơn | Quản lý quán cà phê - Version 1.0");
+        setTitle("TÌM KIẾM HOÁ ĐƠN");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
