@@ -75,7 +75,7 @@ public final class JDModifyTable extends javax.swing.JDialog {
         }
 
         if (!Common.isNullOrEmpty(table)) {
-            lblTitle.setText("Sửa đổi sản phẩm");
+            lblTitle.setText("SỬA ĐỔI BÀN");
             btnModify.setText("Sửa đổi");
             txtName.setText(table.getName());
             rdoActive.setSelected(table.getStatus());

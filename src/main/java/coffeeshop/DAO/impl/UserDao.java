@@ -3,7 +3,10 @@ package coffeeshop.DAO.impl;
 import coffeeshop.DAO.*;
 import coffeeshop.DTO.User;
 import coffeeshop.Util.Common;
+import coffeeshop.Util.Constant;
 import coffeeshop.Util.DbUtil;
+import coffeeshop.Util.BaseMessage;
+import coffeeshop.Util.MessageResponse;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -18,6 +21,7 @@ public class UserDao implements IUserDao {
     Connection conn = null;
     CallableStatement cs = null;
     ResultSet rs = null;
+    private BaseMessage response;
 
     public UserDao(DbUtil dbUtil) {
         conn = dbUtil.getInstance().getConnection();
@@ -35,8 +39,12 @@ public class UserDao implements IUserDao {
             while (rs.next()) {
                 count = rs.getInt("count");
             }
+
+            response = new BaseMessage(Constant.SUCCESS_RESPONSE, String.valueOf(count));
+            log.info(Common.createMessageLog(null, response, "count"));
         } catch (SQLException e) {
-            log.error(e.getMessage());
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(null, response, "count"));
         } finally {
             rs = null;
             cs = null;
@@ -49,7 +57,6 @@ public class UserDao implements IUserDao {
     public List<User> getAll(User user) {
         List<User> list = new ArrayList<>();
         String sql = "{CALL sp_getAllUser(?, ?, ?, ?)}";
-        System.out.println("DAO: " + user);
 
         try {
             cs = conn.prepareCall(sql);
@@ -87,7 +94,8 @@ public class UserDao implements IUserDao {
                 list.add(obj);
             }
         } catch (SQLException e) {
-            log.error(e.getMessage());
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(user, response, "getAll"));
         } finally {
             rs = null;
             cs = null;
@@ -115,7 +123,8 @@ public class UserDao implements IUserDao {
             output.put("status", cs.getBoolean(6));
             output.put("message", cs.getNString(7));
         } catch (SQLException e) {
-            log.error(e.getMessage());
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(user, response, "create"));
         } finally {
             cs = null;
         }
@@ -144,7 +153,8 @@ public class UserDao implements IUserDao {
                 );
             }
         } catch (SQLException e) {
-            log.error(e.getMessage());
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(id, response, "read"));
         } finally {
             rs = null;
             cs = null;
@@ -172,8 +182,16 @@ public class UserDao implements IUserDao {
 
             output.put("status", cs.getBoolean(7));
             output.put("message", cs.getNString(8));
+
+            response = new MessageResponse<>(cs.getBoolean(7), cs.getNString(8), output);
+            if (cs.getBoolean(7)) {
+                log.info(Common.createMessageLog(user, response, "update"));
+            } else {
+                log.error(Common.createMessageLog(user, response, "update"));
+            }
         } catch (SQLException e) {
-            log.error(e.getMessage());
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(user, response, "update"));
         } finally {
             cs = null;
         }
@@ -196,7 +214,8 @@ public class UserDao implements IUserDao {
             output.put("status", cs.getBoolean(2));
             output.put("message", cs.getNString(3));
         } catch (SQLException e) {
-            log.error(e.getMessage());
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(id, response, "update"));
         } finally {
             cs = null;
         }
@@ -204,6 +223,7 @@ public class UserDao implements IUserDao {
         return output;
     }
 
+    @Override
     public User auth(String email, String password) {
         User obj = null;
         String sql = "{CALL sp_checkUser(?, ?)}";
@@ -225,7 +245,8 @@ public class UserDao implements IUserDao {
                 );
             }
         } catch (SQLException e) {
-            log.error(e.getMessage());
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(new Object[]{email, password}, response, "update"));
         } finally {
             rs = null;
             cs = null;

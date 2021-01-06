@@ -63,7 +63,7 @@ public final class JDModifyCategory extends javax.swing.JDialog {
     }
 
     public void loadData() {
-        lblTitle.setText("Sửa đổi danh mục");
+        lblTitle.setText("SỬA ĐỔI DANH MỤC");
         btnModify.setText("Sửa đổi");
         txtName.setText(category.getName());
         rdoActive.setSelected(category.getStatus());

@@ -307,10 +307,8 @@ public final class PnlCategory extends javax.swing.JPanel implements JDModifyCat
     }//GEN-LAST:event_lblUpdateMouseClicked
 
     private void lblSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSearchMouseClicked
-        if (!Common.isNullOrEmpty(categories)) {
-            JDSearchCategory jds = new JDSearchCategory(parent, true, dbUtil, this);
-            jds.setVisible(true);
-        }
+        JDSearchCategory jds = new JDSearchCategory(parent, true, dbUtil, this);
+        jds.setVisible(true);
     }//GEN-LAST:event_lblSearchMouseClicked
 
     private void lblDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDeleteMouseClicked

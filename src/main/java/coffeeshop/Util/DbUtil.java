@@ -11,6 +11,7 @@ public class DbUtil {
 
     private static DbUtil instance;
     private static Connection conn;
+    private BaseMessage response;
 
     public DbUtil() {
         try {
@@ -19,7 +20,8 @@ public class DbUtil {
 
             conn = DriverManager.getConnection(bundle.getString("URL"), bundle.getString("USER"), bundle.getString("PASSWORD"));
         } catch (ClassNotFoundException | SQLException e) {
-            log.error(e.getMessage());
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(null, response, "DbUtil"));
         }
     }
 
@@ -33,7 +35,8 @@ public class DbUtil {
                 instance = new DbUtil();
             }
         } catch (SQLException e) {
-            log.error(e.getMessage());
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(null, response, "getInstance"));
         }
 
         return instance;

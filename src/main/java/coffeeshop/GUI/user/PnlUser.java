@@ -300,10 +300,8 @@ public final class PnlUser extends javax.swing.JPanel implements JDModifyUser.Ca
     }//GEN-LAST:event_lblUpdateMouseClicked
 
     private void lblSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSearchMouseClicked
-        if (!Common.isNullOrEmpty(users)) {
-            JDSearchUser jds = new JDSearchUser(parent, true, this);
-            jds.setVisible(true);
-        }
+        JDSearchUser jds = new JDSearchUser(parent, true, this);
+        jds.setVisible(true);
     }//GEN-LAST:event_lblSearchMouseClicked
 
     private void lblDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDeleteMouseClicked

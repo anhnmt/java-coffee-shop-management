@@ -57,7 +57,7 @@ public final class JDModifyProduct extends javax.swing.JDialog {
         this.productDao = new ProductDao(dbUtil);
 
         if (!Common.isNullOrEmpty(product)) {
-            lblTitle.setText("Sửa đổi sản phẩm");
+            lblTitle.setText("SỬA ĐỔI SẢN PHẨM");
             btnModify.setText("Sửa đổi");
             this.product = product;
             loadingData();

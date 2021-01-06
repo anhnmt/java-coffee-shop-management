@@ -17,8 +17,11 @@ import coffeeshop.DTO.Product;
 import coffeeshop.DTO.Table;
 import coffeeshop.DTO.User;
 import coffeeshop.Util.Common;
+import coffeeshop.Util.Constant;
 import coffeeshop.Util.DbUtil;
+import coffeeshop.Util.BaseMessage;
 import java.awt.Color;
+import java.awt.Frame;
 import java.awt.HeadlessException;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -76,7 +79,8 @@ public final class JDTable extends javax.swing.JDialog implements JDModifyBillDe
     ProductDao productDao = null;
     BillDao billDao = null;
     BillDetailDao billDetailDao = null;
-//    Frame parent;
+    private BaseMessage response;
+    Frame parent;
 
     /**
      * Creates new form JDBillDetail
@@ -88,11 +92,11 @@ public final class JDTable extends javax.swing.JDialog implements JDModifyBillDe
      * @param user
      * @param table
      */
-    public JDTable(java.awt.Frame parent, boolean modal, DbUtil dbUtil, CallbackTableExit callback, User user, Table table) {
+    public JDTable(Frame parent, boolean modal, DbUtil dbUtil, CallbackTableExit callback, User user, Table table) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
-
+        this.parent = parent;
         this.callback = callback;
         this.user = user;
         this.table = table;
@@ -168,7 +172,8 @@ public final class JDTable extends javax.swing.JDialog implements JDModifyBillDe
 
             tblProduct.setModel(dtm);
         } catch (Exception e) {
-            log.error(e.getMessage());
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(null, response, "loadingProduct"));
         }
     }
 
@@ -208,7 +213,8 @@ public final class JDTable extends javax.swing.JDialog implements JDModifyBillDe
                 loadingBillDetail();
             }
         } catch (Exception e) {
-            log.error(e.getMessage());
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(null, response, "loadingBill"));
         }
     }
 
@@ -247,7 +253,8 @@ public final class JDTable extends javax.swing.JDialog implements JDModifyBillDe
 
             tblBillDetail.setModel(dtm);
         } catch (Exception e) {
-            log.error(e.getMessage());
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(null, response, "loadingBillDetail"));
         }
     }
 
@@ -669,7 +676,8 @@ public final class JDTable extends javax.swing.JDialog implements JDModifyBillDe
                 JOptionPane.showMessageDialog(rootPane, billCreate.get("message"));
             }
         } catch (HeadlessException e) {
-            log.error(e.getMessage());
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(null, response, "btnBookActionPerformed"));
         }
     }//GEN-LAST:event_btnBookActionPerformed
 
@@ -742,7 +750,8 @@ public final class JDTable extends javax.swing.JDialog implements JDModifyBillDe
                 }
             }
         } catch (HeadlessException | NumberFormatException e) {
-            log.error(e.getMessage());
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(null, response, "btnAddProductActionPerformed"));
         }
     }//GEN-LAST:event_btnAddProductActionPerformed
 
@@ -760,7 +769,8 @@ public final class JDTable extends javax.swing.JDialog implements JDModifyBillDe
                 JOptionPane.showMessageDialog(rootPane, billCheckout.get("message"));
             }
         } catch (HeadlessException | NumberFormatException e) {
-            log.error(e.getMessage());
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(null, response, "btnCheckoutActionPerformed"));
         }
     }//GEN-LAST:event_btnCheckoutActionPerformed
 

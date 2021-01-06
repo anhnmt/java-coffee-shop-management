@@ -2,7 +2,9 @@ package coffeeshop.DAO.impl;
 
 import coffeeshop.DAO.*;
 import coffeeshop.DTO.Table;
+import coffeeshop.Util.BaseMessage;
 import coffeeshop.Util.Common;
+import coffeeshop.Util.Constant;
 import coffeeshop.Util.DbUtil;
 
 import java.sql.*;
@@ -19,6 +21,7 @@ public class TableDao implements ITableDao {
     CallableStatement cs = null;
     PreparedStatement ps = null;
     ResultSet rs = null;
+    private BaseMessage response;
 
     public TableDao(DbUtil dbUtil) {
         conn = dbUtil.getInstance().getConnection();
@@ -36,8 +39,12 @@ public class TableDao implements ITableDao {
             while (rs.next()) {
                 count = rs.getInt("count");
             }
+            
+            response = new BaseMessage(Constant.SUCCESS_RESPONSE, String.valueOf(count));
+            log.info(Common.createMessageLog(null, response, "count"));
         } catch (SQLException e) {
-            log.error(e.getMessage());
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(null, response, "count"));
         } finally {
             rs = null;
             cs = null;
@@ -85,7 +92,8 @@ public class TableDao implements ITableDao {
                 list.add(obj);
             }
         } catch (SQLException e) {
-            log.error(e.getMessage());
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(table, response, "getAll"));
         } finally {
             rs = null;
             cs = null;
@@ -111,7 +119,8 @@ public class TableDao implements ITableDao {
             output.put("status", cs.getBoolean(4));
             output.put("message", cs.getNString(5));
         } catch (SQLException e) {
-            log.error(e.getMessage());
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(table, response, "create"));
         } finally {
             cs = null;
         }
@@ -137,7 +146,8 @@ public class TableDao implements ITableDao {
                 );
             }
         } catch (SQLException e) {
-            log.error(e.getMessage());
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(id, response, "read"));
         } finally {
             ps = null;
         }
@@ -163,7 +173,8 @@ public class TableDao implements ITableDao {
             output.put("status", cs.getBoolean(5));
             output.put("message", cs.getNString(6));
         } catch (SQLException e) {
-            log.error(e.getMessage());
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(table, response, "update"));
         } finally {
             cs = null;
         }
@@ -186,7 +197,8 @@ public class TableDao implements ITableDao {
             output.put("status", cs.getBoolean(2));
             output.put("message", cs.getNString(3));
         } catch (SQLException e) {
-            log.error(e.getMessage());
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(id, response, "delete"));
         } finally {
             cs = null;
         }
@@ -220,7 +232,8 @@ public class TableDao implements ITableDao {
                 );
             }
         } catch (SQLException e) {
-            log.error(e.getMessage());
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(name, response, "findByName"));
         } finally {
             rs = null;
             cs = null;

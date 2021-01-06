@@ -2,6 +2,9 @@ package coffeeshop.DAO.impl;
 
 import coffeeshop.DAO.*;
 import coffeeshop.DTO.BillDetail;
+import coffeeshop.Util.BaseMessage;
+import coffeeshop.Util.Common;
+import coffeeshop.Util.Constant;
 import coffeeshop.Util.DbUtil;
 
 import java.sql.*;
@@ -17,6 +20,7 @@ public class BillDetailDao implements IBillDetailDao {
     Connection conn = null;
     CallableStatement cs = null;
     ResultSet rs = null;
+    private BaseMessage response;
 
     public BillDetailDao(DbUtil dbUtil) {
         conn = dbUtil.getInstance().getConnection();
@@ -44,7 +48,8 @@ public class BillDetailDao implements IBillDetailDao {
                 obj.add(billDetail);
             }
         } catch (SQLException e) {
-            log.error(e.getMessage());
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(bill_id, response, "getAll"));
         } finally {
             rs = null;
             cs = null;
@@ -70,7 +75,8 @@ public class BillDetailDao implements IBillDetailDao {
             output.put("status", cs.getBoolean(4));
             output.put("message", cs.getNString(5));
         } catch (SQLException e) {
-            log.error(e.getMessage());
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(billDetail, response, "create"));
         } finally {
             cs = null;
         }
@@ -100,7 +106,8 @@ public class BillDetailDao implements IBillDetailDao {
             output.put("status", cs.getBoolean(4));
             output.put("message", cs.getNString(5));
         } catch (SQLException e) {
-            log.error(e.getMessage());
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(billDetail, response, "update"));
         } finally {
             cs = null;
         }
@@ -125,7 +132,8 @@ public class BillDetailDao implements IBillDetailDao {
             output.put("status", cs.getBoolean(3));
             output.put("message", cs.getNString(4));
         } catch (SQLException e) {
-            log.error(e.getMessage());
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(billDetail, response, "delete"));
         } finally {
             cs = null;
         }

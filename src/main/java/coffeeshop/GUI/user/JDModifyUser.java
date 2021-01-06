@@ -265,15 +265,15 @@ public final class JDModifyUser extends javax.swing.JDialog {
             lblNameError.setVisible(false);
             lblEmailError.setVisible(false);
             try {
-                User user = new User();
-                user.setName(name);
-                user.setStatus(status);
-                user.setRole(role);
-                user.setEmail(email);
-                user.setPassword(password);
+                User newUser = new User();
+                newUser.setName(name);
+                newUser.setStatus(status);
+                newUser.setRole(role);
+                newUser.setEmail(email);
+                newUser.setPassword(password);
 
                 if (Common.isNullOrEmpty(user)) {
-                    Map<String, Object> result = userDao.create(user);
+                    Map<String, Object> result = userDao.create(newUser);
 
                     if ((boolean) result.get("status") == true) {
                         JOptionPane.showMessageDialog(this, result.get("message"));
@@ -283,9 +283,8 @@ public final class JDModifyUser extends javax.swing.JDialog {
                         JOptionPane.showMessageDialog(this, result.get("message"));
                     }
                 } else {
-                    user.setId(this.user.getId());
-                    System.out.println(user);
-                    Map<String, Object> result = userDao.update(user);
+                    newUser.setId(user.getId());
+                    Map<String, Object> result = userDao.update(newUser);
                     if ((boolean) result.get("status") == true) {
                         JOptionPane.showMessageDialog(this, result.get("message"));
                         callback.actionUserModify();

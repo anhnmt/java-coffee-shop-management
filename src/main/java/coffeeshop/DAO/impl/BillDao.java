@@ -2,7 +2,9 @@ package coffeeshop.DAO.impl;
 
 import coffeeshop.DAO.*;
 import coffeeshop.DTO.Bill;
+import coffeeshop.Util.BaseMessage;
 import coffeeshop.Util.Common;
+import coffeeshop.Util.Constant;
 import coffeeshop.Util.DbUtil;
 
 import java.sql.*;
@@ -18,6 +20,7 @@ public class BillDao implements IBillDao {
     Connection conn = null;
     CallableStatement cs = null;
     ResultSet rs = null;
+    private BaseMessage response;
 
     public BillDao(DbUtil dbUtil) {
         conn = dbUtil.getInstance().getConnection();
@@ -35,13 +38,17 @@ public class BillDao implements IBillDao {
             while (rs.next()) {
                 count = rs.getInt("count");
             }
+            
+            response = new BaseMessage(Constant.SUCCESS_RESPONSE, String.valueOf(count));
+            log.info(Common.createMessageLog(null, response, "count"));
         } catch (SQLException e) {
-            log.error(e.getMessage());
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(null, response, "count"));
         } finally {
             rs = null;
             cs = null;
         }
-        
+
         return count;
     }
 
@@ -88,7 +95,8 @@ public class BillDao implements IBillDao {
                 list.add(obj);
             }
         } catch (SQLException e) {
-            log.error(e.getMessage());
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(bill, response, "getAll"));
         } finally {
             rs = null;
             cs = null;
@@ -134,7 +142,8 @@ public class BillDao implements IBillDao {
             output.put("status", cs.getBoolean(6));
             output.put("message", cs.getNString(7));
         } catch (SQLException e) {
-            log.error(e.getMessage());
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(bill, response, "create"));
         } finally {
             cs = null;
         }
@@ -166,7 +175,8 @@ public class BillDao implements IBillDao {
                 );
             }
         } catch (SQLException e) {
-            log.error(e.getMessage());
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(id, response, "read"));
         } finally {
             rs = null;
             cs = null;
@@ -195,7 +205,8 @@ public class BillDao implements IBillDao {
             output.put("status", cs.getBoolean(7));
             output.put("message", cs.getNString(8));
         } catch (SQLException e) {
-            log.error(e.getMessage());
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(bill, response, "update"));
         } finally {
             cs = null;
         }
@@ -218,7 +229,8 @@ public class BillDao implements IBillDao {
             output.put("status", cs.getBoolean(2));
             output.put("message", cs.getNString(3));
         } catch (SQLException e) {
-            log.error(e.getMessage());
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(id, response, "delete"));
         } finally {
             cs = null;
         }
@@ -256,7 +268,8 @@ public class BillDao implements IBillDao {
                 );
             }
         } catch (SQLException e) {
-            log.error(e.getMessage());
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(bill, response, "getByTableId"));
         } finally {
             rs = null;
             cs = null;

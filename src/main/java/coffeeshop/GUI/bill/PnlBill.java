@@ -20,7 +20,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Minh
  */
-public class PnlBill extends javax.swing.JPanel implements JDSearchBill.CallbackBillSearch, JDDeleteBill.CallbackBillDelete, JDBill.CallbackBillExit {
+public class PnlBill extends javax.swing.JPanel implements JDSearchBill.CallbackBillSearch, JDDeleteBill.CallbackBillDelete, JDBill.CallbackBillExit, JDExportBill.CallbackBillExport {
 
     Frame parent;
     DbUtil dbUtil;
@@ -96,6 +96,7 @@ public class PnlBill extends javax.swing.JPanel implements JDSearchBill.Callback
         lblSearch = new javax.swing.JLabel();
         lblDelete = new javax.swing.JLabel();
         lblRefresh = new javax.swing.JLabel();
+        lblExport = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblBill = new javax.swing.JTable();
 
@@ -174,6 +175,20 @@ public class PnlBill extends javax.swing.JPanel implements JDSearchBill.Callback
             }
         });
         jPanel2.add(lblRefresh);
+
+        lblExport.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        lblExport.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblExport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_repeat_50px_1.png"))); // NOI18N
+        lblExport.setText("Xuất Excel");
+        lblExport.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblExport.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lblExport.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        lblExport.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblExportMouseClicked(evt);
+            }
+        });
+        jPanel2.add(lblExport);
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_START);
 
@@ -289,10 +304,8 @@ public class PnlBill extends javax.swing.JPanel implements JDSearchBill.Callback
     }//GEN-LAST:event_lblViewMouseClicked
 
     private void lblSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSearchMouseClicked
-        if (!Common.isNullOrEmpty(bills)) {
-            JDSearchBill jdsb = new JDSearchBill(parent, true, dbUtil, this);
-            jdsb.setVisible(true);
-        }
+        JDSearchBill jdsb = new JDSearchBill(parent, true, dbUtil, this);
+        jdsb.setVisible(true);
     }//GEN-LAST:event_lblSearchMouseClicked
 
     private void lblDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDeleteMouseClicked
@@ -306,6 +319,11 @@ public class PnlBill extends javax.swing.JPanel implements JDSearchBill.Callback
         loading(null);
     }//GEN-LAST:event_lblRefreshMouseClicked
 
+    private void lblExportMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblExportMouseClicked
+        JDExportBill jdeb = new JDExportBill(parent, true, dbUtil, this);
+        jdeb.setVisible(true);
+    }//GEN-LAST:event_lblExportMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -313,6 +331,7 @@ public class PnlBill extends javax.swing.JPanel implements JDSearchBill.Callback
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblDelete;
+    private javax.swing.JLabel lblExport;
     private javax.swing.JLabel lblRefresh;
     private javax.swing.JLabel lblSearch;
     private javax.swing.JLabel lblView;
@@ -332,5 +351,10 @@ public class PnlBill extends javax.swing.JPanel implements JDSearchBill.Callback
     @Override
     public void actionBillSearch(Bill bill) {
         loading(bill);
+    }
+
+    @Override
+    public void actionBillExport() {
+        loading(null);
     }
 }
