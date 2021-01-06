@@ -9,16 +9,20 @@ import coffeeshop.DAO.impl.AreaDao;
 import coffeeshop.DTO.Area;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
+import coffeeshop.Util.BaseMessage;
+import coffeeshop.Util.Constant;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
+import lombok.extern.log4j.Log4j;
 
 /**
  *
  * @author Minh
  */
+@Log4j
 public final class JDModifyArea extends javax.swing.JDialog {
 
     /**
@@ -28,6 +32,7 @@ public final class JDModifyArea extends javax.swing.JDialog {
     Area area;
     DbUtil dbUtil;
     AreaDao areaDao;
+    private BaseMessage response;
 
     public interface CallbackAreaModify {
 
@@ -227,8 +232,9 @@ public final class JDModifyArea extends javax.swing.JDialog {
                     }
                 }
 
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            } catch (Exception e) {
+                response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+                log.error(Common.createMessageLog(null, response, "btnModifyActionPerformed"));
             }
         }
 

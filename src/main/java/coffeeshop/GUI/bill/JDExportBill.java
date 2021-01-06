@@ -20,11 +20,18 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  *
  * @author Minh
  */
+import coffeeshop.Util.BaseMessage;
+import coffeeshop.Util.Common;
+import coffeeshop.Util.Constant;
+import lombok.extern.log4j.Log4j;
+
+@Log4j
 public final class JDExportBill extends javax.swing.JDialog {
 
     CallbackBillExport callback;
     Bill bill;
     DbUtil dbUtil;
+    private BaseMessage response;
 
     interface CallbackBillExport {
 
@@ -165,7 +172,8 @@ public final class JDExportBill extends javax.swing.JDialog {
                 dispose();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(null, response, "btnExportActionPerformed"));
         }
     }//GEN-LAST:event_btnExportActionPerformed
 

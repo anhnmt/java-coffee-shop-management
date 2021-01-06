@@ -18,14 +18,11 @@ import coffeeshop.DTO.Table;
 import coffeeshop.DAO.impl.TableDao;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
-import java.awt.HeadlessException;
 import java.util.Objects;
+import coffeeshop.Util.BaseMessage;
+import coffeeshop.Util.Constant;
 import lombok.extern.log4j.Log4j;
 
-/**
- *
- * @author Minh
- */
 @Log4j
 public final class JDModifyTable extends javax.swing.JDialog {
 
@@ -38,6 +35,7 @@ public final class JDModifyTable extends javax.swing.JDialog {
 
     AreaDao areaDao;
     TableDao tableDao;
+    private BaseMessage response;
 
     public interface CallbackTableModify {
 
@@ -290,9 +288,9 @@ public final class JDModifyTable extends javax.swing.JDialog {
                         JOptionPane.showMessageDialog(this, result.get("message"));
                     }
                 }
-
-            } catch (HeadlessException ex) {
-                log.error(ex.getMessage());
+            } catch (Exception e) {
+                response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+                log.error(Common.createMessageLog(null, response, "btnModifyActionPerformed"));
             }
         }
 

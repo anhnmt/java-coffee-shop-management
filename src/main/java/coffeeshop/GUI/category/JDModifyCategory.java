@@ -19,6 +19,11 @@ import javax.swing.JOptionPane;
  *
  * @author Minh
  */
+import coffeeshop.Util.BaseMessage;
+import coffeeshop.Util.Constant;
+import lombok.extern.log4j.Log4j;
+
+@Log4j
 public final class JDModifyCategory extends javax.swing.JDialog {
 
     /**
@@ -28,6 +33,7 @@ public final class JDModifyCategory extends javax.swing.JDialog {
     Category category;
     DbUtil dbUtil;
     CategoryDao categoryDao;
+    private BaseMessage response;
 
     interface CallbackModify {
 
@@ -238,8 +244,9 @@ public final class JDModifyCategory extends javax.swing.JDialog {
                         JOptionPane.showMessageDialog(this, result.get("message"));
                     }
                 }
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            } catch (Exception e) {
+                response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+                log.error(Common.createMessageLog(null, response, "btnModifyActionPerformed"));
             }
         }
 

@@ -19,11 +19,17 @@ import javax.swing.JOptionPane;
  *
  * @author Minh
  */
+import coffeeshop.Util.BaseMessage;
+import coffeeshop.Util.Constant;
+import lombok.extern.log4j.Log4j;
+
+@Log4j
 public final class JDModifyUser extends javax.swing.JDialog {
 
     User user;
     CallbackUserModify callback;
     UserDao userDao;
+    private BaseMessage response;
 
     interface CallbackUserModify {
 
@@ -294,8 +300,9 @@ public final class JDModifyUser extends javax.swing.JDialog {
                     }
                 }
 
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            } catch (Exception e) {
+                response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+                log.error(Common.createMessageLog(null, response, "btnModifyActionPerformed"));
             }
         }
 
