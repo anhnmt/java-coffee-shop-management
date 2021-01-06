@@ -109,8 +109,9 @@ public class PnlHome extends javax.swing.JPanel {
         flowLayout1.setAlignOnBaseline(true);
         jPanel3.setLayout(flowLayout1);
 
-        jPanel2.setBackground(new java.awt.Color(102, 255, 102));
+        jPanel2.setBackground(new java.awt.Color(33, 150, 243));
 
+        lblCategory.setBackground(new java.awt.Color(33, 150, 243));
         lblCategory.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         lblCategory.setForeground(new java.awt.Color(255, 255, 255));
         lblCategory.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -127,8 +128,9 @@ public class PnlHome extends javax.swing.JPanel {
             .addComponent(lblCategory, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
-        jPanel4.setBackground(new java.awt.Color(0, 204, 0));
+        jPanel4.setBackground(new java.awt.Color(77, 171, 245));
 
+        lblCountCategory.setBackground(new java.awt.Color(33, 150, 243));
         lblCountCategory.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
         lblCountCategory.setForeground(new java.awt.Color(255, 255, 255));
         lblCountCategory.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -162,8 +164,9 @@ public class PnlHome extends javax.swing.JPanel {
 
         jPanel3.add(pnlCategory);
 
-        jPanel6.setBackground(new java.awt.Color(102, 255, 102));
+        jPanel6.setBackground(new java.awt.Color(244, 67, 54));
 
+        lblProduct.setBackground(new java.awt.Color(33, 150, 243));
         lblProduct.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         lblProduct.setForeground(new java.awt.Color(255, 255, 255));
         lblProduct.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -180,7 +183,7 @@ public class PnlHome extends javax.swing.JPanel {
             .addComponent(lblProduct, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
-        jPanel7.setBackground(new java.awt.Color(0, 204, 0));
+        jPanel7.setBackground(new java.awt.Color(246, 104, 94));
 
         lblCountProduct.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
         lblCountProduct.setForeground(new java.awt.Color(255, 255, 255));
@@ -215,7 +218,7 @@ public class PnlHome extends javax.swing.JPanel {
 
         jPanel3.add(pnlProduct);
 
-        jPanel9.setBackground(new java.awt.Color(102, 255, 102));
+        jPanel9.setBackground(new java.awt.Color(156, 39, 176));
 
         lblArea.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         lblArea.setForeground(new java.awt.Color(255, 255, 255));
@@ -233,7 +236,7 @@ public class PnlHome extends javax.swing.JPanel {
             .addComponent(lblArea, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
-        jPanel10.setBackground(new java.awt.Color(0, 204, 0));
+        jPanel10.setBackground(new java.awt.Color(175, 82, 191));
 
         lblCountArea.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
         lblCountArea.setForeground(new java.awt.Color(255, 255, 255));
@@ -268,7 +271,7 @@ public class PnlHome extends javax.swing.JPanel {
 
         jPanel3.add(pnlArea);
 
-        jPanel12.setBackground(new java.awt.Color(102, 255, 102));
+        jPanel12.setBackground(new java.awt.Color(76, 175, 80));
 
         lblTable.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         lblTable.setForeground(new java.awt.Color(255, 255, 255));
@@ -286,7 +289,7 @@ public class PnlHome extends javax.swing.JPanel {
             .addComponent(lblTable, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
-        jPanel13.setBackground(new java.awt.Color(0, 204, 0));
+        jPanel13.setBackground(new java.awt.Color(111, 191, 115));
 
         lblCountTable.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
         lblCountTable.setForeground(new java.awt.Color(255, 255, 255));
@@ -321,7 +324,7 @@ public class PnlHome extends javax.swing.JPanel {
 
         jPanel3.add(pnlTable);
 
-        jPanel15.setBackground(new java.awt.Color(102, 255, 102));
+        jPanel15.setBackground(new java.awt.Color(255, 152, 0));
 
         lblUser.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         lblUser.setForeground(new java.awt.Color(255, 255, 255));
@@ -339,7 +342,7 @@ public class PnlHome extends javax.swing.JPanel {
             .addComponent(lblUser, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
-        jPanel16.setBackground(new java.awt.Color(0, 204, 0));
+        jPanel16.setBackground(new java.awt.Color(255, 172, 51));
 
         lblCountUser.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
         lblCountUser.setForeground(new java.awt.Color(255, 255, 255));
@@ -374,7 +377,7 @@ public class PnlHome extends javax.swing.JPanel {
 
         jPanel3.add(pnlUser);
 
-        jPanel18.setBackground(new java.awt.Color(102, 255, 102));
+        jPanel18.setBackground(new java.awt.Color(42, 62, 177));
 
         lblBill.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         lblBill.setForeground(new java.awt.Color(255, 255, 255));
@@ -392,7 +395,7 @@ public class PnlHome extends javax.swing.JPanel {
             .addComponent(lblBill, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
-        jPanel19.setBackground(new java.awt.Color(0, 204, 0));
+        jPanel19.setBackground(new java.awt.Color(61, 90, 254));
 
         lblCountBill.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
         lblCountBill.setForeground(new java.awt.Color(255, 255, 255));
