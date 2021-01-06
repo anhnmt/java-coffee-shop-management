@@ -173,7 +173,6 @@ CREATE PROC sp_insertCategory
     @_outMsg NVARCHAR(200) = '' OUTPUT
 )
 AS
-BEGIN TRAN;
 BEGIN TRY
     IF EXISTS (SELECT [name] FROM Categories WHERE [name] = @_name)
     BEGIN
@@ -182,6 +181,7 @@ BEGIN TRY
     END;
     ELSE
     BEGIN
+		BEGIN TRAN;
         INSERT INTO Categories
         (
             [name],
@@ -405,6 +405,7 @@ BEGIN CATCH
 END CATCH;
 
 GO
+
 
 EXEC sp_insertProduct 1, N'Bạc xỉu', 35000;
 
