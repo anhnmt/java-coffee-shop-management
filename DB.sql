@@ -406,6 +406,7 @@ END CATCH;
 
 GO
 
+
 EXEC sp_insertProduct 1, N'Bạc xỉu', 35000;
 
 GO
