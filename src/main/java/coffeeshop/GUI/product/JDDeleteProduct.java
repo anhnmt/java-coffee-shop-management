@@ -149,12 +149,11 @@ public class JDDeleteProduct extends javax.swing.JDialog {
         Map<String, Object> result = productDao.delete(product.getId());
 
         if ((boolean) result.get("status") == true) {
-            JOptionPane.showMessageDialog(null, "Xoá sản phẩm thành công!");
+            JOptionPane.showMessageDialog(this, result.get("message"));
             callback.actionProductDelete();
             dispose();
         } else {
-            JOptionPane.showMessageDialog(null, "Xoá sản phẩm thất bại, lỗi: " + result.get("message") + "!");
-            dispose();
+            JOptionPane.showMessageDialog(this, result.get("message"));
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 

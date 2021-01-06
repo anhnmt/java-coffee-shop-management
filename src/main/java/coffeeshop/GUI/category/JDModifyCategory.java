@@ -19,6 +19,11 @@ import javax.swing.JOptionPane;
  *
  * @author Minh
  */
+import coffeeshop.Util.BaseMessage;
+import coffeeshop.Util.Constant;
+import lombok.extern.log4j.Log4j;
+
+@Log4j
 public final class JDModifyCategory extends javax.swing.JDialog {
 
     /**
@@ -28,6 +33,7 @@ public final class JDModifyCategory extends javax.swing.JDialog {
     Category category;
     DbUtil dbUtil;
     CategoryDao categoryDao;
+    private BaseMessage response;
 
     interface CallbackModify {
 
@@ -63,7 +69,7 @@ public final class JDModifyCategory extends javax.swing.JDialog {
     }
 
     public void loadData() {
-        lblTitle.setText("Sửa đổi danh mục");
+        lblTitle.setText("SỬA ĐỔI DANH MỤC");
         btnModify.setText("Sửa đổi");
         txtName.setText(category.getName());
         rdoActive.setSelected(category.getStatus());
@@ -217,11 +223,11 @@ public final class JDModifyCategory extends javax.swing.JDialog {
                     Map<String, Object> result = categoryDao.create(category);
 
                     if ((boolean) result.get("status") == true) {
-                        JOptionPane.showMessageDialog(null, "Thêm danh mục thành công!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                         callback.actionCategoryModify();
                         dispose();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Thêm danh mục thất bại, lỗi: " + result.get("message") + "!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                     }
                 } else {
                     category.setId(this.category.getId());
@@ -231,15 +237,16 @@ public final class JDModifyCategory extends javax.swing.JDialog {
                     Map<String, Object> result = categoryDao.update(category);
 
                     if ((boolean) result.get("status") == true) {
-                        JOptionPane.showMessageDialog(null, "Sửa đổi danh mục thành công!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                         callback.actionCategoryModify();
                         dispose();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Sửa đổi danh mục thất bại, lỗi: " + result.get("message") + "!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                     }
                 }
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            } catch (Exception e) {
+                response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+                log.error(Common.createMessageLog(null, response, "btnModifyActionPerformed"));
             }
         }
 

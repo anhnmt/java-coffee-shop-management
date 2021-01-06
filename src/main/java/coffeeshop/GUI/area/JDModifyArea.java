@@ -9,16 +9,20 @@ import coffeeshop.DAO.impl.AreaDao;
 import coffeeshop.DTO.Area;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
+import coffeeshop.Util.BaseMessage;
+import coffeeshop.Util.Constant;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
+import lombok.extern.log4j.Log4j;
 
 /**
  *
  * @author Minh
  */
+@Log4j
 public final class JDModifyArea extends javax.swing.JDialog {
 
     /**
@@ -28,6 +32,7 @@ public final class JDModifyArea extends javax.swing.JDialog {
     Area area;
     DbUtil dbUtil;
     AreaDao areaDao;
+    private BaseMessage response;
 
     public interface CallbackAreaModify {
 
@@ -54,7 +59,7 @@ public final class JDModifyArea extends javax.swing.JDialog {
     }
 
     public void loadData() {
-        lblTitle.setText("Sửa đổi khu vực");
+        lblTitle.setText("SỬA ĐỔI KHU VỰC");
         btnModify.setText("Sửa đổi");
         txtName.setText(area.getName());
         rdoActive.setSelected(area.getStatus());
@@ -200,36 +205,36 @@ public final class JDModifyArea extends javax.swing.JDialog {
             lblNameError.setVisible(true);
         } else {
             try {
-                if (this.area == null) {
+                if (Common.isNullOrEmpty(area)) {
                     area = new Area();
                     area.setName(name);
                     area.setStatus(status);
                     Map<String, Object> result = areaDao.create(area);
 
                     if ((boolean) result.get("status") == true) {
-                        JOptionPane.showMessageDialog(null, "Thêm khu vực thành công!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                         callback.actionAreaModify();
                         dispose();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Thêm khu vực thất bại, lỗi: " + result.get("message") + "!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                     }
                 } else {
-                    area.setId(this.area.getId());
                     area.setName(name);
                     area.setStatus(status);
                     Map<String, Object> result = areaDao.update(area);
 
                     if ((boolean) result.get("status") == true) {
-                        JOptionPane.showMessageDialog(null, "Sửa đổi khu vực thành công!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                         callback.actionAreaModify();
                         dispose();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Sửa đổi khu vực thất bại, lỗi: " + result.get("message") + "!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                     }
                 }
 
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            } catch (Exception e) {
+                response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+                log.error(Common.createMessageLog(null, response, "btnModifyActionPerformed"));
             }
         }
 

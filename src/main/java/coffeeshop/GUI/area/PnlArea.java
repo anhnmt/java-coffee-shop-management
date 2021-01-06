@@ -91,20 +91,22 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
         bill = null;
         tabbedPane.removeAll();
         areas = areaDao.getAll();
-        tables = tableDao.getAll();
+        tables = tableDao.getAll(null);
 
-        areas.forEach(objArea -> {
-            JComponent panel = makeTextPanel();
-            addTab(tabbedPane, objArea.getName(), panel);
-            panel.setName(objArea.getName());
+        if (!Common.isNullOrEmpty(areas)) {
+            areas.forEach(objArea -> {
+                JComponent panel = makeTextPanel();
+                addTab(tabbedPane, objArea.getName(), panel);
+                panel.setName(objArea.getName());
 
-            tables.stream().filter(objTable -> (Objects.equals(objTable.getArea_id(), objArea.getId()))).forEachOrdered(objTable -> {
-                makeTable(panel, objTable);
+                tables.stream().filter(objTable -> (Objects.equals(objTable.getArea_id(), objArea.getId()))).forEachOrdered(objTable -> {
+                    makeTable(panel, objTable);
+                });
             });
-        });
 
-        String name = tabbedPane.getSelectedComponent().getName();
-        area = areaDao.findByName(name);
+            String name = tabbedPane.getSelectedComponent().getName();
+            area = areaDao.findByName(name);
+        }
     }
 
     public void addTab(JTabbedPane tabbedPane, String title, Component tab) {

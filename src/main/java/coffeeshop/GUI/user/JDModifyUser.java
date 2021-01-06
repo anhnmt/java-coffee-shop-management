@@ -19,11 +19,17 @@ import javax.swing.JOptionPane;
  *
  * @author Minh
  */
+import coffeeshop.Util.BaseMessage;
+import coffeeshop.Util.Constant;
+import lombok.extern.log4j.Log4j;
+
+@Log4j
 public final class JDModifyUser extends javax.swing.JDialog {
 
     User user;
     CallbackUserModify callback;
     UserDao userDao;
+    private BaseMessage response;
 
     interface CallbackUserModify {
 
@@ -265,38 +271,38 @@ public final class JDModifyUser extends javax.swing.JDialog {
             lblNameError.setVisible(false);
             lblEmailError.setVisible(false);
             try {
-                User user = new User();
-                user.setName(name);
-                user.setStatus(status);
-                user.setRole(role);
-                user.setEmail(email);
-                user.setPassword(password);
+                User newUser = new User();
+                newUser.setName(name);
+                newUser.setStatus(status);
+                newUser.setRole(role);
+                newUser.setEmail(email);
+                newUser.setPassword(password);
 
                 if (Common.isNullOrEmpty(user)) {
-                    Map<String, Object> result = userDao.create(user);
+                    Map<String, Object> result = userDao.create(newUser);
 
                     if ((boolean) result.get("status") == true) {
-                        JOptionPane.showMessageDialog(null, "Thêm người dùng thành công!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                         callback.actionUserModify();
                         dispose();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Thêm người dùng thất bại, lỗi: " + result.get("message") + "!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                     }
                 } else {
-                    user.setId(this.user.getId());
-                    System.out.println(user);
-                    Map<String, Object> result = userDao.update(user);
+                    newUser.setId(user.getId());
+                    Map<String, Object> result = userDao.update(newUser);
                     if ((boolean) result.get("status") == true) {
-                        JOptionPane.showMessageDialog(null, "Sửa người dùng thành công!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                         callback.actionUserModify();
                         dispose();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Sửa người dùng thất bại, lỗi: " + result.get("message") + "!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                     }
                 }
 
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            } catch (Exception e) {
+                response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+                log.error(Common.createMessageLog(null, response, "btnModifyActionPerformed"));
             }
         }
 

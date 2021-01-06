@@ -149,11 +149,11 @@ public class JDDeleteTable extends javax.swing.JDialog {
         Map<String, Object> result = tableDao.delete(table.getId());
 
         if ((boolean) result.get("status") == true) {
-            JOptionPane.showMessageDialog(null, "Xoá bàn thành công!");
+            JOptionPane.showMessageDialog(this, result.get("message"));
             callback.actionTableDelete();
             dispose();
         } else {
-            JOptionPane.showMessageDialog(null, "Xoá bàn thất bại, lỗi: " + result.get("message") + "!");
+            JOptionPane.showMessageDialog(this, result.get("message"));
             dispose();
         }
     }//GEN-LAST:event_btnDeleteActionPerformed

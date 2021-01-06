@@ -57,7 +57,7 @@ public final class PnlProduct extends javax.swing.JPanel implements JDModifyProd
         String columns[] = {"Id", "Tên danh mục", "Tên", "Giá", "Trạng thái"};
         DefaultTableModel dtm = new DefaultTableModel(columns, 0);
 
-        if (!products.isEmpty()) {
+        if (!Common.isNullOrEmpty(products)) {
             products.forEach(obj -> {
                 dtm.addRow(new Object[]{obj.getId(), obj.getCategory_name(), obj.getName(), obj.getPrice(), obj.getStatus() ? "Hoạt động" : "Không hoạt động"});
             });
@@ -292,25 +292,25 @@ public final class PnlProduct extends javax.swing.JPanel implements JDModifyProd
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddMouseClicked
-        JDModifyProduct jdm = new JDModifyProduct(this.parent, true, dbUtil, this, null);
+        JDModifyProduct jdm = new JDModifyProduct(parent, true, dbUtil, this, null);
         jdm.setVisible(true);
     }//GEN-LAST:event_lblAddMouseClicked
 
     private void lblUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUpdateMouseClicked
         if (!Common.isNullOrEmpty(product)) {
-            JDModifyProduct jdm = new JDModifyProduct(this.parent, true, dbUtil, this, product);
+            JDModifyProduct jdm = new JDModifyProduct(parent, true, dbUtil, this, product);
             jdm.setVisible(true);
         }
     }//GEN-LAST:event_lblUpdateMouseClicked
 
     private void lblSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSearchMouseClicked
-        JDSearchProduct jds = new JDSearchProduct(this.parent, true, dbUtil, this);
+        JDSearchProduct jds = new JDSearchProduct(parent, true, dbUtil, this);
         jds.setVisible(true);
     }//GEN-LAST:event_lblSearchMouseClicked
 
     private void lblDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDeleteMouseClicked
         if (!Common.isNullOrEmpty(product)) {
-            JDDeleteProduct jdd = new JDDeleteProduct(this.parent, true, dbUtil, this, product);
+            JDDeleteProduct jdd = new JDDeleteProduct(parent, true, dbUtil, this, product);
             jdd.setVisible(true);
         }
     }//GEN-LAST:event_lblDeleteMouseClicked

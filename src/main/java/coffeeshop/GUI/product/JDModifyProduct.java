@@ -24,6 +24,11 @@ import javax.swing.JOptionPane;
  *
  * @author Minh
  */
+import coffeeshop.Util.BaseMessage;
+import coffeeshop.Util.Constant;
+import lombok.extern.log4j.Log4j;
+
+@Log4j
 public final class JDModifyProduct extends javax.swing.JDialog {
 
     Product product;
@@ -32,6 +37,7 @@ public final class JDModifyProduct extends javax.swing.JDialog {
     List<Category> categories = new ArrayList<>();
     CategoryDao categoryDao;
     ProductDao productDao;
+    private BaseMessage response;
 
     interface CallbackProductModify {
 
@@ -57,7 +63,7 @@ public final class JDModifyProduct extends javax.swing.JDialog {
         this.productDao = new ProductDao(dbUtil);
 
         if (!Common.isNullOrEmpty(product)) {
-            lblTitle.setText("Sửa đổi sản phẩm");
+            lblTitle.setText("SỬA ĐỔI SẢN PHẨM");
             btnModify.setText("Sửa đổi");
             this.product = product;
             loadingData();
@@ -301,26 +307,27 @@ public final class JDModifyProduct extends javax.swing.JDialog {
                     Map<String, Object> result = productDao.create(newProduct);
 
                     if ((boolean) result.get("status") == true) {
-                        JOptionPane.showMessageDialog(null, "Thêm sản phẩm thành công!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                         callback.actionProductModify();
                         dispose();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Thêm sản phẩm thất bại, lỗi: " + result.get("message") + "!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                     }
                 } else {
                     newProduct.setId(product.getId());
                     Map<String, Object> result = productDao.update(newProduct);
                     if ((boolean) result.get("status") == true) {
-                        JOptionPane.showMessageDialog(null, "Sửa sản phẩm thành công!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                         callback.actionProductModify();
                         dispose();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Sửa sản phẩm thất bại, lỗi: " + result.get("message") + "!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                     }
                 }
 
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            } catch (Exception e) {
+                response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+                log.error(Common.createMessageLog(null, response, "btnModifyActionPerformed"));
             }
         }
 

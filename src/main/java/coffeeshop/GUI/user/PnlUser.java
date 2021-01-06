@@ -24,7 +24,7 @@ import javax.swing.table.DefaultTableModel;
 public final class PnlUser extends javax.swing.JPanel implements JDModifyUser.CallbackUserModify, JDDeleteUser.CallbackUserDelete, JDSearchUser.CallbackUserSearch {
 
     Frame parent;
-    List<User> list = new ArrayList<>();
+    List<User> users = new ArrayList<>();
     User user;
     User currentUser;
     UserDao userDao;
@@ -48,20 +48,20 @@ public final class PnlUser extends javax.swing.JPanel implements JDModifyUser.Ca
 
     public void loading(User newUser) {
         user = null;
-        list = userDao.getAll(newUser);
+        users = userDao.getAll(newUser);
 
         String columns[] = {"Id", "Tên", "Email", "Quyền", "Trạng thái"};
         DefaultTableModel dtm = new DefaultTableModel(columns, 0);
 
-        if (!Common.isNullOrEmpty(list)) {
-            list.forEach(obj -> {
+        if (!Common.isNullOrEmpty(users)) {
+            users.forEach(obj -> {
                 dtm.addRow(new Object[]{obj.getId(), obj.getName(), obj.getEmail(), obj.getRole() == 1 ? "Super Admin" : "Nhân viên", obj.getStatus() == true ? "Hoạt động" : "Không hoạt động"});
             });
 
             tblUser.getSelectionModel().addListSelectionListener((ListSelectionEvent lse) -> {
                 int position = tblUser.getSelectedRow();
                 if (position >= 0) {
-                    user = list.get(position);
+                    user = users.get(position);
                 }
 
             });
@@ -288,28 +288,28 @@ public final class PnlUser extends javax.swing.JPanel implements JDModifyUser.Ca
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddMouseClicked
-        JDModifyUser jdm = new JDModifyUser(this.parent, true, dbUtil, this, null);
+        JDModifyUser jdm = new JDModifyUser(parent, true, dbUtil, this, null);
         jdm.setVisible(true);
     }//GEN-LAST:event_lblAddMouseClicked
 
     private void lblUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUpdateMouseClicked
         if (!Common.isNullOrEmpty(user)) {
-            JDModifyUser jdm = new JDModifyUser(this.parent, true, dbUtil, this, user);
+            JDModifyUser jdm = new JDModifyUser(parent, true, dbUtil, this, user);
             jdm.setVisible(true);
         }
     }//GEN-LAST:event_lblUpdateMouseClicked
 
     private void lblSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSearchMouseClicked
-        JDSearchUser jds = new JDSearchUser(this.parent, true, this);
+        JDSearchUser jds = new JDSearchUser(parent, true, this);
         jds.setVisible(true);
     }//GEN-LAST:event_lblSearchMouseClicked
 
     private void lblDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDeleteMouseClicked
         if (!Common.isNullOrEmpty(user)) {
             if (Objects.equals(currentUser.getId(), user.getId())) {
-                JOptionPane.showMessageDialog(null, "Bạn không thể xoá tài khoản của chính bạn!");
+                JOptionPane.showMessageDialog(this, "Bạn không thể xoá tài khoản của chính bạn!");
             } else {
-                JDDeleteUser jdd = new JDDeleteUser(this.parent, true, dbUtil, this, user);
+                JDDeleteUser jdd = new JDDeleteUser(parent, true, dbUtil, this, user);
                 jdd.setVisible(true);
             }
         }

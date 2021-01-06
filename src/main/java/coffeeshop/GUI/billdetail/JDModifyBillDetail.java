@@ -14,11 +14,11 @@ import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
 import coffeeshop.DTO.BillDetail;
 import javax.swing.JDialog;
+import coffeeshop.Util.BaseMessage;
+import coffeeshop.Util.Constant;
+import lombok.extern.log4j.Log4j;
 
-/**
- *
- * @author Minh
- */
+@Log4j
 public final class JDModifyBillDetail extends javax.swing.JDialog {
 
     CallbackBillDetailModify callback;
@@ -26,6 +26,7 @@ public final class JDModifyBillDetail extends javax.swing.JDialog {
 
     BillDetail billDetail = null;
     BillDetailDao billDetailDao = null;
+    private BaseMessage response;
 
     public interface CallbackBillDetailModify {
 
@@ -235,15 +236,16 @@ public final class JDModifyBillDetail extends javax.swing.JDialog {
 
                 Map<String, Object> result = billDetailDao.update(billDetail);
                 if ((boolean) result.get("status") == true) {
-                    JOptionPane.showMessageDialog(this, "Cập nhật thông tin hoá đơn thành công!");
+                    JOptionPane.showMessageDialog(this, result.get("message"));
                     callback.actionBillDetailModify();
                     dispose();
                 } else {
-                    JOptionPane.showMessageDialog(this, "Cập nhật thất bại, lỗi: " + result.get("message") + "!");
+                    JOptionPane.showMessageDialog(this, result.get("message"));
                 }
 
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            } catch (Exception e) {
+                response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+                log.error(Common.createMessageLog(null, response, "btnModifyActionPerformed"));
             }
         }
     }//GEN-LAST:event_btnModifyActionPerformed

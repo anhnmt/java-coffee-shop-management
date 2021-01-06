@@ -128,11 +128,13 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <Component id="btnAddProduct" min="-2" pref="120" max="-2" attributes="0"/>
+                              <Component id="btnAddProduct" min="-2" pref="115" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="btnChangeTable" min="-2" pref="115" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
@@ -152,13 +154,13 @@
                                               <EmptySpace max="-2" attributes="0"/>
                                               <Component id="txtProductAmount" max="32767" attributes="0"/>
                                           </Group>
-                                          <Component id="lblProductAmountError" max="32767" attributes="0"/>
+                                          <Component id="lblProductAmountError" pref="199" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
-                              <EmptySpace max="-2" attributes="0"/>
                           </Group>
                       </Group>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -179,7 +181,10 @@
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="btnAddProduct" min="-2" pref="30" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="btnAddProduct" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                              <Component id="btnChangeTable" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                          </Group>
                           <Component id="lblProductAmountError" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
@@ -272,6 +277,30 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Kh&#xf4;ng &#x111;&#x1b0;&#x1ee3;c &#x111;&#x1ec3; tr&#x1ed1;ng"/>
               </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="btnChangeTable">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="b8" green="a2" red="17" type="rgb"/>
+                </Property>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI Semibold" size="14" style="0"/>
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="&#x110;&#x1ed5;i b&#xe0;n"/>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+                    <EmptyBorder/>
+                  </Border>
+                </Property>
+                <Property name="borderPainted" type="boolean" value="false"/>
+                <Property name="focusPainted" type="boolean" value="false"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnChangeTableActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

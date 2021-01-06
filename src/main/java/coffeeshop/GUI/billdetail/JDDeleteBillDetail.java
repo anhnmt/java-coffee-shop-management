@@ -152,11 +152,11 @@ public class JDDeleteBillDetail extends javax.swing.JDialog {
         Map<String, Object> result = billDetailDao.delete(billDetail);
 
         if ((boolean) result.get("status") == true) {
-            JOptionPane.showMessageDialog(null, "Xoá sản phẩm trong hoá đơn thành công!");
+            JOptionPane.showMessageDialog(this, result.get("message"));
             callback.actionBillDetailDelete();
             dispose();
         } else {
-            JOptionPane.showMessageDialog(null, "Xoá sản phẩm thất bại, lỗi: " + result.get("message") + "!");
+            JOptionPane.showMessageDialog(this, result.get("message"));
             dispose();
         }
     }//GEN-LAST:event_btnDeleteActionPerformed

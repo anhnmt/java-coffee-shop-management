@@ -149,11 +149,11 @@ public class JDDeleteCategory extends javax.swing.JDialog {
         Map<String, Object> result = categoryDao.delete(category.getId());
 
         if ((boolean) result.get("status") == true) {
-            JOptionPane.showMessageDialog(null, "Xoá danh mục thành công!");
+            JOptionPane.showMessageDialog(this, result.get("message"));
             callback.actionCategoryDelete();
             dispose();
         } else {
-            JOptionPane.showMessageDialog(null, "Xoá danh mục thất bại, lỗi: " + result.get("message") + "!");
+            JOptionPane.showMessageDialog(this, result.get("message"));
             dispose();
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
