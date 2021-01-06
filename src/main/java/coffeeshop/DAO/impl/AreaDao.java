@@ -6,6 +6,7 @@ import coffeeshop.Util.BaseMessage;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.Constant;
 import coffeeshop.Util.DbUtil;
+import coffeeshop.Util.MessageResponse;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class AreaDao implements IAreaDao {
                 count = rs.getInt("count");
             }
 
-            response = new BaseMessage(Constant.SUCCESS_RESPONSE, String.valueOf(count));
+            response = new MessageResponse<>(Constant.SUCCESS_RESPONSE, "Thành công", count);
             log.info(Common.createMessageLog(null, response, "count"));
         } catch (SQLException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
@@ -69,6 +70,9 @@ public class AreaDao implements IAreaDao {
                 );
                 list.add(obj);
             }
+
+            response = new MessageResponse<>(Constant.SUCCESS_RESPONSE, "Thành công", list);
+            log.info(Common.createMessageLog(null, response, "getAll"));
         } catch (SQLException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
             log.error(Common.createMessageLog(null, response, "getAll"));
@@ -95,6 +99,13 @@ public class AreaDao implements IAreaDao {
 
             output.put("status", cs.getBoolean(3));
             output.put("message", cs.getNString(4));
+
+            response = new MessageResponse<>(cs.getBoolean(3), cs.getNString(4), output);
+            if (cs.getBoolean(3)) {
+                log.info(Common.createMessageLog(area, response, "create"));
+            } else {
+                log.error(Common.createMessageLog(area, response, "create"));
+            }
         } catch (SQLException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
             log.error(Common.createMessageLog(area, response, "create"));
@@ -127,6 +138,9 @@ public class AreaDao implements IAreaDao {
                         rs.getBoolean("status")
                 );
             }
+
+            response = new MessageResponse<>(Constant.SUCCESS_RESPONSE, "Thành công", obj);
+            log.info(Common.createMessageLog(name, response, "findByName"));
         } catch (SQLException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
             log.error(Common.createMessageLog(name, response, "findByName"));
@@ -154,6 +168,13 @@ public class AreaDao implements IAreaDao {
 
             output.put("status", cs.getBoolean(4));
             output.put("message", cs.getNString(5));
+
+            response = new MessageResponse<>(cs.getBoolean(4), cs.getNString(5), output);
+            if (cs.getBoolean(4)) {
+                log.info(Common.createMessageLog(area, response, "update"));
+            } else {
+                log.error(Common.createMessageLog(area, response, "update"));
+            }
         } catch (SQLException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
             log.error(Common.createMessageLog(area, response, "update"));
@@ -178,6 +199,13 @@ public class AreaDao implements IAreaDao {
 
             output.put("status", cs.getBoolean(2));
             output.put("message", cs.getNString(3));
+
+            response = new MessageResponse<>(cs.getBoolean(2), cs.getNString(3), output);
+            if (cs.getBoolean(2)) {
+                log.info(Common.createMessageLog(id, response, "delete"));
+            } else {
+                log.error(Common.createMessageLog(id, response, "delete"));
+            }
         } catch (SQLException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
             log.error(Common.createMessageLog(id, response, "delete"));

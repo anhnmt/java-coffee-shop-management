@@ -6,6 +6,7 @@ import coffeeshop.Util.BaseMessage;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.Constant;
 import coffeeshop.Util.DbUtil;
+import coffeeshop.Util.MessageResponse;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -38,8 +39,8 @@ public class ProductDao implements IProductDao {
             while (rs.next()) {
                 count = rs.getInt("count");
             }
-            
-            response = new BaseMessage(Constant.SUCCESS_RESPONSE, String.valueOf(count));
+
+            response = new MessageResponse<>(Constant.SUCCESS_RESPONSE, "Thành công", count);
             log.info(Common.createMessageLog(null, response, "count"));
         } catch (SQLException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
@@ -96,6 +97,9 @@ public class ProductDao implements IProductDao {
 
                 list.add(obj);
             }
+
+            response = new MessageResponse<>(Constant.SUCCESS_RESPONSE, "Thành công", list);
+            log.info(Common.createMessageLog(new Object[]{product, fromPrice, toPrice}, response, "getAll"));
         } catch (SQLException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
             log.error(Common.createMessageLog(new Object[]{product, fromPrice, toPrice}, response, "getAll"));
@@ -124,6 +128,13 @@ public class ProductDao implements IProductDao {
 
             output.put("status", cs.getBoolean(5));
             output.put("message", cs.getNString(6));
+
+            response = new MessageResponse<>(cs.getBoolean(5), cs.getNString(6), output);
+            if (cs.getBoolean(5)) {
+                log.info(Common.createMessageLog(product, response, "delete"));
+            } else {
+                log.error(Common.createMessageLog(product, response, "delete"));
+            }
         } catch (SQLException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
             log.error(Common.createMessageLog(product, response, "creates"));
@@ -154,6 +165,9 @@ public class ProductDao implements IProductDao {
                         null
                 );
             }
+
+            response = new MessageResponse<>(Constant.SUCCESS_RESPONSE, "Thành công", obj);
+            log.info(Common.createMessageLog(id, response, "read"));
         } catch (SQLException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
             log.error(Common.createMessageLog(id, response, "read"));
@@ -183,6 +197,13 @@ public class ProductDao implements IProductDao {
 
             output.put("status", cs.getBoolean(6));
             output.put("message", cs.getNString(7));
+
+            response = new MessageResponse<>(cs.getBoolean(6), cs.getNString(7), output);
+            if (cs.getBoolean(6)) {
+                log.info(Common.createMessageLog(product, response, "update"));
+            } else {
+                log.error(Common.createMessageLog(product, response, "update"));
+            }
         } catch (SQLException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
             log.error(Common.createMessageLog(product, response, "update"));
@@ -207,6 +228,13 @@ public class ProductDao implements IProductDao {
 
             output.put("status", cs.getBoolean(2));
             output.put("message", cs.getNString(3));
+
+            response = new MessageResponse<>(cs.getBoolean(2), cs.getNString(3), output);
+            if (cs.getBoolean(2)) {
+                log.info(Common.createMessageLog(id, response, "delete"));
+            } else {
+                log.error(Common.createMessageLog(id, response, "delete"));
+            }
         } catch (SQLException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
             log.error(Common.createMessageLog(id, response, "delete"));

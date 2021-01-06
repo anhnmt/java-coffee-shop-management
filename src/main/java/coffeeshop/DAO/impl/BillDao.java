@@ -6,6 +6,7 @@ import coffeeshop.Util.BaseMessage;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.Constant;
 import coffeeshop.Util.DbUtil;
+import coffeeshop.Util.MessageResponse;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -38,8 +39,8 @@ public class BillDao implements IBillDao {
             while (rs.next()) {
                 count = rs.getInt("count");
             }
-            
-            response = new BaseMessage(Constant.SUCCESS_RESPONSE, String.valueOf(count));
+
+            response = new MessageResponse<>(Constant.SUCCESS_RESPONSE, "Thành công", count);
             log.info(Common.createMessageLog(null, response, "count"));
         } catch (SQLException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
@@ -94,6 +95,9 @@ public class BillDao implements IBillDao {
                 );
                 list.add(obj);
             }
+
+            response = new MessageResponse<>(Constant.SUCCESS_RESPONSE, "Thành công", list);
+            log.info(Common.createMessageLog(bill, response, "getAll"));
         } catch (SQLException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
             log.error(Common.createMessageLog(bill, response, "getAll"));
@@ -141,6 +145,13 @@ public class BillDao implements IBillDao {
 
             output.put("status", cs.getBoolean(6));
             output.put("message", cs.getNString(7));
+
+            response = new MessageResponse<>(cs.getBoolean(6), cs.getNString(7), output);
+            if (cs.getBoolean(6)) {
+                log.info(Common.createMessageLog(bill, response, "create"));
+            } else {
+                log.error(Common.createMessageLog(bill, response, "create"));
+            }
         } catch (SQLException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
             log.error(Common.createMessageLog(bill, response, "create"));
@@ -174,6 +185,9 @@ public class BillDao implements IBillDao {
                         rs.getNString("table_name")
                 );
             }
+
+            response = new MessageResponse<>(Constant.SUCCESS_RESPONSE, "Thành công", obj);
+            log.info(Common.createMessageLog(id, response, "read"));
         } catch (SQLException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
             log.error(Common.createMessageLog(id, response, "read"));
@@ -204,6 +218,13 @@ public class BillDao implements IBillDao {
 
             output.put("status", cs.getBoolean(7));
             output.put("message", cs.getNString(8));
+
+            response = new MessageResponse<>(cs.getBoolean(7), cs.getNString(8), output);
+            if (cs.getBoolean(7)) {
+                log.info(Common.createMessageLog(bill, response, "update"));
+            } else {
+                log.error(Common.createMessageLog(bill, response, "update"));
+            }
         } catch (SQLException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
             log.error(Common.createMessageLog(bill, response, "update"));
@@ -228,6 +249,13 @@ public class BillDao implements IBillDao {
 
             output.put("status", cs.getBoolean(2));
             output.put("message", cs.getNString(3));
+
+            response = new MessageResponse<>(cs.getBoolean(2), cs.getNString(3), output);
+            if (cs.getBoolean(2)) {
+                log.info(Common.createMessageLog(id, response, "delete"));
+            } else {
+                log.error(Common.createMessageLog(id, response, "delete"));
+            }
         } catch (SQLException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
             log.error(Common.createMessageLog(id, response, "delete"));
@@ -267,6 +295,9 @@ public class BillDao implements IBillDao {
                         rs.getNString("table_name")
                 );
             }
+
+            response = new MessageResponse<>(Constant.SUCCESS_RESPONSE, "Thành công", obj);
+            log.info(Common.createMessageLog(bill, response, "getByTableId"));
         } catch (SQLException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
             log.error(Common.createMessageLog(bill, response, "getByTableId"));

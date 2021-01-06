@@ -40,7 +40,7 @@ public class UserDao implements IUserDao {
                 count = rs.getInt("count");
             }
 
-            response = new BaseMessage(Constant.SUCCESS_RESPONSE, String.valueOf(count));
+            response = new MessageResponse<>(Constant.SUCCESS_RESPONSE, "Thành công", count);
             log.info(Common.createMessageLog(null, response, "count"));
         } catch (SQLException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
@@ -87,12 +87,15 @@ public class UserDao implements IUserDao {
                         rs.getInt("id"),
                         rs.getNString("name"),
                         rs.getString("email"),
-                        rs.getString("password"),
+                        null,
                         rs.getInt("role"),
                         rs.getBoolean("status")
                 );
                 list.add(obj);
             }
+
+            response = new MessageResponse<>(Constant.SUCCESS_RESPONSE, "Thành công", list);
+            log.info(Common.createMessageLog(user, response, "getAll"));
         } catch (SQLException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
             log.error(Common.createMessageLog(user, response, "getAll"));
@@ -122,6 +125,13 @@ public class UserDao implements IUserDao {
 
             output.put("status", cs.getBoolean(6));
             output.put("message", cs.getNString(7));
+
+            response = new MessageResponse<>(cs.getBoolean(6), cs.getNString(7), output);
+            if (cs.getBoolean(6)) {
+                log.info(Common.createMessageLog(user, response, "update"));
+            } else {
+                log.error(Common.createMessageLog(user, response, "update"));
+            }
         } catch (SQLException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
             log.error(Common.createMessageLog(user, response, "create"));
@@ -152,6 +162,9 @@ public class UserDao implements IUserDao {
                         rs.getBoolean("status")
                 );
             }
+
+            response = new MessageResponse<>(Constant.SUCCESS_RESPONSE, "Thành công", obj);
+            log.info(Common.createMessageLog(id, response, "read"));
         } catch (SQLException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
             log.error(Common.createMessageLog(id, response, "read"));
@@ -213,6 +226,13 @@ public class UserDao implements IUserDao {
 
             output.put("status", cs.getBoolean(2));
             output.put("message", cs.getNString(3));
+
+            response = new MessageResponse<>(cs.getBoolean(2), cs.getNString(3), output);
+            if (cs.getBoolean(2)) {
+                log.info(Common.createMessageLog(id, response, "delete"));
+            } else {
+                log.error(Common.createMessageLog(id, response, "delete"));
+            }
         } catch (SQLException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
             log.error(Common.createMessageLog(id, response, "update"));
