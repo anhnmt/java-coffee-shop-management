@@ -276,22 +276,22 @@ public final class JDModifyUser extends javax.swing.JDialog {
                     Map<String, Object> result = userDao.create(user);
 
                     if ((boolean) result.get("status") == true) {
-                        JOptionPane.showMessageDialog(null, "Thêm người dùng thành công!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                         callback.actionUserModify();
                         dispose();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Thêm người dùng thất bại, lỗi: " + result.get("message") + "!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                     }
                 } else {
                     user.setId(this.user.getId());
                     System.out.println(user);
                     Map<String, Object> result = userDao.update(user);
                     if ((boolean) result.get("status") == true) {
-                        JOptionPane.showMessageDialog(null, "Sửa người dùng thành công!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                         callback.actionUserModify();
                         dispose();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Sửa người dùng thất bại, lỗi: " + result.get("message") + "!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                     }
                 }
 

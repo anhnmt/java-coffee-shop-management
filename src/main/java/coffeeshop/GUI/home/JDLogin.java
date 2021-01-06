@@ -395,11 +395,11 @@ public class JDLogin extends javax.swing.JDialog {
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void lblRegisterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegisterMouseClicked
-        JOptionPane.showMessageDialog(null, "Vui lòng liên hệ admin để đăng ký tài khoản.");        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(this, "Vui lòng liên hệ admin để đăng ký tài khoản.");        // TODO add your handling code here:
     }//GEN-LAST:event_lblRegisterMouseClicked
 
     private void lblForgotPasswordMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblForgotPasswordMouseClicked
-        JOptionPane.showMessageDialog(null, "Vui lòng liên hệ admin để lấy lại mật khẩu.");
+        JOptionPane.showMessageDialog(this, "Vui lòng liên hệ admin để lấy lại mật khẩu.");
     }//GEN-LAST:event_lblForgotPasswordMouseClicked
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed

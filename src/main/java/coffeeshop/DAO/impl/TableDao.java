@@ -2,6 +2,7 @@ package coffeeshop.DAO.impl;
 
 import coffeeshop.DAO.*;
 import coffeeshop.DTO.Table;
+import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
 
 import java.sql.*;
@@ -46,12 +47,31 @@ public class TableDao implements ITableDao {
     }
 
     @Override
-    public List<Table> getAll() {
+    public List<Table> getAll(Table table) {
         List<Table> list = new ArrayList<>();
-        String sql = "{CALL sp_getAllTable}";
+        String sql = "{CALL sp_getAllTable(?, ?, ?, ?)}";
 
         try {
             cs = conn.prepareCall(sql);
+            cs.setNull(1, Types.INTEGER);
+            cs.setNull(2, Types.INTEGER);
+            cs.setNull(3, Types.NVARCHAR);
+            cs.setNull(4, Types.BOOLEAN);
+
+            if (!Common.isNullOrEmpty(table)) {
+                if (!Common.isNullOrEmpty(table.getId())) {
+                    cs.setInt(1, table.getId());
+                }
+                if (!Common.isNullOrEmpty(table.getArea_id())) {
+                    cs.setInt(2, table.getArea_id());
+                }
+                if (!Common.isNullOrEmpty(table.getName())) {
+                    cs.setNString(3, table.getName());
+                }
+                if (!Common.isNullOrEmpty(table.getStatus())) {
+                    cs.setBoolean(4, table.getStatus());
+                }
+            }
             rs = cs.executeQuery();
 
             while (rs.next()) {
@@ -177,11 +197,18 @@ public class TableDao implements ITableDao {
     @Override
     public Table findByName(String name) {
         Table table = null;
-        String sql = "{CALL sp_getAllTable(?)}";
+        String sql = "{CALL sp_getAllTable(?, ?, ?, ?)}";
 
         try {
             cs = conn.prepareCall(sql);
-            cs.setNString(1, name);
+            cs.setNull(1, Types.INTEGER);
+            cs.setNull(2, Types.INTEGER);
+            cs.setNull(3, Types.NVARCHAR);
+            cs.setNull(4, Types.BOOLEAN);
+
+            if (!Common.isNullOrEmpty(name)) {
+                cs.setNString(3, name);
+            }
             rs = cs.executeQuery();
 
             while (rs.next()) {

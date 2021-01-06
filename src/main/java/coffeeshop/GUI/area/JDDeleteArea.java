@@ -150,11 +150,11 @@ public class JDDeleteArea extends javax.swing.JDialog {
         Map<String, Object> result = areaDao.delete(area.getId());
 
         if ((boolean) result.get("status") == true) {
-            JOptionPane.showMessageDialog(null, "Xoá khu vực thành công!");
+            JOptionPane.showMessageDialog(this, result.get("message"));
             callback.actionAreaDelete();
             dispose();
         } else {
-            JOptionPane.showMessageDialog(null, "Xoá khu vực thất bại, lỗi: " + result.get("message") + "!");
+            JOptionPane.showMessageDialog(this, result.get("message"));
             dispose();
         }
     }//GEN-LAST:event_btnDeleteActionPerformed

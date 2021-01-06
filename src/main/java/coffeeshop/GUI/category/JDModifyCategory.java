@@ -217,11 +217,11 @@ public final class JDModifyCategory extends javax.swing.JDialog {
                     Map<String, Object> result = categoryDao.create(category);
 
                     if ((boolean) result.get("status") == true) {
-                        JOptionPane.showMessageDialog(null, "Thêm danh mục thành công!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                         callback.actionCategoryModify();
                         dispose();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Thêm danh mục thất bại, lỗi: " + result.get("message") + "!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                     }
                 } else {
                     category.setId(this.category.getId());
@@ -231,11 +231,11 @@ public final class JDModifyCategory extends javax.swing.JDialog {
                     Map<String, Object> result = categoryDao.update(category);
 
                     if ((boolean) result.get("status") == true) {
-                        JOptionPane.showMessageDialog(null, "Sửa đổi danh mục thành công!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                         callback.actionCategoryModify();
                         dispose();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Sửa đổi danh mục thất bại, lỗi: " + result.get("message") + "!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                     }
                 }
             } catch (Exception ex) {

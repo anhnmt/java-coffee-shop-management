@@ -200,31 +200,30 @@ public final class JDModifyArea extends javax.swing.JDialog {
             lblNameError.setVisible(true);
         } else {
             try {
-                if (this.area == null) {
+                if (Common.isNullOrEmpty(area)) {
                     area = new Area();
                     area.setName(name);
                     area.setStatus(status);
                     Map<String, Object> result = areaDao.create(area);
 
                     if ((boolean) result.get("status") == true) {
-                        JOptionPane.showMessageDialog(null, "Thêm khu vực thành công!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                         callback.actionAreaModify();
                         dispose();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Thêm khu vực thất bại, lỗi: " + result.get("message") + "!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                     }
                 } else {
-                    area.setId(this.area.getId());
                     area.setName(name);
                     area.setStatus(status);
                     Map<String, Object> result = areaDao.update(area);
 
                     if ((boolean) result.get("status") == true) {
-                        JOptionPane.showMessageDialog(null, "Sửa đổi khu vực thành công!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                         callback.actionAreaModify();
                         dispose();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Sửa đổi khu vực thất bại, lỗi: " + result.get("message") + "!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                     }
                 }
 

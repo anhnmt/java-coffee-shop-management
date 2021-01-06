@@ -151,11 +151,11 @@ public class JDDeleteUser extends javax.swing.JDialog {
         Map<String, Object> result = userDao.delete(user.getId());
 
         if ((boolean) result.get("status") == true) {
-            JOptionPane.showMessageDialog(null, "Xoá người dùng thành công!");
+            JOptionPane.showMessageDialog(this, result.get("message"));
             callback.actionUserDelete();
             dispose();
         } else {
-            JOptionPane.showMessageDialog(null, "Xoá người dùng thất bại, lỗi: " + result.get("message") + "!");
+            JOptionPane.showMessageDialog(this, result.get("message"));
             dispose();
         }
     }//GEN-LAST:event_btnDeleteActionPerformed

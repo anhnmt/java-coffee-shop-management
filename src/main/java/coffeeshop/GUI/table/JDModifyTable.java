@@ -272,22 +272,22 @@ public final class JDModifyTable extends javax.swing.JDialog {
                     Map<String, Object> result = tableDao.create(objTable);
 
                     if ((boolean) result.get("status") == true) {
-                        JOptionPane.showMessageDialog(null, "Thêm bàn thành công!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                         callback.actionTableModify();
                         dispose();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Thêm bàn thất bại, lỗi: " + result.get("message") + "!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                     }
                 } else {
                     objTable.setId(table.getId());
                     Map<String, Object> result = tableDao.update(objTable);
 
                     if ((boolean) result.get("status") == true) {
-                        JOptionPane.showMessageDialog(null, "Sửa bàn thành công!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                         callback.actionTableModify();
                         dispose();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Sửa bàn thất bại, lỗi: " + result.get("message") + "!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                     }
                 }
 

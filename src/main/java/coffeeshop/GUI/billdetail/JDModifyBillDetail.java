@@ -235,11 +235,11 @@ public final class JDModifyBillDetail extends javax.swing.JDialog {
 
                 Map<String, Object> result = billDetailDao.update(billDetail);
                 if ((boolean) result.get("status") == true) {
-                    JOptionPane.showMessageDialog(this, "Cập nhật thông tin hoá đơn thành công!");
+                    JOptionPane.showMessageDialog(this, result.get("message"));
                     callback.actionBillDetailModify();
                     dispose();
                 } else {
-                    JOptionPane.showMessageDialog(this, "Cập nhật thất bại, lỗi: " + result.get("message") + "!");
+                    JOptionPane.showMessageDialog(this, result.get("message"));
                 }
 
             } catch (Exception ex) {

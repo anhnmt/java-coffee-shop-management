@@ -58,7 +58,7 @@ public final class PnlCategory extends javax.swing.JPanel implements JDModifyCat
         String columns[] = {"Id", "Tên", "Trạng thái"};
         DefaultTableModel dtm = new DefaultTableModel(columns, 0);
 
-        if (!categories.isEmpty()) {
+        if (!Common.isNullOrEmpty(categories)) {
             categories.forEach(obj -> {
                 dtm.addRow(new Object[]{obj.getId(), obj.getName(), obj.getStatus() ? "Hoạt động" : "Không hoạt động"});
             });
@@ -295,25 +295,27 @@ public final class PnlCategory extends javax.swing.JPanel implements JDModifyCat
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddMouseClicked
-        JDModifyCategory jdm = new JDModifyCategory(this.parent, true, dbUtil, this, null);
+        JDModifyCategory jdm = new JDModifyCategory(parent, true, dbUtil, this, null);
         jdm.setVisible(true);
     }//GEN-LAST:event_lblAddMouseClicked
 
     private void lblUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUpdateMouseClicked
         if (!Common.isNullOrEmpty(category)) {
-            JDModifyCategory jdm = new JDModifyCategory(this.parent, true, dbUtil, this, category);
+            JDModifyCategory jdm = new JDModifyCategory(parent, true, dbUtil, this, category);
             jdm.setVisible(true);
         }
     }//GEN-LAST:event_lblUpdateMouseClicked
 
     private void lblSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSearchMouseClicked
-        JDSearchCategory jds = new JDSearchCategory(this.parent, true, dbUtil, this);
-        jds.setVisible(true);
+        if (!Common.isNullOrEmpty(categories)) {
+            JDSearchCategory jds = new JDSearchCategory(parent, true, dbUtil, this);
+            jds.setVisible(true);
+        }
     }//GEN-LAST:event_lblSearchMouseClicked
 
     private void lblDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDeleteMouseClicked
         if (!Common.isNullOrEmpty(category)) {
-            JDDeleteCategory jdd = new JDDeleteCategory(this.parent, true, dbUtil, this, category);
+            JDDeleteCategory jdd = new JDDeleteCategory(parent, true, dbUtil, this, category);
             jdd.setVisible(true);
         }
     }//GEN-LAST:event_lblDeleteMouseClicked

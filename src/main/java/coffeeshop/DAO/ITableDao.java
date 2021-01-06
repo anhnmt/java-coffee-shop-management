@@ -8,7 +8,7 @@ public interface ITableDao {
 
     public int count();
 
-    public List<Table> getAll();
+    public List<Table> getAll(Table table);
 
     public Table findByName(String name);
 

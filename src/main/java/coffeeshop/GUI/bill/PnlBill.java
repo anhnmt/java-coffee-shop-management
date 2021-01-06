@@ -283,19 +283,21 @@ public class PnlBill extends javax.swing.JPanel implements JDSearchBill.Callback
 
     private void lblViewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblViewMouseClicked
         if (!Common.isNullOrEmpty(bill)) {
-            JDBill jdb = new JDBill(this.parent, true, dbUtil, this, bill);
+            JDBill jdb = new JDBill(parent, true, dbUtil, this, bill);
             jdb.setVisible(true);
         }
     }//GEN-LAST:event_lblViewMouseClicked
 
     private void lblSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSearchMouseClicked
-        JDSearchBill jdsb = new JDSearchBill(this.parent, true, dbUtil, this);
-        jdsb.setVisible(true);
+        if (!Common.isNullOrEmpty(bills)) {
+            JDSearchBill jdsb = new JDSearchBill(parent, true, dbUtil, this);
+            jdsb.setVisible(true);
+        }
     }//GEN-LAST:event_lblSearchMouseClicked
 
     private void lblDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDeleteMouseClicked
         if (!Common.isNullOrEmpty(bill)) {
-            JDDeleteBill deleteBill = new JDDeleteBill(this.parent, true, dbUtil, this, bill);
+            JDDeleteBill deleteBill = new JDDeleteBill(parent, true, dbUtil, this, bill);
             deleteBill.setVisible(true);
         }
     }//GEN-LAST:event_lblDeleteMouseClicked
@@ -303,7 +305,6 @@ public class PnlBill extends javax.swing.JPanel implements JDSearchBill.Callback
     private void lblRefreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRefreshMouseClicked
         loading(null);
     }//GEN-LAST:event_lblRefreshMouseClicked
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
