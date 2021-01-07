@@ -5,58 +5,36 @@
  */
 package coffeeshop.GUI.table;
 
-import coffeeshop.GUI.billdetail.JDModifyBillDetail;
-import coffeeshop.GUI.billdetail.JDDeleteBillDetail;
 import coffeeshop.DAO.impl.BillDao;
 import coffeeshop.DAO.impl.BillDetailDao;
 import coffeeshop.DAO.impl.ProductDao;
-import coffeeshop.DTO.Area;
-import coffeeshop.DTO.Bill;
-import coffeeshop.DTO.BillDetail;
-import coffeeshop.DTO.Product;
-import coffeeshop.DTO.Table;
-import coffeeshop.DTO.User;
+import coffeeshop.DTO.*;
+import coffeeshop.GUI.bill.JDDeleteBill;
+import coffeeshop.GUI.billdetail.JDDeleteBillDetail;
+import coffeeshop.GUI.billdetail.JDModifyBillDetail;
+import coffeeshop.Util.BaseMessage;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.Constant;
 import coffeeshop.Util.DbUtil;
-import coffeeshop.Util.BaseMessage;
-import java.awt.Color;
-import java.awt.Frame;
-import java.awt.HeadlessException;
+import lombok.extern.log4j.Log4j;
+
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import javax.swing.BorderFactory;
-import javax.swing.JOptionPane;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.table.DefaultTableModel;
-import lombok.extern.log4j.Log4j;
 
 /**
  *
  * @author TUANANH-PC
  */
 @Log4j
-public final class JDTable extends javax.swing.JDialog implements JDModifyBillDetail.CallbackBillDetailModify, JDDeleteBillDetail.CallbackBillDetailDelete, JDChangeTable.CallbackTableChange {
+public final class JDTable extends javax.swing.JDialog implements JDModifyBillDetail.CallbackBillDetailModify, JDDeleteBillDetail.CallbackBillDetailDelete, JDChangeTable.CallbackTableChange, JDDeleteBill.CallbackBillDelete {
 
     CallbackTableExit callback;
-
-    @Override
-    public void actionBillDetailDelete() {
-        loadingBill();
-    }
-
-    @Override
-    public void actionBillDetailModify() {
-        loadingBill();
-    }
-
-    @Override
-    public void actionTableChange() {
-        callback.actionTableExit();
-        dispose();
-    }
 
     public interface CallbackTableExit {
 
@@ -108,10 +86,11 @@ public final class JDTable extends javax.swing.JDialog implements JDModifyBillDe
 
         // Custom Style
         btnAddProduct.setVisible(false);
+        txtProductAmount.setEditable(false);
         btnBook.setVisible(true);
         btnChangeTable.setVisible(false);
         btnCheckout.setVisible(false);
-        txtProductAmount.setEditable(false);
+        btnDeleteBill.setVisible(false);
         txtProductName.setBorder(BorderFactory.createCompoundBorder(
                 txtProductName.getBorder(),
                 BorderFactory.createEmptyBorder(5, 8, 5, 8)));
@@ -151,7 +130,7 @@ public final class JDTable extends javax.swing.JDialog implements JDModifyBillDe
             String columns[] = {"Id", "Tên sản phẩm", "Giá", "Tên danh mục"};
             DefaultTableModel dtm = new DefaultTableModel(columns, 0);
 
-            if (!products.isEmpty()) {
+            if (!Common.isNullOrEmpty(products)) {
                 products.forEach(pro -> {
                     dtm.addRow(new Object[]{pro.getId(), pro.getName(), pro.getPrice(), pro.getCategory_name()});
                 });
@@ -198,18 +177,23 @@ public final class JDTable extends javax.swing.JDialog implements JDModifyBillDe
 
             if (Common.isNullOrEmpty(bill)) {
                 btnAddProduct.setVisible(false);
+                txtProductAmount.setEditable(false);
                 btnBook.setVisible(true);
                 btnCheckout.setVisible(false);
-                txtProductAmount.setEditable(false);
                 btnChangeTable.setVisible(false);
+                btnDeleteBill.setVisible(false);
             } else {
                 txtBillId.setText(String.valueOf(bill.getId()));
                 txtBillTime.setText(String.valueOf(bill.getCreated_at()));
 
                 btnBook.setVisible(false);
-                btnAddProduct.setVisible(true);
-                txtProductAmount.setEditable(true);
-                btnChangeTable.setVisible(true);
+                btnDeleteBill.setVisible(true);
+
+                if (!Common.isNullOrEmpty(products)) {
+                    txtProductAmount.setEditable(true);
+                    btnChangeTable.setVisible(true);
+                }
+
                 loadingBillDetail();
             }
         } catch (Exception e) {
@@ -295,6 +279,7 @@ public final class JDTable extends javax.swing.JDialog implements JDModifyBillDe
         lblTotalPrice = new javax.swing.JLabel();
         btnBook = new javax.swing.JButton();
         btnCheckout = new javax.swing.JButton();
+        btnDeleteBill = new javax.swing.JButton();
         scrollPaneBillDetail = new javax.swing.JScrollPane();
         tblBillDetail = new javax.swing.JTable();
         scrollPaneProduct = new javax.swing.JScrollPane();
@@ -497,6 +482,18 @@ public final class JDTable extends javax.swing.JDialog implements JDModifyBillDe
             }
         });
 
+        btnDeleteBill.setBackground(new java.awt.Color(220, 53, 69));
+        btnDeleteBill.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        btnDeleteBill.setForeground(new java.awt.Color(255, 255, 255));
+        btnDeleteBill.setText("Huỷ đơn");
+        btnDeleteBill.setBorderPainted(false);
+        btnDeleteBill.setFocusPainted(false);
+        btnDeleteBill.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteBillActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlBillLayout = new javax.swing.GroupLayout(pnlBill);
         pnlBill.setLayout(pnlBillLayout);
         pnlBillLayout.setHorizontalGroup(
@@ -504,27 +501,27 @@ public final class JDTable extends javax.swing.JDialog implements JDModifyBillDe
             .addGroup(pnlBillLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBillLayout.createSequentialGroup()
-                        .addGroup(pnlBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(pnlBillLayout.createSequentialGroup()
-                                .addComponent(lblBillId, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtBillId))
-                            .addGroup(pnlBillLayout.createSequentialGroup()
-                                .addComponent(lblBillTime, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtBillTime, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(10, 10, 10))
                     .addGroup(pnlBillLayout.createSequentialGroup()
-                        .addComponent(btnBook, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblBillId, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtBillId))
+                    .addGroup(pnlBillLayout.createSequentialGroup()
+                        .addComponent(btnBook, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, 0)
-                        .addComponent(btnCheckout, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(65, 65, 65)))
+                        .addComponent(btnCheckout)
+                        .addGap(0, 0, 0)
+                        .addComponent(btnDeleteBill)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(pnlBillLayout.createSequentialGroup()
+                        .addComponent(lblBillTime, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtBillTime)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(lblTotalPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblTableName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblAreaName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(16, 16, 16)
                 .addGroup(pnlBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtUserId, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBillLayout.createSequentialGroup()
@@ -543,7 +540,7 @@ public final class JDTable extends javax.swing.JDialog implements JDModifyBillDe
                         .addGroup(pnlBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblBillId)
                             .addComponent(txtBillId, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(pnlBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblBillTime)
                             .addComponent(txtBillTime, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -551,18 +548,20 @@ public final class JDTable extends javax.swing.JDialog implements JDModifyBillDe
                         .addGroup(pnlBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblTableName)
                             .addComponent(txtTableId, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(pnlBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblAreaName)
                             .addComponent(txtUserId, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(pnlBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtTotalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblVND)
                         .addComponent(lblTotalPrice))
-                    .addComponent(btnCheckout, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBook, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnBook, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnCheckout, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnDeleteBill, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -621,7 +620,7 @@ public final class JDTable extends javax.swing.JDialog implements JDModifyBillDe
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnlBill, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(scrollPaneBillDetail, javax.swing.GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE))
+                    .addComponent(scrollPaneBillDetail, javax.swing.GroupLayout.DEFAULT_SIZE, 679, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -633,7 +632,7 @@ public final class JDTable extends javax.swing.JDialog implements JDModifyBillDe
                     .addComponent(pnlBill, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrollPaneBillDetail, javax.swing.GroupLayout.DEFAULT_SIZE, 431, Short.MAX_VALUE)
+                    .addComponent(scrollPaneBillDetail, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
                     .addComponent(scrollPaneProduct))
                 .addContainerGap())
         );
@@ -667,10 +666,9 @@ public final class JDTable extends javax.swing.JDialog implements JDModifyBillDe
 
             if ((boolean) billCreate.get("status") == true) {
                 btnBook.setVisible(false);
-                btnAddProduct.setVisible(true);
                 loadingBill();
             } else {
-                JOptionPane.showMessageDialog(rootPane, billCreate.get("message"));
+                JOptionPane.showMessageDialog(this, billCreate.get("message"));
             }
         } catch (HeadlessException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
@@ -743,7 +741,7 @@ public final class JDTable extends javax.swing.JDialog implements JDModifyBillDe
                     loadingBillDetail();
                     txtProductAmount.setText("");
                 } else {
-                    JOptionPane.showMessageDialog(rootPane, billDetailUpdate.get("message"));
+                    JOptionPane.showMessageDialog(this, billDetailUpdate.get("message"));
                 }
             }
         } catch (HeadlessException | NumberFormatException e) {
@@ -761,9 +759,9 @@ public final class JDTable extends javax.swing.JDialog implements JDModifyBillDe
 
             if ((boolean) billCheckout.get("status") == true) {
                 loadingBill();
-                JOptionPane.showMessageDialog(rootPane, billCheckout.get("message"));
+                JOptionPane.showMessageDialog(this, billCheckout.get("message"));
             } else {
-                JOptionPane.showMessageDialog(rootPane, billCheckout.get("message"));
+                JOptionPane.showMessageDialog(this, billCheckout.get("message"));
             }
         } catch (HeadlessException | NumberFormatException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
@@ -803,11 +801,40 @@ public final class JDTable extends javax.swing.JDialog implements JDModifyBillDe
         }
     }//GEN-LAST:event_btnChangeTableActionPerformed
 
+    private void btnDeleteBillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteBillActionPerformed
+        if (!Common.isNullOrEmpty(bill)) {
+            JDDeleteBill jddb = new JDDeleteBill(parent, true, dbUtil, this, bill);
+            jddb.setVisible(true);
+        }
+    }//GEN-LAST:event_btnDeleteBillActionPerformed
+
+    @Override
+    public void actionBillDetailDelete() {
+        loadingBill();
+    }
+
+    @Override
+    public void actionBillDetailModify() {
+        loadingBill();
+    }
+
+    @Override
+    public void actionTableChange() {
+        callback.actionTableExit();
+        dispose();
+    }
+
+    @Override
+    public void actionBillDelete() {
+        loadingBill();
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddProduct;
     private javax.swing.JButton btnBook;
     private javax.swing.JButton btnChangeTable;
     private javax.swing.JButton btnCheckout;
+    private javax.swing.JButton btnDeleteBill;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel lblAreaName;
     private javax.swing.JLabel lblBillId;

@@ -7,9 +7,9 @@ package coffeeshop.GUI.user;
 
 import coffeeshop.DTO.User;
 import coffeeshop.Util.Common;
-import java.awt.Color;
-import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  *

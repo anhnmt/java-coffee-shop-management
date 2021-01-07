@@ -9,15 +9,13 @@ import coffeeshop.DAO.impl.UserDao;
 import coffeeshop.DTO.User;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
-import java.awt.Color;
-import java.awt.Frame;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 
 /**
  *

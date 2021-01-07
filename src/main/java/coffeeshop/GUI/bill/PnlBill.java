@@ -6,15 +6,16 @@
 package coffeeshop.GUI.bill;
 
 import coffeeshop.DAO.impl.BillDao;
-import java.awt.Frame;
-import coffeeshop.DTO.User;
 import coffeeshop.DTO.Bill;
+import coffeeshop.DTO.User;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
-import java.util.ArrayList;
-import java.util.List;
+
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *

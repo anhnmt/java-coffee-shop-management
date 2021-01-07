@@ -6,22 +6,21 @@
 package coffeeshop.GUI.table;
 
 import coffeeshop.DAO.impl.AreaDao;
+import coffeeshop.DAO.impl.TableDao;
 import coffeeshop.DTO.Area;
-import java.awt.Color;
+import coffeeshop.DTO.Table;
+import coffeeshop.Util.BaseMessage;
+import coffeeshop.Util.Common;
+import coffeeshop.Util.Constant;
+import coffeeshop.Util.DbUtil;
+import lombok.extern.log4j.Log4j;
+
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JOptionPane;
-import coffeeshop.DTO.Table;
-import coffeeshop.DAO.impl.TableDao;
-import coffeeshop.Util.Common;
-import coffeeshop.Util.DbUtil;
 import java.util.Objects;
-import coffeeshop.Util.BaseMessage;
-import coffeeshop.Util.Constant;
-import lombok.extern.log4j.Log4j;
 
 @Log4j
 public final class JDModifyTable extends javax.swing.JDialog {

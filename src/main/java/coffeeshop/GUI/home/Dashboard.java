@@ -6,20 +6,19 @@
 package coffeeshop.GUI.home;
 
 import coffeeshop.DTO.User;
-import coffeeshop.GUI.bill.PnlBill;
 import coffeeshop.GUI.area.PnlArea;
-import coffeeshop.GUI.user.PnlUser;
+import coffeeshop.GUI.bill.PnlBill;
 import coffeeshop.GUI.category.PnlCategory;
 import coffeeshop.GUI.product.PnlProduct;
+import coffeeshop.GUI.user.PnlUser;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
-import java.awt.Color;
-import java.awt.Frame;
-import java.awt.GraphicsEnvironment;
+
+import javax.swing.*;
+import java.awt.*;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
 
 /**
  *

@@ -5,11 +5,12 @@
  */
 package coffeeshop.GUI.product;
 
-import coffeeshop.DTO.Product;
 import coffeeshop.DAO.impl.ProductDao;
+import coffeeshop.DTO.Product;
 import coffeeshop.Util.DbUtil;
+
+import javax.swing.*;
 import java.util.Map;
-import javax.swing.JOptionPane;
 
 /**
  *

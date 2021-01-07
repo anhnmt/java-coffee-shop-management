@@ -1,10 +1,11 @@
 package coffeeshop.Util;
 
+import lombok.extern.log4j.Log4j;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
-import lombok.extern.log4j.Log4j;
 
 @Log4j
 public class DbUtil {

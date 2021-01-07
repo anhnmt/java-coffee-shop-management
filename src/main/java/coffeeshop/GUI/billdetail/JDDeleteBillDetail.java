@@ -6,11 +6,11 @@
 package coffeeshop.GUI.billdetail;
 
 import coffeeshop.DAO.impl.BillDetailDao;
-import coffeeshop.Util.DbUtil;
-import java.util.Map;
-import javax.swing.JOptionPane;
 import coffeeshop.DTO.BillDetail;
-import javax.swing.JDialog;
+import coffeeshop.Util.DbUtil;
+
+import javax.swing.*;
+import java.util.Map;
 
 /**
  *

@@ -7,13 +7,14 @@ package coffeeshop.GUI.bill;
 
 import coffeeshop.DAO.impl.BillDao;
 import coffeeshop.DAO.impl.BillDetailDao;
-import coffeeshop.Util.Common;
-import coffeeshop.Util.DbUtil;
 import coffeeshop.DTO.Bill;
 import coffeeshop.DTO.BillDetail;
-import java.awt.Frame;
-import java.util.List;
+import coffeeshop.Util.Common;
+import coffeeshop.Util.DbUtil;
+
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.util.List;
 
 /**
  *
