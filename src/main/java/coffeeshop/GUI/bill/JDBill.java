@@ -20,6 +20,7 @@ import java.awt.*;
 import java.io.File;
 import java.util.List;
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -71,6 +72,20 @@ public final class JDBill extends javax.swing.JDialog {
             txtBillTotalPrice.setText(String.valueOf(bill.getTotal_price()));
             loading();
         }
+
+        // Custom Style
+        txtBillId.setBorder(BorderFactory.createCompoundBorder(
+                txtBillId.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+        txtBillTime.setBorder(BorderFactory.createCompoundBorder(
+                txtBillTime.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+        txtBillTotalPrice.setBorder(BorderFactory.createCompoundBorder(
+                txtBillTotalPrice.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+        txtBillDiscount.setBorder(BorderFactory.createCompoundBorder(
+                txtBillDiscount.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
     }
 
     private void loading() {
