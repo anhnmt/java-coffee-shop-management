@@ -9,15 +9,13 @@ import coffeeshop.DAO.impl.UserDao;
 import coffeeshop.DTO.User;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
-import java.awt.Color;
-import java.awt.Frame;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -61,7 +59,7 @@ public class JDLogin extends javax.swing.JDialog {
 
         // Custom code
         lblBackground.setBounds(0, 0, 960, 610);
-        lblBackground.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("/coffeeshop/assets/img/background.png")).getImage().getScaledInstance(lblBackground.getWidth(), lblBackground.getHeight(), 1)));
+        lblBackground.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("/assets/img/background.png")).getImage().getScaledInstance(lblBackground.getWidth(), lblBackground.getHeight(), 1)));
 
         lblEmailError.setVisible(false);
         lblPasswordError.setVisible(false);
@@ -160,6 +158,7 @@ public class JDLogin extends javax.swing.JDialog {
         btnLogin.setText("Đăng nhập");
         btnLogin.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         btnLogin.setBorderPainted(false);
+        btnLogin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnLogin.setFocusPainted(false);
         btnLogin.setFocusable(false);
         btnLogin.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -172,6 +171,7 @@ public class JDLogin extends javax.swing.JDialog {
         lblRegister.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblRegister.setForeground(new java.awt.Color(114, 137, 218));
         lblRegister.setText("Đăng ký");
+        lblRegister.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblRegister.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblRegisterMouseClicked(evt);
@@ -185,6 +185,7 @@ public class JDLogin extends javax.swing.JDialog {
         lblForgotPassword.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblForgotPassword.setForeground(new java.awt.Color(114, 137, 218));
         lblForgotPassword.setText("Quên mật khẩu?");
+        lblForgotPassword.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblForgotPassword.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblForgotPasswordMouseClicked(evt);
@@ -395,11 +396,11 @@ public class JDLogin extends javax.swing.JDialog {
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void lblRegisterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegisterMouseClicked
-        JOptionPane.showMessageDialog(null, "Vui lòng liên hệ admin để đăng ký tài khoản.");        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(this, "Vui lòng liên hệ admin để đăng ký tài khoản.");        // TODO add your handling code here:
     }//GEN-LAST:event_lblRegisterMouseClicked
 
     private void lblForgotPasswordMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblForgotPasswordMouseClicked
-        JOptionPane.showMessageDialog(null, "Vui lòng liên hệ admin để lấy lại mật khẩu.");
+        JOptionPane.showMessageDialog(this, "Vui lòng liên hệ admin để lấy lại mật khẩu.");
     }//GEN-LAST:event_lblForgotPasswordMouseClicked
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed

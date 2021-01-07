@@ -154,6 +154,47 @@ GO
 
 GO
 
+CREATE PROC sp_deleteUser
+(
+    @_id INT,
+    @_outStt BIT = 1 OUTPUT,
+    @_outMsg NVARCHAR(200) = '' OUTPUT
+)
+AS
+BEGIN TRY
+    IF EXISTS
+    (
+        SELECT U.id
+        FROM Users U
+            JOIN Bills B
+                ON B.[user_id] = U.id
+        WHERE U.id = @_id
+    )
+    BEGIN
+        SET @_outStt = 0;
+        SET @_outMsg = N'Người dùng đang có liên kết hoá đơn, không thể xoá';
+    END;
+    ELSE
+    BEGIN
+        BEGIN TRAN;
+        DELETE Users
+        WHERE id = @_id;
+
+        SET @_outStt = 1;
+        SET @_outMsg = N'Xoá thành công';
+        IF @@TRANCOUNT > 0
+            COMMIT TRAN;
+    END;
+END TRY
+BEGIN CATCH
+    SET @_outStt = 0;
+    SET @_outMsg = N'Xoá không thành công: ' + ERROR_MESSAGE();
+    IF @@TRANCOUNT > 0
+        ROLLBACK TRAN;
+END CATCH;
+
+GO
+
 CREATE TABLE Categories
 (
     id INT PRIMARY KEY IDENTITY,
@@ -173,7 +214,6 @@ CREATE PROC sp_insertCategory
     @_outMsg NVARCHAR(200) = '' OUTPUT
 )
 AS
-BEGIN TRAN;
 BEGIN TRY
     IF EXISTS (SELECT [name] FROM Categories WHERE [name] = @_name)
     BEGIN
@@ -182,6 +222,7 @@ BEGIN TRY
     END;
     ELSE
     BEGIN
+        BEGIN TRAN;
         INSERT INTO Categories
         (
             [name],
@@ -198,7 +239,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
-    SET @_outMsg = ERROR_MESSAGE();
+    SET @_outMsg = N'Thêm không thành công' + ERROR_MESSAGE();
     IF @@TRANCOUNT > 0
         ROLLBACK TRAN;
 END CATCH;
@@ -271,7 +312,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
-    SET @_outMsg = ERROR_MESSAGE();
+    SET @_outMsg = N'Cập nhật thất bại: ' + ERROR_MESSAGE();
     IF @@TRANCOUNT > 0
         ROLLBACK TRAN;
 END CATCH;
@@ -312,7 +353,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
-    SET @_outMsg = ERROR_MESSAGE();
+    SET @_outMsg = N'Xoá không thành công: ' + ERROR_MESSAGE();
     IF @@TRANCOUNT > 0
         ROLLBACK TRAN;
 END CATCH;
@@ -399,7 +440,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
-    SET @_outMsg = ERROR_MESSAGE();
+    SET @_outMsg = N'Thêm thất bại: ' + ERROR_MESSAGE();
     IF @@TRANCOUNT > 0
         ROLLBACK TRAN sp_insertProduct;
 END CATCH;
@@ -615,7 +656,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
-    SET @_outMsg = ERROR_MESSAGE();
+    SET @_outMsg = N'Cập nhật thất bại: ' + ERROR_MESSAGE();
     IF @@TRANCOUNT > 0
         ROLLBACK TRAN;
 END CATCH;
@@ -656,7 +697,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
-    SET @_outMsg = ERROR_MESSAGE();
+    SET @_outMsg = N'Xoá không thành công: ' + ERROR_MESSAGE();
     IF @@TRANCOUNT > 0
         ROLLBACK TRAN;
 END CATCH;
@@ -727,7 +768,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
-    SET @_outMsg = ERROR_MESSAGE();
+    SET @_outMsg = N'Thêm thất bại: ' + ERROR_MESSAGE();
     IF @@TRANCOUNT > 0
         ROLLBACK TRAN;
 END CATCH;
@@ -773,7 +814,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
-    SET @_outMsg = ERROR_MESSAGE();
+    SET @_outMsg = N'Cập nhật thất bại: ' + ERROR_MESSAGE();
     IF @@TRANCOUNT > 0
         ROLLBACK TRAN;
 END CATCH;
@@ -823,7 +864,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
-    SET @_outMsg = ERROR_MESSAGE();
+    SET @_outMsg = N'Xoá không thành công: ' + ERROR_MESSAGE();
     IF @@TRANCOUNT > 0
         ROLLBACK TRAN;
 END CATCH;
@@ -844,14 +885,28 @@ CREATE TABLE [Tables]
 GO
 
 CREATE PROC sp_getAllTable
-(@_name NVARCHAR(100) = NULL)
+(
+    @_id INT = NULL,
+    @_area_id INT = NULL,
+    @_name NVARCHAR(100) = NULL,
+    @_status BIT = NULL
+)
 AS
 DECLARE @sql NVARCHAR(MAX) = N'
 		SELECT *
 		FROM Tables WHERE 1=1';
 
+IF (@_id IS NOT NULL)
+    SET @sql = CONCAT(@sql, N' AND id = ', @_id);
+
+IF (@_area_id IS NOT NULL)
+    SET @sql = CONCAT(@sql, N' AND area_id = ', @_area_id);
+
 IF (@_name IS NOT NULL)
     SET @sql = CONCAT(@sql, N' AND name LIKE ''%', @_name, N'%''');
+
+IF (@_status IS NOT NULL)
+    SET @sql = CONCAT(@sql, N' AND status = ', @_status);
 
 EXEC (@sql);
 
@@ -908,15 +963,31 @@ END CATCH;
 
 GO
 
-EXEC sp_insertTable @_area_id = 1, @_name = N'Bàn 1';
+EXEC sp_insertTable 1, N'Bàn 1';
 
 GO
 
-EXEC sp_insertTable @_area_id = 1, @_name = N'Bàn 2';
+EXEC sp_insertTable 1, N'Bàn 2';
 
 GO
 
-EXEC sp_insertTable @_area_id = 1, @_name = N'Bàn 3';
+EXEC sp_insertTable 1, N'Bàn 3';
+
+GO
+
+EXEC sp_insertTable 1, N'Bàn 4';
+
+GO
+
+EXEC sp_insertTable 1, N'Bàn 5';
+
+GO
+
+EXEC sp_insertTable 2, N'Bàn 6';
+
+GO
+
+EXEC sp_insertTable 2, N'Bàn 7';
 
 
 GO
@@ -965,6 +1036,47 @@ END TRY
 BEGIN CATCH
     SET @_outStt = 0;
     SET @_outMsg = N'Cập nhật không thành công: ' + ERROR_MESSAGE();
+    IF @@TRANCOUNT > 0
+        ROLLBACK TRAN;
+END CATCH;
+
+GO
+
+CREATE PROC sp_deleteTable
+(
+    @_id INT,
+    @_outStt BIT = 1 OUTPUT,
+    @_outMsg NVARCHAR(200) = '' OUTPUT
+)
+AS
+BEGIN TRY
+    IF EXISTS
+    (
+        SELECT B.*
+        FROM [Tables] T
+            JOIN Bills B
+                ON T.id = B.table_id
+        WHERE T.id = @_id
+    )
+    BEGIN
+        SET @_outStt = 0;
+        SET @_outMsg = N'Bàn đang có hoá đơn, không thể xoá';
+    END;
+    ELSE
+    BEGIN
+        BEGIN TRAN;
+        DELETE [Tables]
+        WHERE id = @_id;
+
+        SET @_outStt = 1;
+        SET @_outMsg = N'Xoá thành công';
+        IF @@TRANCOUNT > 0
+            COMMIT TRAN;
+    END;
+END TRY
+BEGIN CATCH
+    SET @_outStt = 0;
+    SET @_outMsg = N'Xoá không thành công: ' + ERROR_MESSAGE();
     IF @@TRANCOUNT > 0
         ROLLBACK TRAN;
 END CATCH;
@@ -1081,15 +1193,16 @@ BEGIN TRY
         SET @_outStt = 0;
         SET @_outMsg = N'Mã bàn không tồn tại, vui lòng nhập lại';
     END;
-    ELSE IF NOT EXISTS
-         (
-             SELECT TOP 1
-                    *
-             FROM Bills
-             WHERE table_id = @_table_id
-                   AND [status] = 0
-             ORDER BY created_at DESC
-         )
+    ELSE IF EXISTS
+    (
+        SELECT TOP 1
+               *
+        FROM Bills
+        WHERE id = @_bill_id
+              AND table_id = @_table_id
+              AND [status] = 1
+        ORDER BY created_at DESC
+    )
     BEGIN
         SET @_outStt = 0;
         SET @_outMsg = N'Bàn đã thanh toán, vui lòng thử lại';
@@ -1124,7 +1237,6 @@ GO
 --                   @_user_id = 1,
 --                   @_table_id = 1,
 --                   @_total_price = 490000;
-
 
 GO
 
@@ -1182,7 +1294,6 @@ BEGIN TRY
     END;
     ELSE
     BEGIN
-
         BEGIN TRAN;
         IF EXISTS (SELECT bill_id FROM BillDetail WHERE bill_id = @_bill_id)
         BEGIN
@@ -1412,7 +1523,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
     SET @_outStt = 0;
-    SET @_outMsg = ERROR_MESSAGE();
+    SET @_outMsg = N'Xoá không thành công: ' + ERROR_MESSAGE();
     IF @@TRANCOUNT > 0
         ROLLBACK TRAN;
 END CATCH;
@@ -1433,3 +1544,45 @@ WHERE bill_id = @_bill_id;
 GO
 
 --EXEC sp_getBillDetailByBillId 2;
+
+GO
+
+CREATE PROC sp_countCategories
+AS
+SELECT COUNT(*) [count]
+FROM Categories;
+
+GO
+
+CREATE PROC sp_countProducts
+AS
+SELECT COUNT(*) [count]
+FROM Products;
+
+GO
+
+CREATE PROC sp_countUsers
+AS
+SELECT COUNT(*) [count]
+FROM Users;
+
+GO
+
+CREATE PROC sp_countAreas
+AS
+SELECT COUNT(*) [count]
+FROM Areas;
+
+GO
+
+CREATE PROC sp_countTables
+AS
+SELECT COUNT(*) [count]
+FROM Tables;
+
+GO
+
+CREATE PROC sp_countBills
+AS
+SELECT COUNT(*) [count]
+FROM Bills;

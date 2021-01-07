@@ -10,9 +10,10 @@ import coffeeshop.DTO.Category;
 import coffeeshop.DTO.Product;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
+
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.DefaultComboBoxModel;
 
 /**
  *
@@ -47,6 +48,16 @@ public final class JDSearchProduct extends javax.swing.JDialog {
         this.callback = callback;
         this.categoryDao = new CategoryDao(dbUtil);
 
+        //Custom Style
+        txtName.setBorder(BorderFactory.createCompoundBorder(
+                txtName.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+        txtToPrice.setBorder(BorderFactory.createCompoundBorder(
+                txtToPrice.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+        txtFromPrice.setBorder(BorderFactory.createCompoundBorder(
+                txtFromPrice.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
         loadCategory();
         loadSatus();
     }
@@ -100,7 +111,7 @@ public final class JDSearchProduct extends javax.swing.JDialog {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_google_web_search_50px.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_google_web_search_50px.png"))); // NOI18N
         jLabel1.setText("TÌM KIẾM SẢN PHẨM");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N

@@ -6,11 +6,11 @@
 package coffeeshop.GUI.billdetail;
 
 import coffeeshop.DAO.impl.BillDetailDao;
-import coffeeshop.Util.DbUtil;
-import java.util.Map;
-import javax.swing.JOptionPane;
 import coffeeshop.DTO.BillDetail;
-import javax.swing.JDialog;
+import coffeeshop.Util.DbUtil;
+
+import javax.swing.*;
+import java.util.Map;
 
 /**
  *
@@ -73,7 +73,7 @@ public class JDDeleteBillDetail extends javax.swing.JDialog {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 24)); // NOI18N
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_trash_can_50px_1.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_trash_can_50px_1.png"))); // NOI18N
         jLabel1.setText("XOÁ THÔNG TIN HOÁ ĐƠN");
 
         btnCancel.setBackground(new java.awt.Color(0, 204, 51));
@@ -152,11 +152,11 @@ public class JDDeleteBillDetail extends javax.swing.JDialog {
         Map<String, Object> result = billDetailDao.delete(billDetail);
 
         if ((boolean) result.get("status") == true) {
-            JOptionPane.showMessageDialog(null, "Xoá sản phẩm trong hoá đơn thành công!");
+            JOptionPane.showMessageDialog(this, result.get("message"));
             callback.actionBillDetailDelete();
             dispose();
         } else {
-            JOptionPane.showMessageDialog(null, "Xoá sản phẩm thất bại, lỗi: " + result.get("message") + "!");
+            JOptionPane.showMessageDialog(this, result.get("message"));
             dispose();
         }
     }//GEN-LAST:event_btnDeleteActionPerformed

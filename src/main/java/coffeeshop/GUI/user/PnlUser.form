@@ -116,7 +116,7 @@
                     </Property>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/coffeeshop/assets/img/icons8_add_50px_2.png"/>
+                      <Image iconType="3" name="/assets/img/icons8_add_50px_2.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Th&#xea;m m&#x1edb;i"/>
                     <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
@@ -136,7 +136,7 @@
                     </Property>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/coffeeshop/assets/img/icons8_update_50px.png"/>
+                      <Image iconType="3" name="/assets/img/icons8_update_50px.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="S&#x1eed;a &#x111;&#x1ed5;i"/>
                     <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
@@ -156,7 +156,7 @@
                     </Property>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/coffeeshop/assets/img/icons8_search_50px_1.png"/>
+                      <Image iconType="3" name="/assets/img/icons8_search_50px_1.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="T&#xec;m ki&#x1ebf;m"/>
                     <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
@@ -176,7 +176,7 @@
                     </Property>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/coffeeshop/assets/img/icons8_delete_50px.png"/>
+                      <Image iconType="3" name="/assets/img/icons8_delete_50px.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Xo&#xe1;"/>
                     <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
@@ -196,7 +196,7 @@
                     </Property>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/coffeeshop/assets/img/icons8_repeat_50px_1.png"/>
+                      <Image iconType="3" name="/assets/img/icons8_repeat_50px_1.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="L&#xe0;m m&#x1edb;i"/>
                     <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">

@@ -7,14 +7,15 @@ package coffeeshop.GUI.product;
 
 import coffeeshop.DAO.impl.ProductDao;
 import coffeeshop.DTO.Product;
-import java.awt.Frame;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.table.DefaultTableModel;
 import coffeeshop.DTO.User;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
+
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -40,13 +41,14 @@ public final class PnlProduct extends javax.swing.JPanel implements JDModifyProd
         this.parent = parent;
         this.dbUtil = dbUtil;
         this.productDao = new ProductDao(dbUtil);
-        loading(null, null, null);
 
         if (user.getRole() != 1) {
             lblAdd.setVisible(false);
             lblUpdate.setVisible(false);
             lblDelete.setVisible(false);
         }
+
+        loading(null, null, null);
     }
 
     public void loading(Product newProduct, Float fromPrice, Float toPrice) {
@@ -56,7 +58,7 @@ public final class PnlProduct extends javax.swing.JPanel implements JDModifyProd
         String columns[] = {"Id", "Tên danh mục", "Tên", "Giá", "Trạng thái"};
         DefaultTableModel dtm = new DefaultTableModel(columns, 0);
 
-        if (!products.isEmpty()) {
+        if (!Common.isNullOrEmpty(products)) {
             products.forEach(obj -> {
                 dtm.addRow(new Object[]{obj.getId(), obj.getCategory_name(), obj.getName(), obj.getPrice(), obj.getStatus() ? "Hoạt động" : "Không hoạt động"});
             });
@@ -118,7 +120,7 @@ public final class PnlProduct extends javax.swing.JPanel implements JDModifyProd
 
         lblAdd.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         lblAdd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_add_50px_2.png"))); // NOI18N
+        lblAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_add_50px_2.png"))); // NOI18N
         lblAdd.setText("Thêm mới");
         lblAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblAdd.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -132,7 +134,7 @@ public final class PnlProduct extends javax.swing.JPanel implements JDModifyProd
 
         lblUpdate.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         lblUpdate.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_update_50px.png"))); // NOI18N
+        lblUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_update_50px.png"))); // NOI18N
         lblUpdate.setText("Sửa đổi");
         lblUpdate.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblUpdate.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -146,7 +148,7 @@ public final class PnlProduct extends javax.swing.JPanel implements JDModifyProd
 
         lblSearch.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         lblSearch.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_search_50px_1.png"))); // NOI18N
+        lblSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_search_50px_1.png"))); // NOI18N
         lblSearch.setText("Tìm kiếm");
         lblSearch.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblSearch.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -160,7 +162,7 @@ public final class PnlProduct extends javax.swing.JPanel implements JDModifyProd
 
         lblDelete.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         lblDelete.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_delete_50px.png"))); // NOI18N
+        lblDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_delete_50px.png"))); // NOI18N
         lblDelete.setText("Xoá");
         lblDelete.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblDelete.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -174,7 +176,7 @@ public final class PnlProduct extends javax.swing.JPanel implements JDModifyProd
 
         lblRefresh.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         lblRefresh.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_repeat_50px_1.png"))); // NOI18N
+        lblRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_repeat_50px_1.png"))); // NOI18N
         lblRefresh.setText("Làm mới");
         lblRefresh.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblRefresh.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -291,25 +293,25 @@ public final class PnlProduct extends javax.swing.JPanel implements JDModifyProd
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddMouseClicked
-        JDModifyProduct jdm = new JDModifyProduct(this.parent, true, dbUtil, this, null);
+        JDModifyProduct jdm = new JDModifyProduct(parent, true, dbUtil, this, null);
         jdm.setVisible(true);
     }//GEN-LAST:event_lblAddMouseClicked
 
     private void lblUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUpdateMouseClicked
         if (!Common.isNullOrEmpty(product)) {
-            JDModifyProduct jdm = new JDModifyProduct(this.parent, true, dbUtil, this, product);
+            JDModifyProduct jdm = new JDModifyProduct(parent, true, dbUtil, this, product);
             jdm.setVisible(true);
         }
     }//GEN-LAST:event_lblUpdateMouseClicked
 
     private void lblSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSearchMouseClicked
-        JDSearchProduct jds = new JDSearchProduct(this.parent, true, dbUtil, this);
+        JDSearchProduct jds = new JDSearchProduct(parent, true, dbUtil, this);
         jds.setVisible(true);
     }//GEN-LAST:event_lblSearchMouseClicked
 
     private void lblDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDeleteMouseClicked
         if (!Common.isNullOrEmpty(product)) {
-            JDDeleteProduct jdd = new JDDeleteProduct(this.parent, true, dbUtil, this, product);
+            JDDeleteProduct jdd = new JDDeleteProduct(parent, true, dbUtil, this, product);
             jdd.setVisible(true);
         }
     }//GEN-LAST:event_lblDeleteMouseClicked

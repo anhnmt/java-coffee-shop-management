@@ -5,12 +5,13 @@
  */
 package coffeeshop.GUI.user;
 
-import coffeeshop.DTO.User;
 import coffeeshop.DAO.impl.UserDao;
+import coffeeshop.DTO.User;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
+
+import javax.swing.*;
 import java.util.Map;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -72,7 +73,7 @@ public class JDDeleteUser extends javax.swing.JDialog {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_trash_can_50px_1.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_trash_can_50px_1.png"))); // NOI18N
         jLabel1.setText("XOÁ NGƯỜI DÙNG");
 
         btnCancel.setBackground(new java.awt.Color(0, 204, 51));
@@ -151,11 +152,11 @@ public class JDDeleteUser extends javax.swing.JDialog {
         Map<String, Object> result = userDao.delete(user.getId());
 
         if ((boolean) result.get("status") == true) {
-            JOptionPane.showMessageDialog(null, "Xoá người dùng thành công!");
+            JOptionPane.showMessageDialog(this, result.get("message"));
             callback.actionUserDelete();
             dispose();
         } else {
-            JOptionPane.showMessageDialog(null, "Xoá người dùng thất bại, lỗi: " + result.get("message") + "!");
+            JOptionPane.showMessageDialog(this, result.get("message"));
             dispose();
         }
     }//GEN-LAST:event_btnDeleteActionPerformed

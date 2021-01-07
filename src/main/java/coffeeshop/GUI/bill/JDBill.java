@@ -7,18 +7,25 @@ package coffeeshop.GUI.bill;
 
 import coffeeshop.DAO.impl.BillDao;
 import coffeeshop.DAO.impl.BillDetailDao;
-import coffeeshop.Util.Common;
-import coffeeshop.Util.DbUtil;
 import coffeeshop.DTO.Bill;
 import coffeeshop.DTO.BillDetail;
-import java.awt.Frame;
-import java.util.List;
-import javax.swing.table.DefaultTableModel;
+import coffeeshop.Util.BaseMessage;
+import coffeeshop.Util.Common;
+import coffeeshop.Util.Constant;
+import coffeeshop.Util.DbUtil;
+import coffeeshop.Util.Excel;
 
-/**
- *
- * @author Minh
- */
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.io.File;
+import java.util.List;
+import javax.swing.Action;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import lombok.extern.log4j.Log4j;
+
+@Log4j
 public final class JDBill extends javax.swing.JDialog {
 
     CallbackBillExit callback;
@@ -31,6 +38,7 @@ public final class JDBill extends javax.swing.JDialog {
 
     BillDao billDao = null;
     BillDetailDao billDetailDao = null;
+    private BaseMessage response;
 
     public interface CallbackBillExit {
 
@@ -106,6 +114,7 @@ public final class JDBill extends javax.swing.JDialog {
         txtBillDiscount = new javax.swing.JTextField();
         lblBillTotalPrice = new javax.swing.JLabel();
         txtBillTotalPrice = new javax.swing.JTextField();
+        btnExportExcel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("THÔNG TIN CHI TIẾT HOÁ ĐƠN");
@@ -119,7 +128,7 @@ public final class JDBill extends javax.swing.JDialog {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         lblTitle.setFont(new java.awt.Font("Segoe UI Semibold", 0, 24)); // NOI18N
-        lblTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_product_50px_2.png"))); // NOI18N
+        lblTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_product_50px_2.png"))); // NOI18N
         lblTitle.setText("THÔNG TIN CHI TIẾT HOÁ ĐƠN");
 
         lblBillId.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
@@ -168,6 +177,18 @@ public final class JDBill extends javax.swing.JDialog {
 
         txtBillTotalPrice.setEditable(false);
 
+        btnExportExcel.setBackground(new java.awt.Color(0, 204, 106));
+        btnExportExcel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnExportExcel.setForeground(new java.awt.Color(255, 255, 255));
+        btnExportExcel.setText("Xuất Excel");
+        btnExportExcel.setBorderPainted(false);
+        btnExportExcel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnExportExcel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportExcelActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -191,6 +212,8 @@ public final class JDBill extends javax.swing.JDialog {
                             .addComponent(txtBillTime, javax.swing.GroupLayout.Alignment.LEADING)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnExportExcel, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -220,7 +243,9 @@ public final class JDBill extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnExportExcel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -247,8 +272,39 @@ public final class JDBill extends javax.swing.JDialog {
         callback.actionBillExit();
     }//GEN-LAST:event_formWindowClosing
 
+    private void btnExportExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportExcelActionPerformed
+        try {
+            Excel excel = new Excel(dbUtil);
+            String table = "Bills";
+            String excelFilePath = excel.getFileName(table.concat("_Export"));
+
+            JFileChooser excelFileChooser = new JFileChooser(".");
+            excelFileChooser.setDialogTitle("Lưu file ...");
+            excelFileChooser.setSelectedFile(new File(excelFilePath));
+            Action details = excelFileChooser.getActionMap().get("viewTypeDetails");
+            details.actionPerformed(null);
+            // Kiểu định dạng file xuất
+            FileNameExtensionFilter fnef = new FileNameExtensionFilter("Files", "xls", "xlsx", "xlsm");
+            //Setting extension for selected file names
+            excelFileChooser.setFileFilter(fnef);
+
+            int chooser = excelFileChooser.showSaveDialog(null);
+
+            if (chooser == JFileChooser.APPROVE_OPTION) {
+                excel.export(table, excelFileChooser.getSelectedFile().getPath());
+                JOptionPane.showMessageDialog(this, "Xuất hoá đơn thành công");
+                callback.actionBillExit();
+                dispose();
+            }
+        } catch (HeadlessException e) {
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(null, response, "btnExportActionPerformed"));
+        }
+    }//GEN-LAST:event_btnExportExcelActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnExit;
+    private javax.swing.JButton btnExportExcel;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblBillDiscount;

@@ -5,25 +5,28 @@
  */
 package coffeeshop.GUI.user;
 
-import coffeeshop.DTO.User;
 import coffeeshop.DAO.impl.UserDao;
+import coffeeshop.DTO.User;
+import coffeeshop.Util.BaseMessage;
 import coffeeshop.Util.Common;
+import coffeeshop.Util.Constant;
 import coffeeshop.Util.DbUtil;
-import java.awt.Color;
+import lombok.extern.log4j.Log4j;
+
+import javax.swing.*;
+import java.awt.*;
 import java.util.Map;
-import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JOptionPane;
 
 /**
- *
  * @author Minh
  */
+@Log4j
 public final class JDModifyUser extends javax.swing.JDialog {
 
     User user;
     CallbackUserModify callback;
     UserDao userDao;
+    private BaseMessage response;
 
     interface CallbackUserModify {
 
@@ -45,18 +48,28 @@ public final class JDModifyUser extends javax.swing.JDialog {
         setLocationRelativeTo(null);
         this.callback = callback;
         this.userDao = new UserDao(dbUtil);
-        loadingRoles();
 
         if (!Common.isNullOrEmpty(user)) {
-            lblTitle.setText("Sửa đổi người dùng");
+            lblTitle.setText("SỬA ĐỔI NGƯỜI DÙNG");
             btnModify.setText("Sửa đổi");
             this.user = user;
             loadingData();
         }
 
+        // Custom Style
+        txtEmail.setBorder(BorderFactory.createCompoundBorder(
+                txtEmail.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+        txtName.setBorder(BorderFactory.createCompoundBorder(
+                txtName.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+        txtPassword.setBorder(BorderFactory.createCompoundBorder(
+                txtPassword.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
         lblNameError.setVisible(false);
         lblEmailError.setVisible(false);
         lblPasswordError.setVisible(false);
+        loadingRoles();
     }
 
     public void loadingData() {
@@ -114,25 +127,25 @@ public final class JDModifyUser extends javax.swing.JDialog {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblTitle.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
-        lblTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_product_50px_2.png"))); // NOI18N
+        lblTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_product_50px_2.png"))); // NOI18N
         lblTitle.setText("THÊM MỚI NGƯỜI DÙNG");
         jPanel1.add(lblTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 11, 547, 60));
 
         lblName.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         lblName.setText("Tên người dùng");
         jPanel1.add(lblName, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 89, 547, 30));
-        jPanel1.add(txtName, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 125, 547, 40));
+        jPanel1.add(txtName, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 547, 40));
 
         lblStatus.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         lblStatus.setText("Trạng thái");
-        jPanel1.add(lblStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 513, 547, 30));
+        jPanel1.add(lblStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 480, 547, 30));
 
         rdoActive.setBackground(new java.awt.Color(255, 255, 255));
         buttonGroup1.add(rdoActive);
         rdoActive.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         rdoActive.setSelected(true);
         rdoActive.setText("Hoạt động");
-        jPanel1.add(rdoActive, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 545, 259, -1));
+        jPanel1.add(rdoActive, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 520, 259, -1));
 
         rdoNonActive.setBackground(new java.awt.Color(255, 255, 255));
         buttonGroup1.add(rdoNonActive);
@@ -143,7 +156,7 @@ public final class JDModifyUser extends javax.swing.JDialog {
                 rdoNonActiveActionPerformed(evt);
             }
         });
-        jPanel1.add(rdoNonActive, new org.netbeans.lib.awtextra.AbsoluteConstraints(271, 545, 286, -1));
+        jPanel1.add(rdoNonActive, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 520, 286, -1));
 
         btnModify.setBackground(new java.awt.Color(0, 204, 106));
         btnModify.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -160,31 +173,34 @@ public final class JDModifyUser extends javax.swing.JDialog {
 
         lblEmail.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         lblEmail.setText("Email");
-        jPanel1.add(lblEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 203, 547, 30));
-        jPanel1.add(txtEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 239, 547, 40));
+        jPanel1.add(lblEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 547, 30));
+        jPanel1.add(txtEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, 547, 40));
 
         lblPermission.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         lblPermission.setText("Quyền");
-        jPanel1.add(lblPermission, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 419, 547, 30));
+        jPanel1.add(lblPermission, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 400, 547, 30));
 
-        jPanel1.add(cboPermission, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 455, 547, 40));
+        jPanel1.add(cboPermission, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 430, 547, 40));
 
+        lblNameError.setFont(new java.awt.Font("Segoe UI Semibold", 0, 11)); // NOI18N
         lblNameError.setForeground(new java.awt.Color(240, 71, 71));
         lblNameError.setText("Không được để trống");
-        jPanel1.add(lblNameError, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 171, 547, -1));
+        jPanel1.add(lblNameError, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, 547, -1));
 
+        lblEmailError.setFont(new java.awt.Font("Segoe UI Semibold", 0, 11)); // NOI18N
         lblEmailError.setForeground(new java.awt.Color(240, 71, 71));
-        lblEmailError.setText("Không được để trổng");
-        jPanel1.add(lblEmailError, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 285, 547, -1));
+        lblEmailError.setText("Không được để trống");
+        jPanel1.add(lblEmailError, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, 547, -1));
 
         lblPassword.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         lblPassword.setText("Mật khẩu");
-        jPanel1.add(lblPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 317, 547, 30));
-        jPanel1.add(txtPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 353, 547, 40));
+        jPanel1.add(lblPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, 547, 30));
+        jPanel1.add(txtPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 320, 547, 40));
 
+        lblPasswordError.setFont(new java.awt.Font("Segoe UI Semibold", 0, 11)); // NOI18N
         lblPasswordError.setForeground(new java.awt.Color(240, 71, 71));
         lblPasswordError.setText("Không được để trổng");
-        jPanel1.add(lblPasswordError, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 399, 547, -1));
+        jPanel1.add(lblPasswordError, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 380, 547, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -255,38 +271,38 @@ public final class JDModifyUser extends javax.swing.JDialog {
             lblNameError.setVisible(false);
             lblEmailError.setVisible(false);
             try {
-                User user = new User();
-                user.setName(name);
-                user.setStatus(status);
-                user.setRole(role);
-                user.setEmail(email);
-                user.setPassword(password);
+                User newUser = new User();
+                newUser.setName(name);
+                newUser.setStatus(status);
+                newUser.setRole(role);
+                newUser.setEmail(email);
+                newUser.setPassword(password);
 
                 if (Common.isNullOrEmpty(user)) {
-                    Map<String, Object> result = userDao.create(user);
+                    Map<String, Object> result = userDao.create(newUser);
 
                     if ((boolean) result.get("status") == true) {
-                        JOptionPane.showMessageDialog(null, "Thêm người dùng thành công!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                         callback.actionUserModify();
                         dispose();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Thêm người dùng thất bại, lỗi: " + result.get("message") + "!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                     }
                 } else {
-                    user.setId(this.user.getId());
-                    System.out.println(user);
-                    Map<String, Object> result = userDao.update(user);
+                    newUser.setId(user.getId());
+                    Map<String, Object> result = userDao.update(newUser);
                     if ((boolean) result.get("status") == true) {
-                        JOptionPane.showMessageDialog(null, "Sửa người dùng thành công!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                         callback.actionUserModify();
                         dispose();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Sửa người dùng thất bại, lỗi: " + result.get("message") + "!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                     }
                 }
 
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            } catch (HeadlessException e) {
+                response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+                log.error(Common.createMessageLog(null, response, "btnModifyActionPerformed"));
             }
         }
 

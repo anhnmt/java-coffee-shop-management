@@ -9,13 +9,14 @@ import coffeeshop.DAO.impl.UserDao;
 import coffeeshop.DTO.User;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
-import java.awt.Frame;
+
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import javax.swing.JOptionPane;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -24,7 +25,7 @@ import javax.swing.table.DefaultTableModel;
 public final class PnlUser extends javax.swing.JPanel implements JDModifyUser.CallbackUserModify, JDDeleteUser.CallbackUserDelete, JDSearchUser.CallbackUserSearch {
 
     Frame parent;
-    List<User> list = new ArrayList<>();
+    List<User> users = new ArrayList<>();
     User user;
     User currentUser;
     UserDao userDao;
@@ -47,20 +48,21 @@ public final class PnlUser extends javax.swing.JPanel implements JDModifyUser.Ca
     }
 
     public void loading(User newUser) {
-        list = userDao.getAll(newUser);
+        user = null;
+        users = userDao.getAll(newUser);
 
         String columns[] = {"Id", "Tên", "Email", "Quyền", "Trạng thái"};
         DefaultTableModel dtm = new DefaultTableModel(columns, 0);
 
-        if (!Common.isNullOrEmpty(list)) {
-            list.forEach(obj -> {
+        if (!Common.isNullOrEmpty(users)) {
+            users.forEach(obj -> {
                 dtm.addRow(new Object[]{obj.getId(), obj.getName(), obj.getEmail(), obj.getRole() == 1 ? "Super Admin" : "Nhân viên", obj.getStatus() == true ? "Hoạt động" : "Không hoạt động"});
             });
 
             tblUser.getSelectionModel().addListSelectionListener((ListSelectionEvent lse) -> {
                 int position = tblUser.getSelectedRow();
                 if (position >= 0) {
-                    user = list.get(position);
+                    user = users.get(position);
                 }
 
             });
@@ -114,7 +116,7 @@ public final class PnlUser extends javax.swing.JPanel implements JDModifyUser.Ca
 
         lblAdd.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         lblAdd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_add_50px_2.png"))); // NOI18N
+        lblAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_add_50px_2.png"))); // NOI18N
         lblAdd.setText("Thêm mới");
         lblAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblAdd.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -128,7 +130,7 @@ public final class PnlUser extends javax.swing.JPanel implements JDModifyUser.Ca
 
         lblUpdate.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         lblUpdate.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_update_50px.png"))); // NOI18N
+        lblUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_update_50px.png"))); // NOI18N
         lblUpdate.setText("Sửa đổi");
         lblUpdate.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblUpdate.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -142,7 +144,7 @@ public final class PnlUser extends javax.swing.JPanel implements JDModifyUser.Ca
 
         lblSearch.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         lblSearch.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_search_50px_1.png"))); // NOI18N
+        lblSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_search_50px_1.png"))); // NOI18N
         lblSearch.setText("Tìm kiếm");
         lblSearch.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblSearch.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -156,7 +158,7 @@ public final class PnlUser extends javax.swing.JPanel implements JDModifyUser.Ca
 
         lblDelete.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         lblDelete.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_delete_50px.png"))); // NOI18N
+        lblDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_delete_50px.png"))); // NOI18N
         lblDelete.setText("Xoá");
         lblDelete.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblDelete.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -170,7 +172,7 @@ public final class PnlUser extends javax.swing.JPanel implements JDModifyUser.Ca
 
         lblRefresh.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         lblRefresh.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_repeat_50px_1.png"))); // NOI18N
+        lblRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_repeat_50px_1.png"))); // NOI18N
         lblRefresh.setText("Làm mới");
         lblRefresh.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblRefresh.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -287,28 +289,28 @@ public final class PnlUser extends javax.swing.JPanel implements JDModifyUser.Ca
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddMouseClicked
-        JDModifyUser jdm = new JDModifyUser(this.parent, true, dbUtil, this, null);
+        JDModifyUser jdm = new JDModifyUser(parent, true, dbUtil, this, null);
         jdm.setVisible(true);
     }//GEN-LAST:event_lblAddMouseClicked
 
     private void lblUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUpdateMouseClicked
         if (!Common.isNullOrEmpty(user)) {
-            JDModifyUser jdm = new JDModifyUser(this.parent, true, dbUtil, this, user);
+            JDModifyUser jdm = new JDModifyUser(parent, true, dbUtil, this, user);
             jdm.setVisible(true);
         }
     }//GEN-LAST:event_lblUpdateMouseClicked
 
     private void lblSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSearchMouseClicked
-        JDSearchUser jds = new JDSearchUser(this.parent, true, this);
+        JDSearchUser jds = new JDSearchUser(parent, true, this);
         jds.setVisible(true);
     }//GEN-LAST:event_lblSearchMouseClicked
 
     private void lblDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDeleteMouseClicked
         if (!Common.isNullOrEmpty(user)) {
             if (Objects.equals(currentUser.getId(), user.getId())) {
-                JOptionPane.showMessageDialog(null, "Bạn không thể xoá tài khoản của chính bạn!");
+                JOptionPane.showMessageDialog(this, "Bạn không thể xoá tài khoản của chính bạn!");
             } else {
-                JDDeleteUser jdd = new JDDeleteUser(this.parent, true, dbUtil, this, user);
+                JDDeleteUser jdd = new JDDeleteUser(parent, true, dbUtil, this, user);
                 jdd.setVisible(true);
             }
         }
@@ -317,7 +319,6 @@ public final class PnlUser extends javax.swing.JPanel implements JDModifyUser.Ca
     private void lblRefreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRefreshMouseClicked
         loading(null);
     }//GEN-LAST:event_lblRefreshMouseClicked
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;

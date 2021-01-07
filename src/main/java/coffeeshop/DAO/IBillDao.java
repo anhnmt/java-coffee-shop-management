@@ -1,10 +1,13 @@
 package coffeeshop.DAO;
 
 import coffeeshop.DTO.Bill;
+
 import java.util.List;
 import java.util.Map;
 
 public interface IBillDao {
+
+    public int count();
 
     public List<Bill> getAll(Bill bill);
 
