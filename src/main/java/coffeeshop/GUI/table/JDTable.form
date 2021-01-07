@@ -88,7 +88,7 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="pnlBill" max="32767" attributes="0"/>
-                      <Component id="scrollPaneBillDetail" max="32767" attributes="0"/>
+                      <Component id="scrollPaneBillDetail" pref="657" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -349,20 +349,15 @@
                           <Component id="lblTableName" alignment="0" max="32767" attributes="0"/>
                           <Component id="lblAreaName" alignment="0" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="txtTableId" alignment="1" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="txtUserId" alignment="0" pref="251" max="32767" attributes="0"/>
                           <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="txtUserId" alignment="1" min="-2" pref="251" max="-2" attributes="0"/>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Component id="txtTotalPrice" max="32767" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="lblVND" min="-2" pref="30" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
+                              <Component id="txtTotalPrice" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="lblVND" min="-2" pref="30" max="-2" attributes="0"/>
                           </Group>
+                          <Component id="txtTableId" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
