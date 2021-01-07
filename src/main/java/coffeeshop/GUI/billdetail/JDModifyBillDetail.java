@@ -6,19 +6,18 @@
 package coffeeshop.GUI.billdetail;
 
 import coffeeshop.DAO.impl.BillDetailDao;
-import java.awt.Color;
-import java.util.Map;
-import javax.swing.BorderFactory;
-import javax.swing.JOptionPane;
-import coffeeshop.Util.Common;
-import coffeeshop.Util.DbUtil;
 import coffeeshop.DTO.BillDetail;
-import javax.swing.JDialog;
+import coffeeshop.Util.BaseMessage;
+import coffeeshop.Util.Common;
+import coffeeshop.Util.Constant;
+import coffeeshop.Util.DbUtil;
+import lombok.extern.log4j.Log4j;
 
-/**
- *
- * @author Minh
- */
+import javax.swing.*;
+import java.awt.*;
+import java.util.Map;
+
+@Log4j
 public final class JDModifyBillDetail extends javax.swing.JDialog {
 
     CallbackBillDetailModify callback;
@@ -26,6 +25,7 @@ public final class JDModifyBillDetail extends javax.swing.JDialog {
 
     BillDetail billDetail = null;
     BillDetailDao billDetailDao = null;
+    private BaseMessage response;
 
     public interface CallbackBillDetailModify {
 
@@ -58,6 +58,7 @@ public final class JDModifyBillDetail extends javax.swing.JDialog {
             txtProductAmount.setText(String.valueOf(billDetail.getAmount()));
         }
 
+        // Custom Style
         txtProductName.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(240, 240, 240)),
                 BorderFactory.createEmptyBorder(5, 8, 5, 8)));
@@ -92,13 +93,13 @@ public final class JDModifyBillDetail extends javax.swing.JDialog {
         lblProductAmount = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Cập nhật thông tin hoá đơn | Quản lý quán cà phê - Version 1.0");
+        setTitle("CẬP NHẬT THÔNG TIN HOÁ ĐƠN");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         lblTitle.setFont(new java.awt.Font("Segoe UI Semibold", 0, 24)); // NOI18N
-        lblTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_product_50px_2.png"))); // NOI18N
+        lblTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_product_50px_2.png"))); // NOI18N
         lblTitle.setText("SỬA THÔNG TIN HOÁ ĐƠN");
 
         lblProductName.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
@@ -234,15 +235,16 @@ public final class JDModifyBillDetail extends javax.swing.JDialog {
 
                 Map<String, Object> result = billDetailDao.update(billDetail);
                 if ((boolean) result.get("status") == true) {
-                    JOptionPane.showMessageDialog(this, "Cập nhật thông tin hoá đơn thành công!");
+                    JOptionPane.showMessageDialog(this, result.get("message"));
                     callback.actionBillDetailModify();
                     dispose();
                 } else {
-                    JOptionPane.showMessageDialog(this, "Cập nhật thất bại, lỗi: " + result.get("message") + "!");
+                    JOptionPane.showMessageDialog(this, result.get("message"));
                 }
 
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            } catch (Exception e) {
+                response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+                log.error(Common.createMessageLog(null, response, "btnModifyActionPerformed"));
             }
         }
     }//GEN-LAST:event_btnModifyActionPerformed

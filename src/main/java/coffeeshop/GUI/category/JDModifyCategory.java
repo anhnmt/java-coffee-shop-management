@@ -7,18 +7,22 @@ package coffeeshop.GUI.category;
 
 import coffeeshop.DAO.impl.CategoryDao;
 import coffeeshop.DTO.Category;
+import coffeeshop.Util.BaseMessage;
 import coffeeshop.Util.Common;
+import coffeeshop.Util.Constant;
 import coffeeshop.Util.DbUtil;
-import java.awt.Color;
+import lombok.extern.log4j.Log4j;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Map;
-import javax.swing.BorderFactory;
-import javax.swing.JOptionPane;
 
 /**
- *
  * @author Minh
  */
+
+@Log4j
 public final class JDModifyCategory extends javax.swing.JDialog {
 
     /**
@@ -28,6 +32,7 @@ public final class JDModifyCategory extends javax.swing.JDialog {
     Category category;
     DbUtil dbUtil;
     CategoryDao categoryDao;
+    private BaseMessage response;
 
     interface CallbackModify {
 
@@ -55,10 +60,15 @@ public final class JDModifyCategory extends javax.swing.JDialog {
             this.category = category;
             loadData();
         }
+
+        // Custom Style
+        txtName.setBorder(BorderFactory.createCompoundBorder(
+                txtName.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
     }
 
     public void loadData() {
-        lblTitle.setText("Sửa đổi danh mục");
+        lblTitle.setText("SỬA ĐỔI DANH MỤC");
         btnModify.setText("Sửa đổi");
         txtName.setText(category.getName());
         rdoActive.setSelected(category.getStatus());
@@ -86,12 +96,12 @@ public final class JDModifyCategory extends javax.swing.JDialog {
         lblNameError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Cập nhật danh mục | Quản lý quán cà phê - Version 1.0");
+        setTitle("CẬP NHẬT DANH MỤC");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         lblTitle.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
-        lblTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_categorize_50px.png"))); // NOI18N
+        lblTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_categorize_50px.png"))); // NOI18N
         lblTitle.setText("THÊM MỚI DANH MỤC");
 
         lblName.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
@@ -212,11 +222,11 @@ public final class JDModifyCategory extends javax.swing.JDialog {
                     Map<String, Object> result = categoryDao.create(category);
 
                     if ((boolean) result.get("status") == true) {
-                        JOptionPane.showMessageDialog(null, "Thêm danh mục thành công!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                         callback.actionCategoryModify();
                         dispose();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Thêm danh mục thất bại, lỗi: " + result.get("message") + "!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                     }
                 } else {
                     category.setId(this.category.getId());
@@ -226,15 +236,16 @@ public final class JDModifyCategory extends javax.swing.JDialog {
                     Map<String, Object> result = categoryDao.update(category);
 
                     if ((boolean) result.get("status") == true) {
-                        JOptionPane.showMessageDialog(null, "Sửa đổi danh mục thành công!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                         callback.actionCategoryModify();
                         dispose();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Sửa đổi danh mục thất bại, lỗi: " + result.get("message") + "!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                     }
                 }
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            } catch (Exception e) {
+                response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+                log.error(Common.createMessageLog(null, response, "btnModifyActionPerformed"));
             }
         }
 

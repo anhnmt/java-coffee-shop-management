@@ -6,23 +6,23 @@
 package coffeeshop.GUI.table;
 
 import coffeeshop.DAO.impl.AreaDao;
+import coffeeshop.DAO.impl.TableDao;
 import coffeeshop.DTO.Area;
-import java.awt.Color;
+import coffeeshop.DTO.Table;
+import coffeeshop.Util.BaseMessage;
+import coffeeshop.Util.Common;
+import coffeeshop.Util.Constant;
+import coffeeshop.Util.DbUtil;
+import lombok.extern.log4j.Log4j;
+
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JOptionPane;
-import coffeeshop.DTO.Table;
-import coffeeshop.DAO.impl.TableDao;
-import coffeeshop.Util.Common;
-import coffeeshop.Util.DbUtil;
+import java.util.Objects;
 
-/**
- *
- * @author Minh
- */
+@Log4j
 public final class JDModifyTable extends javax.swing.JDialog {
 
     CallbackTableModify callback;
@@ -34,6 +34,7 @@ public final class JDModifyTable extends javax.swing.JDialog {
 
     AreaDao areaDao;
     TableDao tableDao;
+    private BaseMessage response;
 
     public interface CallbackTableModify {
 
@@ -61,31 +62,35 @@ public final class JDModifyTable extends javax.swing.JDialog {
 
         this.areaDao = new AreaDao(dbUtil);
         this.tableDao = new TableDao(dbUtil);
-        loadArea();
 
         if (!Common.isNullOrEmpty(area)) {
             areas.forEach(obj -> {
-                if (obj.getId() == area.getId()) {
+                if (Objects.equals(obj.getId(), area.getId())) {
                     cboArea.setSelectedItem(obj);
                 }
             });
         }
 
         if (!Common.isNullOrEmpty(table)) {
-            lblTitle.setText("Sửa đổi sản phẩm");
+            lblTitle.setText("SỬA ĐỔI BÀN");
             btnModify.setText("Sửa đổi");
             txtName.setText(table.getName());
             rdoActive.setSelected(table.getStatus());
             rdoNonActive.setSelected(table.getStatus() == false);
 
             areas.forEach(obj -> {
-                if (obj.getId() == table.getArea_id()) {
+                if (Objects.equals(obj.getId(), table.getArea_id())) {
                     cboArea.setSelectedItem(obj);
                 }
             });
         }
 
+        // Custom Style
+        txtName.setBorder(BorderFactory.createCompoundBorder(
+                txtName.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
         lblNameError.setVisible(false);
+        loadArea();
     }
 
     public void loadArea() {
@@ -120,13 +125,13 @@ public final class JDModifyTable extends javax.swing.JDialog {
         lblNameError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Cập nhật bàn | Quản lý quán cà phê - Version 1.0");
+        setTitle("CẬP NHẬT BÀN");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         lblTitle.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
-        lblTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_product_50px_2.png"))); // NOI18N
+        lblTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_product_50px_2.png"))); // NOI18N
         lblTitle.setText("THÊM MỚI BÀN");
 
         lblName.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
@@ -264,26 +269,27 @@ public final class JDModifyTable extends javax.swing.JDialog {
                     Map<String, Object> result = tableDao.create(objTable);
 
                     if ((boolean) result.get("status") == true) {
-                        JOptionPane.showMessageDialog(null, "Thêm bàn thành công!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                         callback.actionTableModify();
                         dispose();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Thêm bàn thất bại, lỗi: " + result.get("message") + "!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                     }
                 } else {
                     objTable.setId(table.getId());
                     Map<String, Object> result = tableDao.update(objTable);
+
                     if ((boolean) result.get("status") == true) {
-                        JOptionPane.showMessageDialog(null, "Sửa bàn thành công!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                         callback.actionTableModify();
                         dispose();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Sửa bàn thất bại, lỗi: " + result.get("message") + "!");
+                        JOptionPane.showMessageDialog(this, result.get("message"));
                     }
                 }
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            } catch (Exception e) {
+                response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+                log.error(Common.createMessageLog(null, response, "btnModifyActionPerformed"));
             }
         }
 

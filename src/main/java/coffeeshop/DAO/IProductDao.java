@@ -1,10 +1,13 @@
 package coffeeshop.DAO;
 
 import coffeeshop.DTO.Product;
+
 import java.util.List;
 import java.util.Map;
 
 public interface IProductDao {
+
+    public int count();
 
     public List<Product> getAll(Product product, Float fromPrice, Float toPrice);
 

@@ -29,6 +29,7 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
+    <Property name="title" type="java.lang.String" value="TH&#xd4;NG TIN CHI TI&#x1ebe;T B&#xc0;N"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -80,14 +81,14 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="scrollPaneProduct" pref="0" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="pnlAddProduct" max="32767" attributes="0"/>
+                      <Component id="scrollPaneProduct" pref="487" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="pnlBill" max="32767" attributes="0"/>
-                      <Component id="scrollPaneBillDetail" max="32767" attributes="0"/>
+                      <Component id="scrollPaneBillDetail" pref="679" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -103,7 +104,7 @@
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="scrollPaneBillDetail" pref="455" max="32767" attributes="0"/>
+                      <Component id="scrollPaneBillDetail" pref="430" max="32767" attributes="0"/>
                       <Component id="scrollPaneProduct" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -113,45 +114,53 @@
       </Layout>
       <SubComponents>
         <Container class="javax.swing.JPanel" name="pnlAddProduct">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+            </Property>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                <LineBorder/>
+              </Border>
+            </Property>
+          </Properties>
 
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="lblProductId" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="lblProductName" alignment="0" pref="81" max="32767" attributes="0"/>
-                              </Group>
+                          <Group type="102" attributes="0">
+                              <Component id="btnAddProduct" min="-2" pref="115" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
+                              <Component id="btnChangeTable" min="-2" pref="115" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="txtProductId" max="32767" attributes="0"/>
-                                  <Component id="txtProductName" max="32767" attributes="0"/>
+                                  <Component id="lblProductPrice" min="-2" pref="71" max="-2" attributes="0"/>
+                                  <Component id="lblProductName" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="btnAddProduct" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="133" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="lblProductPrice" max="32767" attributes="0"/>
-                                  <Component id="lblProductAmount" min="-2" pref="55" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="txtProductPrice" max="32767" attributes="0"/>
-                                  <Component id="txtProductAmount" min="-2" pref="120" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="txtProductName" max="32767" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="txtProductPrice" min="-2" pref="170" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" attributes="0">
+                                              <Component id="lblProductAmount" min="-2" pref="55" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="txtProductAmount" max="32767" attributes="0"/>
+                                          </Group>
+                                          <Component id="lblProductAmountError" pref="199" max="32767" attributes="0"/>
+                                      </Group>
+                                  </Group>
                               </Group>
                           </Group>
-                          <Component id="lblProductAmountError" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -160,43 +169,30 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="lblProductId" alignment="3" min="-2" pref="14" max="-2" attributes="0"/>
-                          <Component id="txtProductId" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                          <Component id="lblProductName" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtProductName" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="lblProductAmount" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtProductAmount" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                           <Component id="lblProductPrice" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="txtProductPrice" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="lblProductName" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtProductName" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                          <Component id="lblProductAmount" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtProductAmount" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="lblProductAmountError" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="btnAddProduct" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                              <Component id="btnChangeTable" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="btnAddProduct" min="-2" pref="30" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="lblProductAmountError" min="-2" max="-2" attributes="0"/>
                       </Group>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JLabel" name="lblProductId">
-              <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Segoe UI Semibold" size="12" style="0"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="M&#xe3; s&#x1ea3;n ph&#x1ea9;m:"/>
-              </Properties>
-            </Component>
             <Component class="javax.swing.JLabel" name="lblProductName">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -221,15 +217,6 @@
                 <Property name="text" type="java.lang.String" value="S&#x1ed1; l&#x1b0;&#x1ee3;ng:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="txtProductId">
-              <Properties>
-                <Property name="editable" type="boolean" value="false"/>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Segoe UI Semibold" size="12" style="0"/>
-                </Property>
-                <Property name="focusable" type="boolean" value="false"/>
-              </Properties>
-            </Component>
             <Component class="javax.swing.JTextField" name="txtProductName">
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
@@ -250,6 +237,7 @@
             </Component>
             <Component class="javax.swing.JTextField" name="txtProductAmount">
               <Properties>
+                <Property name="editable" type="boolean" value="false"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI Semibold" size="12" style="0"/>
                 </Property>
@@ -257,10 +245,23 @@
             </Component>
             <Component class="javax.swing.JButton" name="btnAddProduct">
               <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="45" green="a7" red="28" type="rgb"/>
+                </Property>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Segoe UI Semibold" size="12" style="0"/>
+                  <Font name="Segoe UI Semibold" size="14" style="0"/>
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Th&#xea;m s&#x1ea3;n ph&#x1ea9;m"/>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+                    <EmptyBorder/>
+                  </Border>
+                </Property>
+                <Property name="borderPainted" type="boolean" value="false"/>
+                <Property name="focusPainted" type="boolean" value="false"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAddProductActionPerformed"/>
@@ -277,53 +278,84 @@
                 <Property name="text" type="java.lang.String" value="Kh&#xf4;ng &#x111;&#x1b0;&#x1ee3;c &#x111;&#x1ec3; tr&#x1ed1;ng"/>
               </Properties>
             </Component>
+            <Component class="javax.swing.JButton" name="btnChangeTable">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="b8" green="a2" red="17" type="rgb"/>
+                </Property>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI Semibold" size="14" style="0"/>
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="&#x110;&#x1ed5;i b&#xe0;n"/>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+                    <EmptyBorder/>
+                  </Border>
+                </Property>
+                <Property name="borderPainted" type="boolean" value="false"/>
+                <Property name="focusPainted" type="boolean" value="false"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnChangeTableActionPerformed"/>
+              </Events>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="pnlBill">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+            </Property>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                <LineBorder/>
+              </Border>
+            </Property>
+          </Properties>
 
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="btnBook" min="-2" pref="117" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="btnCheckout" min="-2" pref="117" max="-2" attributes="0"/>
-                          </Group>
+                      <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <Component id="lblBillId" min="-2" pref="72" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="txtBillId" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
+                              <Component id="btnBook" min="-2" pref="97" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                              <Component id="btnCheckout" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                              <Component id="btnDeleteBill" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
                               <Component id="lblBillTime" min="-2" pref="72" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="txtBillTime" min="-2" pref="213" max="-2" attributes="0"/>
+                              <Component id="txtBillTime" max="32767" attributes="0"/>
                           </Group>
                       </Group>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="86" max="-2" attributes="0"/>
-                              <Component id="lblTotalPrice" min="-2" pref="67" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="txtTotalPrice" min="-2" pref="170" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Component id="lblTotalPrice" max="32767" attributes="0"/>
+                          <Component id="lblTableName" alignment="0" max="32767" attributes="0"/>
+                          <Component id="lblAreaName" alignment="0" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="txtUserId" alignment="0" pref="251" max="32767" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="txtTotalPrice" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="lblVND" min="-2" pref="30" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="lblAreaName" max="32767" attributes="0"/>
-                                  <Component id="lblTableName" max="32767" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="txtUserId" max="32767" attributes="0"/>
-                                  <Component id="txtTableId" max="32767" attributes="0"/>
-                              </Group>
-                          </Group>
+                          <Component id="txtTableId" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -339,7 +371,7 @@
                                   <Component id="lblBillId" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="txtBillId" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="lblBillTime" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="txtBillTime" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
@@ -350,24 +382,27 @@
                                   <Component id="lblTableName" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="txtTableId" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="lblAreaName" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="txtUserId" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="btnCheckout" alignment="1" min="-2" pref="30" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="btnBook" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                               <Component id="txtTotalPrice" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                               <Component id="lblVND" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="lblTotalPrice" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                              <Component id="btnBook" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
+                              <Component id="btnCheckout" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
+                              <Component id="btnDeleteBill" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -389,17 +424,6 @@
                 </Property>
                 <Property name="focusable" type="boolean" value="false"/>
               </Properties>
-            </Component>
-            <Component class="javax.swing.JButton" name="btnBook">
-              <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Segoe UI Semibold" size="12" style="0"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="&#x110;&#x1eb7;t b&#xe0;n"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBookActionPerformed"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="lblBillTime">
               <Properties>
@@ -477,24 +501,78 @@
                 <Property name="text" type="java.lang.String" value="T&#x1ed5;ng ti&#x1ec1;n:"/>
               </Properties>
             </Component>
+            <Component class="javax.swing.JButton" name="btnBook">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="7b" red="0" type="rgb"/>
+                </Property>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI Semibold" size="14" style="0"/>
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="&#x110;&#x1eb7;t b&#xe0;n"/>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+                    <EmptyBorder/>
+                  </Border>
+                </Property>
+                <Property name="borderPainted" type="boolean" value="false"/>
+                <Property name="focusPainted" type="boolean" value="false"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBookActionPerformed"/>
+              </Events>
+            </Component>
             <Component class="javax.swing.JButton" name="btnCheckout">
               <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="7b" red="0" type="rgb"/>
+                </Property>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Segoe UI Semibold" size="12" style="0"/>
+                  <Font name="Segoe UI Semibold" size="14" style="0"/>
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Thanh to&#xe1;n"/>
+                <Property name="borderPainted" type="boolean" value="false"/>
+                <Property name="focusPainted" type="boolean" value="false"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCheckoutActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="btnDeleteBill">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="45" green="35" red="dc" type="rgb"/>
+                </Property>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI Semibold" size="14" style="0"/>
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Hu&#x1ef7; &#x111;&#x1a1;n"/>
+                <Property name="borderPainted" type="boolean" value="false"/>
+                <Property name="focusPainted" type="boolean" value="false"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDeleteBillActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JScrollPane" name="scrollPaneBillDetail">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+            </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                <EmptyBorder/>
+              <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                <LineBorder/>
               </Border>
             </Property>
             <Property name="componentPopupMenu" type="javax.swing.JPopupMenu" editor="org.netbeans.modules.form.ComponentChooserEditor">
@@ -509,6 +587,9 @@
           <SubComponents>
             <Component class="javax.swing.JTable" name="tblBillDetail">
               <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI Semibold" size="12" style="0"/>
+                </Property>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="4" rowCount="4">
                     <Column editable="true" title="Title 1" type="java.lang.Object"/>
@@ -517,6 +598,7 @@
                     <Column editable="true" title="Title 4" type="java.lang.Object"/>
                   </Table>
                 </Property>
+                <Property name="autoResizeMode" type="int" value="4"/>
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tblBillDetailMouseClicked"/>
@@ -526,9 +608,12 @@
         </Container>
         <Container class="javax.swing.JScrollPane" name="scrollPaneProduct">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+            </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                <EmptyBorder/>
+              <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                <LineBorder/>
               </Border>
             </Property>
           </Properties>
@@ -548,6 +633,7 @@
                     <Column editable="true" title="Title 4" type="java.lang.Object"/>
                   </Table>
                 </Property>
+                <Property name="autoResizeMode" type="int" value="4"/>
               </Properties>
             </Component>
           </SubComponents>

@@ -1,10 +1,13 @@
 package coffeeshop.DAO;
 
 import coffeeshop.DTO.User;
+
 import java.util.List;
 import java.util.Map;
 
 public interface IUserDao {
+
+    public int count();
 
     public List<User> getAll(User user);
 

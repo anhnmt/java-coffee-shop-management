@@ -3,7 +3,9 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-*.log
+logs/
+**/*.log
+**/*.xlsx
 
 ### STS ###
 .apt_generated

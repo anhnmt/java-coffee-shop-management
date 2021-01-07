@@ -1,10 +1,13 @@
 package coffeeshop.DAO;
 
 import coffeeshop.DTO.Category;
+
 import java.util.List;
 import java.util.Map;
 
 public interface ICategoryDao {
+
+    public int count();
 
     public List<Category> getAll(Category category);
 

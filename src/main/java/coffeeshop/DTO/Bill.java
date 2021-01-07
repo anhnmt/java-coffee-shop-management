@@ -1,9 +1,10 @@
 package coffeeshop.DTO;
 
-import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
@@ -15,7 +16,6 @@ public class Bill implements Serializable {
     private Integer table_id;
     private Float total_price;
     private Float discount;
-    private String note;
     private Boolean status;
     private String created_at;
 

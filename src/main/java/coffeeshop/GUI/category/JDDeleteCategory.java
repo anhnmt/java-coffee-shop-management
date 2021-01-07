@@ -5,11 +5,12 @@
  */
 package coffeeshop.GUI.category;
 
-import coffeeshop.DTO.Category;
 import coffeeshop.DAO.impl.CategoryDao;
+import coffeeshop.DTO.Category;
 import coffeeshop.Util.DbUtil;
+
+import javax.swing.*;
 import java.util.Map;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -65,12 +66,12 @@ public class JDDeleteCategory extends javax.swing.JDialog {
         btnDelete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Xoá danh mục | Quản lý quán cà phê - Version 1.0");
+        setTitle("XOÁ DANH MỤC");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coffeeshop/assets/img/icons8_trash_can_50px_1.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_trash_can_50px_1.png"))); // NOI18N
         jLabel1.setText("XOÁ DANH MỤC");
 
         btnCancel.setBackground(new java.awt.Color(0, 204, 51));
@@ -149,11 +150,11 @@ public class JDDeleteCategory extends javax.swing.JDialog {
         Map<String, Object> result = categoryDao.delete(category.getId());
 
         if ((boolean) result.get("status") == true) {
-            JOptionPane.showMessageDialog(null, "Xoá danh mục thành công!");
+            JOptionPane.showMessageDialog(this, result.get("message"));
             callback.actionCategoryDelete();
             dispose();
         } else {
-            JOptionPane.showMessageDialog(null, "Xoá danh mục thất bại, lỗi: " + result.get("message") + "!");
+            JOptionPane.showMessageDialog(this, result.get("message"));
             dispose();
         }
     }//GEN-LAST:event_btnDeleteActionPerformed

@@ -1,5 +1,8 @@
 package coffeeshop.Util;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -15,6 +18,12 @@ import java.util.Set;
  */
 public class Common {
 
+    // Lấy thời gian của hệ thống
+    public static Long getTimeStamp() {
+        return System.currentTimeMillis();
+    }
+
+    // Kiếm tra null hoặc rỗng
     public static boolean isNullOrEmpty(Object obj) {
         if (obj == null) {
             return true;
@@ -39,6 +48,7 @@ public class Common {
         return false;
     }
 
+    // Kiểm tra là số nguyên
     public static boolean isInteger(String s) {
         try {
             Integer.parseInt(s);
@@ -46,5 +56,30 @@ public class Common {
         } catch (NumberFormatException ex) {
             return false;
         }
+    }
+
+    // Tạo message log
+    public static String createMessageLog(Object input, Object response, String methodName) {
+        StringBuilder sb = new StringBuilder();
+        ObjectMapper objectMapper = new ObjectMapper();
+        sb.append(getTimeStamp());
+
+        try {
+            if (!isNullOrEmpty(input)) {
+                sb.append("_").append(objectMapper.writeValueAsString(input));
+            }
+
+            if (!isNullOrEmpty(methodName)) {
+                sb.append("_").append(objectMapper.writeValueAsString(methodName));
+            }
+
+            if (!isNullOrEmpty(response)) {
+                sb.append("_").append(objectMapper.writeValueAsString(response));
+            }
+        } catch (JsonProcessingException e) {
+            e.getMessage();
+        }
+
+        return sb.toString();
     }
 }
