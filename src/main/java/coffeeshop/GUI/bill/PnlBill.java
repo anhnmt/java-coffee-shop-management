@@ -8,20 +8,27 @@ package coffeeshop.GUI.bill;
 import coffeeshop.DAO.impl.BillDao;
 import coffeeshop.DTO.Bill;
 import coffeeshop.DTO.User;
+import coffeeshop.Util.BaseMessage;
 import coffeeshop.Util.Common;
+import coffeeshop.Util.Constant;
 import coffeeshop.Util.DbUtil;
+import coffeeshop.Util.Excel;
 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.Action;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
-/**
- *
- * @author Minh
- */
-public class PnlBill extends javax.swing.JPanel implements JDSearchBill.CallbackBillSearch, JDDeleteBill.CallbackBillDelete, JDBill.CallbackBillExit, JDExportBill.CallbackBillExport {
+import lombok.extern.log4j.Log4j;
+
+@Log4j
+public class PnlBill extends javax.swing.JPanel implements JDSearchBill.CallbackBillSearch, JDDeleteBill.CallbackBillDelete, JDBill.CallbackBillExit {
 
     Frame parent;
     DbUtil dbUtil;
@@ -30,6 +37,7 @@ public class PnlBill extends javax.swing.JPanel implements JDSearchBill.Callback
     List<Bill> bills = new ArrayList<>();
 
     BillDao billDao;
+    private BaseMessage response;
 
     /**
      * Creates new form PnlCategory
@@ -321,8 +329,33 @@ public class PnlBill extends javax.swing.JPanel implements JDSearchBill.Callback
     }//GEN-LAST:event_lblRefreshMouseClicked
 
     private void lblExportMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblExportMouseClicked
-        JDExportBill jdeb = new JDExportBill(parent, true, dbUtil, this);
-        jdeb.setVisible(true);
+        if (!Common.isNullOrEmpty(bills)) {
+            try {
+                Excel excel = new Excel(dbUtil);
+                String table = "Bills";
+                String excelFilePath = excel.getFileName(table.concat("_Export"));
+
+                JFileChooser excelFileChooser = new JFileChooser(".");
+                excelFileChooser.setDialogTitle("Lưu file ...");
+                excelFileChooser.setSelectedFile(new File(excelFilePath));
+                Action details = excelFileChooser.getActionMap().get("viewTypeDetails");
+                details.actionPerformed(null);
+                // Kiểu định dạng file xuất
+                FileNameExtensionFilter fnef = new FileNameExtensionFilter("Files", "xls", "xlsx", "xlsm");
+                //Setting extension for selected file names
+                excelFileChooser.setFileFilter(fnef);
+
+                int chooser = excelFileChooser.showSaveDialog(null);
+
+                if (chooser == JFileChooser.APPROVE_OPTION) {
+                    excel.export(table, excelFileChooser.getSelectedFile().getPath());
+                    JOptionPane.showMessageDialog(this, "Xuất hoá đơn thành công");
+                }
+            } catch (HeadlessException e) {
+                response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+                log.error(Common.createMessageLog(null, response, "btnExportActionPerformed"));
+            }
+        }
     }//GEN-LAST:event_lblExportMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -352,10 +385,5 @@ public class PnlBill extends javax.swing.JPanel implements JDSearchBill.Callback
     @Override
     public void actionBillSearch(Bill bill) {
         loading(bill);
-    }
-
-    @Override
-    public void actionBillExport() {
-        loading(null);
     }
 }

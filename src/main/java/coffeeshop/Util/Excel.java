@@ -44,8 +44,6 @@ public class Excel {
     }
 
     public void export(String table, String file) {
-        String excelFilePath = getFileName(table.concat("_Export"));
-
         String sql = "SELECT * FROM ".concat(table);
 
         try {
@@ -59,7 +57,7 @@ public class Excel {
 
             writeDataLines(rs, workbook, sheet);
 
-            FileOutputStream outputStream = new FileOutputStream(excelFilePath);
+            FileOutputStream outputStream = new FileOutputStream(file);
             workbook.write(outputStream);
         } catch (IOException | SQLException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
