@@ -8,8 +8,8 @@ package coffeeshop.GUI.bill;
 import coffeeshop.DTO.Bill;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
-import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
+
+import javax.swing.*;
 
 /**
  *

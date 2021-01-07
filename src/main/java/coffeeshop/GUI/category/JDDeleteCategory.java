@@ -5,11 +5,12 @@
  */
 package coffeeshop.GUI.category;
 
-import coffeeshop.DTO.Category;
 import coffeeshop.DAO.impl.CategoryDao;
+import coffeeshop.DTO.Category;
 import coffeeshop.Util.DbUtil;
+
+import javax.swing.*;
 import java.util.Map;
-import javax.swing.JOptionPane;
 
 /**
  *

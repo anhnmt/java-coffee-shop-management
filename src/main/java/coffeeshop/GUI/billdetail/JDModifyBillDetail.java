@@ -6,17 +6,16 @@
 package coffeeshop.GUI.billdetail;
 
 import coffeeshop.DAO.impl.BillDetailDao;
-import java.awt.Color;
-import java.util.Map;
-import javax.swing.BorderFactory;
-import javax.swing.JOptionPane;
-import coffeeshop.Util.Common;
-import coffeeshop.Util.DbUtil;
 import coffeeshop.DTO.BillDetail;
-import javax.swing.JDialog;
 import coffeeshop.Util.BaseMessage;
+import coffeeshop.Util.Common;
 import coffeeshop.Util.Constant;
+import coffeeshop.Util.DbUtil;
 import lombok.extern.log4j.Log4j;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.Map;
 
 @Log4j
 public final class JDModifyBillDetail extends javax.swing.JDialog {

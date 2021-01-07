@@ -88,7 +88,7 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="pnlBill" max="32767" attributes="0"/>
-                      <Component id="scrollPaneBillDetail" pref="657" max="32767" attributes="0"/>
+                      <Component id="scrollPaneBillDetail" pref="679" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -104,7 +104,7 @@
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="scrollPaneBillDetail" pref="431" max="32767" attributes="0"/>
+                      <Component id="scrollPaneBillDetail" pref="430" max="32767" attributes="0"/>
                       <Component id="scrollPaneProduct" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -322,34 +322,32 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="1" attributes="0">
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <Component id="lblBillId" min="-2" pref="72" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="txtBillId" max="32767" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" attributes="0">
-                                      <Component id="lblBillTime" min="-2" pref="72" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="txtBillTime" min="-2" pref="213" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="lblBillId" min="-2" pref="72" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="txtBillId" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Component id="btnBook" min="-2" pref="97" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                              <Component id="btnCheckout" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                              <Component id="btnDeleteBill" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="btnBook" min="-2" pref="117" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                              <Component id="btnCheckout" min="-2" pref="117" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="65" max="-2" attributes="0"/>
+                              <Component id="lblBillTime" min="-2" pref="72" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="txtBillTime" max="32767" attributes="0"/>
                           </Group>
                       </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
                           <Component id="lblTotalPrice" max="32767" attributes="0"/>
                           <Component id="lblTableName" alignment="0" max="32767" attributes="0"/>
                           <Component id="lblAreaName" alignment="0" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="txtUserId" alignment="0" pref="251" max="32767" attributes="0"/>
                           <Group type="102" alignment="1" attributes="0">
@@ -373,7 +371,7 @@
                                   <Component id="lblBillId" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="txtBillId" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="lblBillTime" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="txtBillTime" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
@@ -384,22 +382,25 @@
                                   <Component id="lblTableName" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="txtTableId" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="lblAreaName" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="txtUserId" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace type="unrelated" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="txtTotalPrice" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                               <Component id="lblVND" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="lblTotalPrice" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="btnCheckout" alignment="0" min="-2" pref="31" max="-2" attributes="0"/>
-                          <Component id="btnBook" alignment="0" min="-2" pref="31" max="-2" attributes="0"/>
+                          <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                              <Component id="btnBook" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
+                              <Component id="btnCheckout" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
+                              <Component id="btnDeleteBill" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -541,6 +542,25 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCheckoutActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="btnDeleteBill">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="45" green="35" red="dc" type="rgb"/>
+                </Property>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI Semibold" size="14" style="0"/>
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Hu&#x1ef7; &#x111;&#x1a1;n"/>
+                <Property name="borderPainted" type="boolean" value="false"/>
+                <Property name="focusPainted" type="boolean" value="false"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDeleteBillActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>

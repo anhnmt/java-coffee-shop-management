@@ -7,16 +7,16 @@ package coffeeshop.GUI.area;
 
 import coffeeshop.DAO.impl.AreaDao;
 import coffeeshop.DTO.Area;
-import coffeeshop.Util.Common;
-import coffeeshop.Util.DbUtil;
 import coffeeshop.Util.BaseMessage;
+import coffeeshop.Util.Common;
 import coffeeshop.Util.Constant;
-import java.awt.Color;
+import coffeeshop.Util.DbUtil;
+import lombok.extern.log4j.Log4j;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Map;
-import javax.swing.BorderFactory;
-import javax.swing.JOptionPane;
-import lombok.extern.log4j.Log4j;
 
 /**
  *

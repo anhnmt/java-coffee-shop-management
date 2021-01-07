@@ -7,21 +7,20 @@ package coffeeshop.GUI.category;
 
 import coffeeshop.DAO.impl.CategoryDao;
 import coffeeshop.DTO.Category;
+import coffeeshop.Util.BaseMessage;
 import coffeeshop.Util.Common;
+import coffeeshop.Util.Constant;
 import coffeeshop.Util.DbUtil;
-import java.awt.Color;
+import lombok.extern.log4j.Log4j;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Map;
-import javax.swing.BorderFactory;
-import javax.swing.JOptionPane;
 
 /**
- *
  * @author Minh
  */
-import coffeeshop.Util.BaseMessage;
-import coffeeshop.Util.Constant;
-import lombok.extern.log4j.Log4j;
 
 @Log4j
 public final class JDModifyCategory extends javax.swing.JDialog {

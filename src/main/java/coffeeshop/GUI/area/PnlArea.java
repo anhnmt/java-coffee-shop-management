@@ -5,36 +5,27 @@
  */
 package coffeeshop.GUI.area;
 
-import coffeeshop.DTO.User;
-import coffeeshop.DTO.Area;
-import coffeeshop.DTO.Table;
 import coffeeshop.DAO.impl.AreaDao;
 import coffeeshop.DAO.impl.BillDao;
 import coffeeshop.DAO.impl.TableDao;
-import coffeeshop.GUI.table.JDTable;
-import coffeeshop.Util.WrapLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Frame;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.SwingConstants;
+import coffeeshop.DTO.Area;
 import coffeeshop.DTO.Bill;
+import coffeeshop.DTO.Table;
+import coffeeshop.DTO.User;
 import coffeeshop.GUI.table.JDDeleteTable;
 import coffeeshop.GUI.table.JDModifyTable;
+import coffeeshop.GUI.table.JDTable;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
-import java.awt.Cursor;
+import coffeeshop.Util.WrapLayout;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import javax.swing.JPanel;
-import javax.swing.ScrollPaneConstants;
 
 /**
  *
@@ -375,7 +366,7 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
     }//GEN-LAST:event_lblUpdateMouseClicked
 
     private void tabbedPaneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabbedPaneMouseClicked
-        if (tabbedPane.getComponents().length > 0) {
+        if (tabbedPane.getComponents().length > 0 && tabbedPane.getTabCount() > 0) {
             String name = tabbedPane.getSelectedComponent().getName();
             area = areaDao.findByName(name);
         }

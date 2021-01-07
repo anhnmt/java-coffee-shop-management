@@ -7,27 +7,21 @@ package coffeeshop.GUI.table;
 
 import coffeeshop.DAO.impl.AreaDao;
 import coffeeshop.DAO.impl.BillDao;
+import coffeeshop.DAO.impl.TableDao;
 import coffeeshop.DTO.Area;
 import coffeeshop.DTO.Bill;
+import coffeeshop.DTO.Table;
+import coffeeshop.Util.BaseMessage;
+import coffeeshop.Util.Common;
+import coffeeshop.Util.Constant;
+import coffeeshop.Util.DbUtil;
+import lombok.extern.log4j.Log4j;
+
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.DefaultComboBoxModel;
-import coffeeshop.DTO.Table;
-import coffeeshop.DAO.impl.TableDao;
-import coffeeshop.Util.Common;
-import coffeeshop.Util.DbUtil;
 import java.util.Map;
 import java.util.Objects;
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
-
-/**
- *
- * @author Minh
- */
-import coffeeshop.Util.BaseMessage;
-import coffeeshop.Util.Constant;
-import lombok.extern.log4j.Log4j;
 
 @Log4j
 public final class JDChangeTable extends javax.swing.JDialog {

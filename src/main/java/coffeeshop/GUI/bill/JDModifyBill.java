@@ -5,7 +5,7 @@
  */
 package coffeeshop.GUI.bill;
 
-import javax.swing.BorderFactory;
+import javax.swing.*;
 
 /**
  *

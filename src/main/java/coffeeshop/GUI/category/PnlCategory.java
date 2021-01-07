@@ -7,14 +7,15 @@ package coffeeshop.GUI.category;
 
 import coffeeshop.DAO.impl.CategoryDao;
 import coffeeshop.DTO.Category;
-import java.awt.Frame;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.table.DefaultTableModel;
 import coffeeshop.DTO.User;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
+
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *

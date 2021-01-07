@@ -6,25 +6,17 @@
 package coffeeshop.GUI.bill;
 
 import coffeeshop.DTO.Bill;
-import coffeeshop.Util.DbUtil;
-import coffeeshop.Util.Excel;
-import java.awt.Frame;
-import java.io.File;
-import javax.swing.Action;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
-/**
- *
- * @author Minh
- */
-import coffeeshop.Util.BaseMessage;
-import coffeeshop.Util.Common;
-import coffeeshop.Util.Constant;
+import coffeeshop.Util.*;
 import lombok.extern.log4j.Log4j;
 
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
+import java.io.File;
+
+/**
+ * @author Minh
+ */
 @Log4j
 public final class JDExportBill extends javax.swing.JDialog {
 
@@ -171,7 +163,7 @@ public final class JDExportBill extends javax.swing.JDialog {
                 callback.actionBillExport();
                 dispose();
             }
-        } catch (Exception e) {
+        } catch (HeadlessException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
             log.error(Common.createMessageLog(null, response, "btnExportActionPerformed"));
         }

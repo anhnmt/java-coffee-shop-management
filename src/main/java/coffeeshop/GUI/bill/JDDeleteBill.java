@@ -6,13 +6,12 @@
 package coffeeshop.GUI.bill;
 
 import coffeeshop.DAO.impl.BillDao;
-import coffeeshop.Util.DbUtil;
-import java.util.Map;
-import javax.swing.JOptionPane;
 import coffeeshop.DTO.Bill;
-import java.awt.Frame;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import coffeeshop.Util.DbUtil;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.Map;
 
 /**
  *

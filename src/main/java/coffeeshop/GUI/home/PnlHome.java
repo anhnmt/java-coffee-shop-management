@@ -5,14 +5,10 @@
  */
 package coffeeshop.GUI.home;
 
-import coffeeshop.DAO.impl.AreaDao;
-import coffeeshop.DAO.impl.BillDao;
-import coffeeshop.DAO.impl.CategoryDao;
-import coffeeshop.DAO.impl.ProductDao;
-import coffeeshop.DAO.impl.TableDao;
-import coffeeshop.DAO.impl.UserDao;
+import coffeeshop.DAO.impl.*;
 import coffeeshop.Util.DbUtil;
-import java.awt.Frame;
+
+import java.awt.*;
 
 /**
  * @author Minh

@@ -10,10 +10,10 @@ import coffeeshop.DTO.Category;
 import coffeeshop.DTO.Product;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.DbUtil;
+
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
 
 /**
  *
