@@ -53,7 +53,7 @@ public class PnlBill extends javax.swing.JPanel implements JDSearchBill.Callback
         this.billDao = new BillDao(dbUtil);
 
         if (user.getRole() != 1) {
-            lblView.setVisible(false);
+            lblExport.setVisible(false);
             lblDelete.setVisible(false);
         }
 
@@ -187,7 +187,7 @@ public class PnlBill extends javax.swing.JPanel implements JDSearchBill.Callback
 
         lblExport.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         lblExport.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblExport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_repeat_50px_1.png"))); // NOI18N
+        lblExport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/img/icons8_print_50px.png"))); // NOI18N
         lblExport.setText("Xuất Excel");
         lblExport.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblExport.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);

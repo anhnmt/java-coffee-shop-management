@@ -123,25 +123,25 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
         JPanel panel = new JPanel(false);
         panel.setLayout(new WrapLayout(WrapLayout.LEFT, 35, 5));
         panel.setBackground(new Color(255, 255, 255));
+        if (user.getRole() == 1) {
+            JLabel label = new JLabel();
+            label.setIcon(createImageIcon("/assets/img/icons8_add_new_75px.png")); // NOI18N
+            label.setText("Thêm bàn mới");
+            label.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            label.setHorizontalTextPosition(SwingConstants.CENTER);
+            label.setVerticalTextPosition(SwingConstants.BOTTOM);
 
-        JLabel label = new JLabel();
-        label.setIcon(createImageIcon("/assets/img/icons8_add_new_75px.png")); // NOI18N
-        label.setText("Thêm bàn mới");
-        label.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        label.setHorizontalTextPosition(SwingConstants.CENTER);
-        label.setVerticalTextPosition(SwingConstants.BOTTOM);
-
-        panel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent evt) {
-                if (!Common.isNullOrEmpty(area)) {
-                    JDModifyTable jdma = new JDModifyTable(parent, true, dbUtil, (JDModifyTable.CallbackTableModify) self, null, area);
-                    jdma.setVisible(true);
+            panel.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent evt) {
+                    if (!Common.isNullOrEmpty(area)) {
+                        JDModifyTable jdma = new JDModifyTable(parent, true, dbUtil, (JDModifyTable.CallbackTableModify) self, null, area);
+                        jdma.setVisible(true);
+                    }
                 }
-            }
-        });
-
-        panel.add(label);
+            });
+            panel.add(label);
+        }
         return panel;
     }
 
@@ -172,8 +172,10 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
             public void mouseClicked(MouseEvent evt) {
                 table = tableDao.findByName(objTable.getName());
 
-                if (evt.getButton() == MouseEvent.BUTTON3) {
-                    jPopupMenu.show(panel, evt.getX(), evt.getY());
+                if (evt.getButton() == MouseEvent.BUTTON3) {  
+                    if(user.getRole() == 1){
+                        jPopupMenu.show(panel, evt.getX(), evt.getY());
+                    }
                 } else {
                     if (!Common.isNullOrEmpty(table)) {
                         JDTable jDTable = new JDTable(parent, true, dbUtil, (JDTable.CallbackTableExit) self, user, table);
