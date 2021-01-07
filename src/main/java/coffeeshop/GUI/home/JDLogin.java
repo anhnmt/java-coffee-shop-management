@@ -158,6 +158,7 @@ public class JDLogin extends javax.swing.JDialog {
         btnLogin.setText("Đăng nhập");
         btnLogin.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         btnLogin.setBorderPainted(false);
+        btnLogin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnLogin.setFocusPainted(false);
         btnLogin.setFocusable(false);
         btnLogin.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -170,6 +171,7 @@ public class JDLogin extends javax.swing.JDialog {
         lblRegister.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblRegister.setForeground(new java.awt.Color(114, 137, 218));
         lblRegister.setText("Đăng ký");
+        lblRegister.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblRegister.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblRegisterMouseClicked(evt);
@@ -183,6 +185,7 @@ public class JDLogin extends javax.swing.JDialog {
         lblForgotPassword.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblForgotPassword.setForeground(new java.awt.Color(114, 137, 218));
         lblForgotPassword.setText("Quên mật khẩu?");
+        lblForgotPassword.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblForgotPassword.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblForgotPasswordMouseClicked(evt);
