@@ -192,6 +192,7 @@ public final class JDTable extends javax.swing.JDialog implements JDModifyBillDe
                 if (!Common.isNullOrEmpty(products)) {
                     txtProductAmount.setEditable(true);
                     btnChangeTable.setVisible(true);
+                    btnAddProduct.setVisible(true);
                 }
 
                 loadingBillDetail();

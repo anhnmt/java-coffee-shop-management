@@ -447,131 +447,131 @@ END CATCH;
 
 GO
 
---EXEC sp_insertProduct 1, N'Bạc xỉu', 35000;
+EXEC sp_insertProduct 1, N'Bạc xỉu', 35000;
 
---GO
+GO
 
---EXEC sp_insertProduct 1, N'Cà phê sữa tươi', 35000;
+EXEC sp_insertProduct 1, N'Cà phê sữa tươi', 35000;
 
---GO
+GO
 
---EXEC sp_insertProduct 1, N'Cà phê đen', 29000;
+EXEC sp_insertProduct 1, N'Cà phê đen', 29000;
 
---GO
+GO
 
---EXEC sp_insertProduct 1, N'Cà phê nâu', 35000;
+EXEC sp_insertProduct 1, N'Cà phê nâu', 35000;
 
---GO
+GO
 
---EXEC sp_insertProduct 1, N'Cà phê sữa tươi', 35000;
+EXEC sp_insertProduct 1, N'Cà phê sữa tươi', 35000;
 
---GO
+GO
 
---EXEC sp_insertProduct 2, N'Latte', 45000;
+EXEC sp_insertProduct 2, N'Latte', 45000;
 
---GO
+GO
 
---EXEC sp_insertProduct 2, N'Cappuchino', 45000;
+EXEC sp_insertProduct 2, N'Cappuchino', 45000;
 
---GO
+GO
 
---EXEC sp_insertProduct 2, N'Espresso', 30000;
+EXEC sp_insertProduct 2, N'Espresso', 30000;
 
---GO
+GO
 
---EXEC sp_insertProduct 3, N'Sinh tố bơ', 59000;
+EXEC sp_insertProduct 3, N'Sinh tố bơ', 59000;
 
---GO
+GO
 
---EXEC sp_insertProduct 3, N'Sinh tố xoài', 5000;
+EXEC sp_insertProduct 3, N'Sinh tố xoài', 5000;
 
---GO
+GO
 
---EXEC sp_insertProduct 4, N'Trà cam quế', 45000;
+EXEC sp_insertProduct 4, N'Trà cam quế', 45000;
 
---GO
+GO
 
---EXEC sp_insertProduct 4, N'Trà đào chanh leo', 45000;
+EXEC sp_insertProduct 4, N'Trà đào chanh leo', 45000;
 
---GO
+GO
 
---EXEC sp_insertProduct 4, N'Trà quất mật ong', 45000;
+EXEC sp_insertProduct 4, N'Trà quất mật ong', 45000;
 
---GO
+GO
 
---EXEC sp_insertProduct 4, N'Trà lip ton', 25000;
+EXEC sp_insertProduct 4, N'Trà lip ton', 25000;
 
---GO
+GO
 
---EXEC sp_insertProduct 4, N'Trà mạn', 35000;
+EXEC sp_insertProduct 4, N'Trà mạn', 35000;
 
---GO
+GO
 
---EXEC sp_insertProduct 5, N'Cóc xanh (theo mùa)', 55000;
+EXEC sp_insertProduct 5, N'Cóc xanh (theo mùa)', 55000;
 
---GO
+GO
 
---EXEC sp_insertProduct 5, N'Chanh tươi', 39000;
+EXEC sp_insertProduct 5, N'Chanh tươi', 39000;
 
---GO
+GO
 
---EXEC sp_insertProduct 5, N'Dưa hấu', 49000;
+EXEC sp_insertProduct 5, N'Dưa hấu', 49000;
 
---GO
+GO
 
---EXEC sp_insertProduct 5, N'Chanh leo', 49000;
+EXEC sp_insertProduct 5, N'Chanh leo', 49000;
 
---GO
+GO
 
---EXEC sp_insertProduct 5, N'Cam tươi', 65000;
+EXEC sp_insertProduct 5, N'Cam tươi', 65000;
 
---GO
+GO
 
---EXEC sp_insertProduct 5, N'Ổi', 45000;
+EXEC sp_insertProduct 5, N'Ổi', 45000;
 
---GO
+GO
 
---EXEC sp_insertProduct 5, N'Xoài xanh', 45000;
+EXEC sp_insertProduct 5, N'Xoài xanh', 45000;
 
---GO
+GO
 
---EXEC sp_insertProduct 6, N'Sữa chua dầm đá', 35000;
+EXEC sp_insertProduct 6, N'Sữa chua dầm đá', 35000;
 
---GO
+GO
 
---EXEC sp_insertProduct 6, N'Sữa chua ca cao', 40000;
+EXEC sp_insertProduct 6, N'Sữa chua ca cao', 40000;
 
---GO
+GO
 
---EXEC sp_insertProduct 6, N'Sữa chua cà phê', 40000;
+EXEC sp_insertProduct 6, N'Sữa chua cà phê', 40000;
 
---GO
+GO
 
---EXEC sp_insertProduct 6, N'Sữa chua trái cây', 55000;
+EXEC sp_insertProduct 6, N'Sữa chua trái cây', 55000;
 
---GO
+GO
 
---EXEC sp_insertProduct 7, N'Hạt hướng dương', 25000;
+EXEC sp_insertProduct 7, N'Hạt hướng dương', 25000;
 
---GO
+GO
 
---EXEC sp_insertProduct 7, N'Lạc rang', 25000;
+EXEC sp_insertProduct 7, N'Lạc rang', 25000;
 
---GO
+GO
 
---EXEC sp_insertProduct 7, N'Ngô cay', 25000;
+EXEC sp_insertProduct 7, N'Ngô cay', 25000;
 
---GO
+GO
 
---EXEC sp_insertProduct 7, N'Bánh đậu xanh & Kẹo lạc', 25000;
+EXEC sp_insertProduct 7, N'Bánh đậu xanh & Kẹo lạc', 25000;
 
---GO
+GO
 
---EXEC sp_insertProduct 7, N'Bánh sừng bò chấm sữa', 25000;
+EXEC sp_insertProduct 7, N'Bánh sừng bò chấm sữa', 25000;
 
---GO
+GO
 
---EXEC sp_insertProduct 7, N'Thịt bò khô', 40000;
+EXEC sp_insertProduct 7, N'Thịt bò khô', 40000;
 
 GO
 
