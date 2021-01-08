@@ -20,6 +20,7 @@ import java.awt.*;
 import java.io.File;
 import java.util.List;
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -71,6 +72,20 @@ public final class JDBill extends javax.swing.JDialog {
             txtBillTotalPrice.setText(String.valueOf(bill.getTotal_price()));
             loading();
         }
+
+        // Custom Style
+        txtBillId.setBorder(BorderFactory.createCompoundBorder(
+                txtBillId.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+        txtBillTime.setBorder(BorderFactory.createCompoundBorder(
+                txtBillTime.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+        txtBillTotalPrice.setBorder(BorderFactory.createCompoundBorder(
+                txtBillTotalPrice.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+        txtBillDiscount.setBorder(BorderFactory.createCompoundBorder(
+                txtBillDiscount.getBorder(),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)));
     }
 
     private void loading() {
@@ -180,7 +195,7 @@ public final class JDBill extends javax.swing.JDialog {
         btnExportExcel.setBackground(new java.awt.Color(0, 204, 106));
         btnExportExcel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnExportExcel.setForeground(new java.awt.Color(255, 255, 255));
-        btnExportExcel.setText("Xuất Excel");
+        btnExportExcel.setText("In Hoá Đơn");
         btnExportExcel.setBorderPainted(false);
         btnExportExcel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnExportExcel.addActionListener(new java.awt.event.ActionListener() {

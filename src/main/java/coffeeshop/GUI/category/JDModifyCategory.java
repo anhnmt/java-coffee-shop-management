@@ -21,7 +21,6 @@ import java.util.Map;
 /**
  * @author Minh
  */
-
 @Log4j
 public final class JDModifyCategory extends javax.swing.JDialog {
 
@@ -214,12 +213,13 @@ public final class JDModifyCategory extends javax.swing.JDialog {
             lblNameError.setVisible(true);
         } else {
             try {
-                if (this.category == null) {
-                    category = new Category();
-                    category.setName(name);
-                    category.setStatus(status);
+                Category newCategory = new Category();
+                newCategory.setName(name);
+                newCategory.setStatus(status);
 
-                    Map<String, Object> result = categoryDao.create(category);
+                if (Common.isNullOrEmpty(category)) {
+
+                    Map<String, Object> result = categoryDao.create(newCategory);
 
                     if ((boolean) result.get("status") == true) {
                         JOptionPane.showMessageDialog(this, result.get("message"));
@@ -229,11 +229,9 @@ public final class JDModifyCategory extends javax.swing.JDialog {
                         JOptionPane.showMessageDialog(this, result.get("message"));
                     }
                 } else {
-                    category.setId(this.category.getId());
-                    category.setName(name);
-                    category.setStatus(status);
+                    newCategory.setId(category.getId());
 
-                    Map<String, Object> result = categoryDao.update(category);
+                    Map<String, Object> result = categoryDao.update(newCategory);
 
                     if ((boolean) result.get("status") == true) {
                         JOptionPane.showMessageDialog(this, result.get("message"));
@@ -243,7 +241,7 @@ public final class JDModifyCategory extends javax.swing.JDialog {
                         JOptionPane.showMessageDialog(this, result.get("message"));
                     }
                 }
-            } catch (Exception e) {
+            } catch (HeadlessException e) {
                 response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
                 log.error(Common.createMessageLog(null, response, "btnModifyActionPerformed"));
             }
