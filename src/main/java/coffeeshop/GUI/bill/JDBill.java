@@ -195,7 +195,7 @@ public final class JDBill extends javax.swing.JDialog {
         btnExportExcel.setBackground(new java.awt.Color(0, 204, 106));
         btnExportExcel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnExportExcel.setForeground(new java.awt.Color(255, 255, 255));
-        btnExportExcel.setText("Xuất Excel");
+        btnExportExcel.setText("In Hoá Đơn");
         btnExportExcel.setBorderPainted(false);
         btnExportExcel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnExportExcel.addActionListener(new java.awt.event.ActionListener() {

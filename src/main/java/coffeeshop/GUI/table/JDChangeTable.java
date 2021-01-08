@@ -127,7 +127,6 @@ public final class JDChangeTable extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         lblTitle = new javax.swing.JLabel();
         btnChangeTable = new javax.swing.JButton();
@@ -250,7 +249,6 @@ public final class JDChangeTable extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnChangeTable;
-    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<Area> cboArea;
     private javax.swing.JComboBox<Table> cboTable;
     private javax.swing.JPanel jPanel1;
