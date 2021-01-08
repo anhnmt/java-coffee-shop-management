@@ -375,7 +375,6 @@ public class JDLogin extends javax.swing.JDialog {
 
         if (validate == true) {
             User obj = userDao.auth(email, password);
-            System.out.println(obj);
 
             if (!Common.isNullOrEmpty(obj)) {
                 callback.actionLogin(obj);

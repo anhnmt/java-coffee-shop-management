@@ -15,6 +15,7 @@ import coffeeshop.Util.BaseMessage;
 import coffeeshop.Util.Common;
 import coffeeshop.Util.Constant;
 import coffeeshop.Util.DbUtil;
+import java.awt.HeadlessException;
 import lombok.extern.log4j.Log4j;
 
 import javax.swing.*;
@@ -219,25 +220,31 @@ public final class JDChangeTable extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnChangeTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeTableActionPerformed
-        int table_id = ((Table) cboTable.getSelectedItem()).getId();
-
         try {
-            if (!Common.isNullOrEmpty(bill)) {
-                bill.setTable_id(table_id);
+            Table newTable = (Table) cboTable.getSelectedItem();
 
-                Map<String, Object> result = billDao.update(bill);
+            if (!Common.isNullOrEmpty(newTable)) {
+                int table_id = newTable.getId();
 
-                if ((boolean) result.get("status") == true) {
-                    JOptionPane.showMessageDialog(this, result.get("message"));
-                    callback.actionTableChange();
-                    dispose();
-                } else {
-                    JOptionPane.showMessageDialog(this, result.get("message"));
+                if (!Common.isNullOrEmpty(bill)) {
+                    bill.setTable_id(table_id);
+
+                    Map<String, Object> result = billDao.update(bill);
+
+                    if ((boolean) result.get("status") == true) {
+                        JOptionPane.showMessageDialog(this, result.get("message"));
+                        callback.actionTableChange();
+                        dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(this, result.get("message"));
+                    }
                 }
+            } else {
+                JOptionPane.showMessageDialog(this, "Không tìm thấy bàn");
             }
-        } catch (Exception e) {
+        } catch (HeadlessException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
-            log.error(Common.createMessageLog(null, response, "btnModifyActionPerformed"));
+            log.error(Common.createMessageLog(null, response, "btnChangeTableActionPerformed"));
         }
     }//GEN-LAST:event_btnChangeTableActionPerformed
 

@@ -127,13 +127,13 @@ public class ProductDao implements IProductDao {
 
             response = new MessageResponse<>(cs.getBoolean(5), cs.getNString(6), output);
             if (cs.getBoolean(5)) {
-                log.info(Common.createMessageLog(product, response, "delete"));
+                log.info(Common.createMessageLog(product, response, "create"));
             } else {
-                log.error(Common.createMessageLog(product, response, "delete"));
+                log.error(Common.createMessageLog(product, response, "create"));
             }
         } catch (SQLException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
-            log.error(Common.createMessageLog(product, response, "creates"));
+            log.error(Common.createMessageLog(product, response, "create"));
         } finally {
             cs = null;
         }

@@ -83,7 +83,7 @@ public class UserDao implements IUserDao {
                         rs.getInt("id"),
                         rs.getNString("name"),
                         rs.getString("email"),
-                        null,
+                        rs.getString("password"),
                         rs.getInt("role"),
                         rs.getBoolean("status")
                 );
@@ -124,9 +124,9 @@ public class UserDao implements IUserDao {
 
             response = new MessageResponse<>(cs.getBoolean(6), cs.getNString(7), output);
             if (cs.getBoolean(6)) {
-                log.info(Common.createMessageLog(user, response, "update"));
+                log.info(Common.createMessageLog(user, response, "create"));
             } else {
-                log.error(Common.createMessageLog(user, response, "update"));
+                log.error(Common.createMessageLog(user, response, "create"));
             }
         } catch (SQLException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
@@ -231,7 +231,7 @@ public class UserDao implements IUserDao {
             }
         } catch (SQLException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
-            log.error(Common.createMessageLog(id, response, "update"));
+            log.error(Common.createMessageLog(id, response, "delete"));
         } finally {
             cs = null;
         }
@@ -260,9 +260,12 @@ public class UserDao implements IUserDao {
                         rs.getBoolean("status")
                 );
             }
+
+            response = new MessageResponse<>(Constant.SUCCESS_RESPONSE, "Thành công", obj);
+            log.info(Common.createMessageLog(new Object[]{email, password}, response, "auth"));
         } catch (SQLException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
-            log.error(Common.createMessageLog(new Object[]{email, password}, response, "update"));
+            log.error(Common.createMessageLog(new Object[]{email, password}, response, "auth"));
         } finally {
             rs = null;
             cs = null;

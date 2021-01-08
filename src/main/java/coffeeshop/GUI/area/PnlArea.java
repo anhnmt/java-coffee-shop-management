@@ -131,7 +131,7 @@ public final class PnlArea extends javax.swing.JPanel implements JDModifyArea.Ca
             label.setHorizontalTextPosition(SwingConstants.CENTER);
             label.setVerticalTextPosition(SwingConstants.BOTTOM);
 
-            panel.addMouseListener(new MouseAdapter() {
+            label.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent evt) {
                     if (!Common.isNullOrEmpty(area)) {

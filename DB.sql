@@ -91,6 +91,58 @@ EXEC sp_insertUser @_name = N'Nhân viên',
 
 GO
 
+CREATE PROC sp_updateUser
+(
+	@_id INT,
+    @_name NVARCHAR(100),
+    @_email VARCHAR(100),
+    @_password VARCHAR(100),
+    @_role TINYINT = 0,
+    @_status BIT = 1,
+    @_outStt BIT = 1 OUTPUT,
+    @_outMsg NVARCHAR(200) = '' OUTPUT
+)
+AS
+BEGIN TRY   
+	IF NOT EXISTS (SELECT id FROM Users WHERE id = @_id)
+    BEGIN
+        SET @_outStt = 0;
+        SET @_outMsg = N'Người dùng không tồn tại, vui lòng nhập lại';
+    END;
+    ELSE IF EXISTS (SELECT email FROM Users WHERE email = @_email AND id != @_id)
+    BEGIN
+        SET @_outStt = 0;
+        SET @_outMsg = N'Email đã tồn tại, vui lòng nhập lại';
+    END;
+    ELSE
+    BEGIN
+        BEGIN TRAN;
+        UPDATE Users
+		SET 
+            [name] = @_name,
+            email = @_email,
+            [password] = @_password,
+            [role] = @_role,
+            [status] = @_status
+		WHERE id = @_id;
+
+        SET @_outStt = 1;
+        SET @_outMsg = N'Cập nhật người dùng thành công';
+
+        IF @@TRANCOUNT > 0
+            COMMIT TRAN;
+    END;
+END TRY
+BEGIN CATCH
+    SET @_outStt = 0;
+    SET @_outMsg = N'Cập nhật không thành công: ' + ERROR_MESSAGE();
+
+    IF @@TRANCOUNT > 0
+        ROLLBACK TRAN;
+END CATCH;
+
+GO
+
 CREATE PROC sp_checkUser
 (
     @_email VARCHAR(100),
@@ -1013,7 +1065,7 @@ BEGIN TRY
         SET @_outStt = 0;
         SET @_outMsg = N'Mã khu vực không tồn tại, vui lòng nhập lại';
     END;
-    ELSE IF EXISTS (SELECT [name] FROM [Tables] WHERE [name] = @_name)
+    ELSE IF EXISTS (SELECT [name] FROM [Tables] WHERE [name] = @_name AND id != @_id)
     BEGIN
         SET @_outStt = 0;
         SET @_outMsg = N'Tên bàn đã tồn tại, vui lòng nhập lại';
