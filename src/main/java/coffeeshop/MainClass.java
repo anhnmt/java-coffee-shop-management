@@ -12,11 +12,10 @@ import java.awt.*;
 import java.sql.Connection;
 
 @Log4j
-public class MainClass {
+public class MainClass{
 
     public static void main(String[] args) {
         BaseMessage response;
-
         try {
             DbUtil dbUtil = new DbUtil();
             Connection conn = dbUtil.getInstance().getConnection();

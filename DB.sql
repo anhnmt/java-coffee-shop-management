@@ -430,7 +430,24 @@ EXEC (@sql);
 
 GO
 
---EXEC sp_getAllCategory;
+CREATE PROC sp_getAllCategoryTrue
+(
+    @_name NVARCHAR(100) = NULL,
+    @_status BIT = NULL
+)
+AS
+DECLARE @sql NVARCHAR(MAX) = N'SELECT * FROM Categories WHERE 1=1 AND status = 1 ';
+
+    IF (@_name IS NOT NULL)
+        SET @sql = CONCAT(@sql, N' AND name LIKE ''%', @_name, N'%''');
+
+    IF (@_status IS NOT NULL)
+        SET @sql = CONCAT(@sql, N' AND status=', @_status);
+
+    EXEC (@sql);
+
+GO
+--EXEC sp_getAllCategoryTrue;
 
 GO
 
@@ -642,7 +659,7 @@ DECLARE @sql NVARCHAR(MAX)
 		SELECT p.*, c.[name] category_name
 		FROM Products p
 		JOIN Categories c
-        ON c.id = p.category_id WHERE 1=1';
+        ON c.id = p.category_id WHERE 1=1 AND c.status = 1 order by c.name asc ';
 
 IF (@_name IS NOT NULL)
     SET @sql = CONCAT(@sql, N' AND p.name LIKE ''%', @_name, N'%''');

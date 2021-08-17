@@ -62,6 +62,50 @@ public class CategoryDao implements ICategoryDao {
 
             if (!Common.isNullOrEmpty(category)) {
                 if (!Common.isNullOrEmpty(category.getName())) {
+                    cs.setNString(1, category.getNam96+
+                            e());
+                }
+                if (!Common.isNullOrEmpty(category.getStatus())) {
+                    cs.setBoolean(2, category.getStatus());
+                }
+            }
+            rs = cs.executeQuery();
+
+            while (rs.next()) {
+                Category obj = new Category(
+                        rs.getInt("id"),
+                        rs.getNString("name"),
+                        rs.getBoolean("status")
+                );
+                list.add(obj);
+            }
+
+            response = new MessageResponse<>(Constant.SUCCESS_RESPONSE, "Thành công", list);
+            log.info(Common.createMessageLog(category, response, "getAll"));
+        } catch (SQLException e) {
+            response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
+            log.error(Common.createMessageLog(category, response, "getAll"));
+        } finally {
+            rs = null;
+            cs = null;
+        }
+
+        return list;
+    }
+
+    @Override
+    public List<Category> getAllByStatusTrue(Category category) {
+        List<Category> list = new ArrayList<>();
+
+        String sql = "{CALL sp_getAllCategoryTrue(?, ?)}";
+
+        try {
+            cs = conn.prepareCall(sql);
+            cs.setNull(1, Types.NVARCHAR);
+            cs.setNull(2, Types.BOOLEAN);
+
+            if (!Common.isNullOrEmpty(category)) {
+                if (!Common.isNullOrEmpty(category.getName())) {
                     cs.setNString(1, category.getName());
                 }
                 if (!Common.isNullOrEmpty(category.getStatus())) {

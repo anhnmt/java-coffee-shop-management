@@ -80,7 +80,7 @@ public final class JDModifyProduct extends javax.swing.JDialog {
     }
 
     public void loadCategory() {
-        categories = categoryDao.getAll(null);
+        categories = categoryDao.getAllByStatusTrue(null);
         DefaultComboBoxModel<Category> dcbm = new DefaultComboBoxModel<>();
         categories.forEach(category -> {
             dcbm.addElement(category);
