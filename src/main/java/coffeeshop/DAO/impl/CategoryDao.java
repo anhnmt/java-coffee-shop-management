@@ -62,8 +62,7 @@ public class CategoryDao implements ICategoryDao {
 
             if (!Common.isNullOrEmpty(category)) {
                 if (!Common.isNullOrEmpty(category.getName())) {
-                    cs.setNString(1, category.getNam96+
-                            e());
+                    cs.setNString(1, category.getName());
                 }
                 if (!Common.isNullOrEmpty(category.getStatus())) {
                     cs.setBoolean(2, category.getStatus());

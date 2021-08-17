@@ -36,6 +36,7 @@ public class MainClass{
         } catch (HeadlessException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
             log.error(Common.createMessageLog(null, response, "main"));
+            System.exit(0);
         }
     }
 }

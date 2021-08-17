@@ -511,7 +511,7 @@ BEGIN CATCH
     SET @_outStt = 0;
     SET @_outMsg = N'Thêm thất bại: ' + ERROR_MESSAGE();
     IF @@TRANCOUNT > 0
-        ROLLBACK TRAN sp_insertProduct;
+        ROLLBACK TRAN;
 END CATCH;
 
 GO
