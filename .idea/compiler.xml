@@ -11,7 +11,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="java-coffee-shop-management" target="1.8" />
+      <module name="java-coffee-shop-management" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

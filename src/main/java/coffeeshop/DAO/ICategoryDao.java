@@ -11,6 +11,8 @@ public interface ICategoryDao {
 
     public List<Category> getAll(Category category);
 
+    public List<Category> getAllByStatusTrue(Category category);
+
     public Map<String, Object> create(Category category);
 
     public Category read(int id);

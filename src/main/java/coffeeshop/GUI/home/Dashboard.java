@@ -43,6 +43,10 @@ public final class Dashboard extends javax.swing.JFrame implements JDLogin.Callb
     }
 
     public void loadUser(User user) {
+        this.setIconImage(new ImageIcon(
+                getClass().getResource("/assets/img/icon_cafe.png")
+        ).getImage());
+
         if (!Common.isNullOrEmpty(user)) {
             this.user = user;
             lblName.setText(user.getName().toUpperCase());

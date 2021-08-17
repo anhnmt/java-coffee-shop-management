@@ -12,11 +12,10 @@ import java.awt.*;
 import java.sql.Connection;
 
 @Log4j
-public class MainClass {
+public class MainClass{
 
     public static void main(String[] args) {
         BaseMessage response;
-
         try {
             DbUtil dbUtil = new DbUtil();
             Connection conn = dbUtil.getInstance().getConnection();
@@ -37,6 +36,7 @@ public class MainClass {
         } catch (HeadlessException e) {
             response = new BaseMessage(Constant.ERROR_RESPONSE, e.getMessage());
             log.error(Common.createMessageLog(null, response, "main"));
+            System.exit(0);
         }
     }
 }
